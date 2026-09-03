@@ -74,9 +74,9 @@ async def handle_moral_policing(message: Message) -> bool:
     """Late-night moral policing check (10 PM to 5 AM) - AUDIO ONLY."""
     current_hour = datetime.now().hour
     if current_hour >= 22 or current_hour < 5:
-        police_audio = os.path.join("audio", "hostel.mp3")
+        police_audio = os.path.abspath(os.path.join("audio", "hostel.mp3"))
         try:
-            await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
+            await message.bot.send_chat_action(chat_id=message.chat.id, action="upload_voice")
             if os.path.exists(police_audio):
                 await message.answer_audio(
                     audio=FSInputFile(police_audio),
@@ -93,9 +93,9 @@ async def handle_moral_policing(message: Message) -> bool:
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    welcome_audio = os.path.join("audio", "supplies.mp3")
+    welcome_audio = os.path.abspath(os.path.join("audio", "supplies.mp3"))
     try:
-        await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
+        await message.bot.send_chat_action(chat_id=message.chat.id, action="upload_voice")
         if os.path.exists(welcome_audio):
             await message.answer_audio(
                 audio=FSInputFile(welcome_audio),
@@ -123,10 +123,10 @@ async def send_audio_for_situation(message: Message, audio_key: str):
     Sends ONLY the distinct Malayalam voice note audio file (.mp3) for the specific situation.
     ZERO text messages sent to user!
     """
-    audio_path = os.path.join("audio", f"{audio_key}.mp3")
+    audio_path = os.path.abspath(os.path.join("audio", f"{audio_key}.mp3"))
 
     try:
-        await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
+        await message.bot.send_chat_action(chat_id=message.chat.id, action="upload_voice")
     except Exception:
         pass
 
@@ -150,7 +150,8 @@ async def send_audio_for_situation(message: Message, audio_key: str):
                 print(f"Error sending voice fallback {audio_path}: {e2}")
 
     # Fallback if specific audio file missing
-    all_files = [os.path.join("audio", f) for f in os.listdir("audio") if f.endswith(".mp3")]
+    audio_dir = os.path.abspath("audio")
+    all_files = [os.path.join(audio_dir, f) for f in os.listdir(audio_dir) if f.endswith(".mp3")]
     if all_files:
         try:
             await message.answer_audio(
