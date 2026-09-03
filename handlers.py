@@ -1,9 +1,7 @@
 import os
 import random
-import hashlib
 import asyncio
 from datetime import datetime
-from gtts import gTTS
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import (
@@ -18,60 +16,7 @@ from media_ids import SITUATION_DATA_MAP
 router = Router()
 
 # ==========================================
-# DISTINCT ELDERLY VOICE PROFILES & ASYNC TTS ENGINE
-# ==========================================
-
-# Customized voice parameters to simulate elderly Ammavan, Ammayi, Nattukar, and Moral Police
-VOICE_PROFILES = {
-    "ammavan": {"tld": "co.in", "slow": True},   # Stern elderly Malayali boomer uncle (slow, authoritative)
-    "ammayi": {"tld": "com", "slow": True},      # High-pitched elderly gossip aunt (slow, expressive)
-    "nattukar": {"tld": "ca", "slow": False},    # Dramatic news reporter / colony gossip
-    "police": {"tld": "co.uk", "slow": True}     # Deep stern moral policing voice
-}
-
-
-def _generate_tts_file(speech_text: str, voice_type: str, file_path: str):
-    """Synchronous gTTS worker running in thread pool to prevent async loop freezing."""
-    profile = VOICE_PROFILES.get(voice_type, {"tld": "co.in", "slow": True})
-    tts = gTTS(
-        text=speech_text,
-        lang='ml',
-        tld=profile["tld"],
-        slow=profile["slow"]
-    )
-    tts.save(file_path)
-
-
-async def get_or_generate_malayalam_voice_async(speech_text: str, audio_key: str, voice_type: str = "ammavan") -> str | None:
-    """
-    Non-blocking async voice generator:
-    1. Checks for local custom audio override file in audio/<audio_key>.mp3/ogg/wav
-    2. Uses asyncio.to_thread so gTTS network IO NEVER blocks concurrent users!
-    """
-    audio_dir = "audio"
-    os.makedirs(audio_dir, exist_ok=True)
-    
-    # 1. Check for custom recorded audio file override in audio/ directory
-    for ext in [".mp3", ".ogg", ".wav", ".m4a"]:
-        custom_file = os.path.join(audio_dir, f"{audio_key}{ext}")
-        if os.path.exists(custom_file) and os.path.getsize(custom_file) > 1000 and custom_file != os.path.join(audio_dir, "test_ml.mp3"):
-            return custom_file
-
-    # 2. Asynchronous gTTS Voice Generation
-    try:
-        text_hash = hashlib.md5(f"{speech_text}_{voice_type}".encode('utf-8')).hexdigest()[:12]
-        voice_path = os.path.join(audio_dir, f"ml_{voice_type}_{text_hash}.mp3")
-        
-        if not os.path.exists(voice_path):
-            await asyncio.to_thread(_generate_tts_file, speech_text, voice_type, voice_path)
-            
-        return voice_path
-    except Exception as e:
-        print(f"Error in async voice synthesis: {e}")
-        return None
-
-# ==========================================
-# 18 CLICKABLE MENU BUTTONS (NO TEXT SUBOPTIONS)
+# 18 CLICKABLE MENU BUTTONS (NO TEXT MESSAGES)
 # ==========================================
 
 def get_main_keyboard() -> ReplyKeyboardMarkup:
@@ -129,14 +74,11 @@ async def handle_moral_policing(message: Message) -> bool:
     """Late-night moral policing check (10 PM to 5 AM) - AUDIO ONLY."""
     current_hour = datetime.now().hour
     if current_hour >= 22 or current_hour < 5:
-        speech = "രാത്രി 10 മണി കഴിഞ്ഞിട്ടും നീ കോളേജ് ഗ്രൂപ്പിൽ സന്ദേശം അയക്കുകയാണോ മര്യാദയുള്ള പിള്ളേർ ഈ നേരത്ത് കിടന്നു ഉറങ്ങും ഫോൺ മാറ്റിവെച്ച് പോയി ഉറങ്ങെടാ"
-        voice_path = await get_or_generate_malayalam_voice_async(speech, "moral_police", voice_type="police")
-        
+        police_audio = os.path.join("audio", "hostel.mp3")
         try:
             await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
-            if voice_path and os.path.exists(voice_path):
-                # AUDIO ONLY - NO TEXT MESSAGE AT ALL
-                await message.answer_audio(audio=FSInputFile(voice_path))
+            if os.path.exists(police_audio):
+                await message.answer_audio(audio=FSInputFile(police_audio))
         except Exception as e:
             print(f"Moral policing audio error: {e}")
         return True
@@ -148,15 +90,12 @@ async def handle_moral_policing(message: Message) -> bool:
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    # Set up the menu keyboard and send initial welcoming audio note (AUDIO ONLY)
-    welcome_speech = "കേരള നാട്ടുകാരുടെയും അമ്മാവന്മാരുടെയും ഔദ്യോഗിക ട്രോൾ ബോട്ട് സ്വാഗതം ചെയ്യുന്നു നിങ്ങളുടെ കോളേജ് പ്രശ്നം താഴെ നിന്നും തെരഞ്ഞെടുക്കുക"
-    voice_path = await get_or_generate_malayalam_voice_async(welcome_speech, "welcome", voice_type="ammavan")
-    
+    welcome_audio = os.path.join("audio", "supplies.mp3")
     try:
         await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
-        if voice_path and os.path.exists(voice_path):
+        if os.path.exists(welcome_audio):
             await message.answer_audio(
-                audio=FSInputFile(voice_path),
+                audio=FSInputFile(welcome_audio),
                 reply_markup=get_main_keyboard()
             )
         else:
@@ -173,38 +112,45 @@ async def cmd_menu(message: Message):
     await cmd_start(message)
 
 # ==========================================
-# AUDIO ONLY RESPONSE SENDER (NO TEXT MESSAGES)
+# AUDIO ONLY RESPONSE SENDER (NO TEXT MESSAGES AT ALL)
 # ==========================================
 
 async def send_audio_only_response(message: Message, data: dict):
     """
-    Sends ONLY the Malayalam voice note audio file (.mp3).
+    Sends ONLY the distinct Malayalam voice note audio file (.mp3) for the specific situation.
     ZERO text messages sent to user!
     """
-    speech_text = data["speech"]
     audio_key = data["key"]
-    voice_type = data.get("voice_type", "ammavan")
+    audio_path = os.path.join("audio", f"{audio_key}.mp3")
 
     try:
         await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
     except Exception:
         pass
 
-    # Non-blocking async generation of Malayalam elderly voice note
-    voice_path = await get_or_generate_malayalam_voice_async(speech_text, audio_key, voice_type)
-    
-    # Send AUDIO NOTE ONLY - NO TEXT MESSAGES
-    if voice_path and os.path.exists(voice_path):
+    if os.path.exists(audio_path):
         try:
             await message.answer_audio(
-                audio=FSInputFile(voice_path),
+                audio=FSInputFile(audio_path),
+                reply_markup=get_main_keyboard()
+            )
+            return
+        except Exception as e:
+            print(f"Error sending audio {audio_path}: {e}")
+
+    # Fallback to any available audio file if specific key missing
+    all_files = [os.path.join("audio", f) for f in os.listdir("audio") if f.endswith(".mp3")]
+    if all_files:
+        try:
+            await message.answer_audio(
+                audio=FSInputFile(random.choice(all_files)),
                 reply_markup=get_main_keyboard()
             )
         except Exception as e:
-            print(f"Error sending voice note audio: {e}")
+            print(f"Fallback audio send error: {e}")
 
 # ==========================================
-# SITUATION ROUTING HANDLER (MATCHES ALL 18 BUTTONS & TEXT)
+# SITUATION ROUTING HANDLER (MATCHES ALL 18 SITUATIONS)
 # ==========================================
 
 @router.message()
@@ -214,24 +160,20 @@ async def situation_handler(message: Message):
 
     user_text = message.text.strip() if message.text else ""
 
-    # Check for exact button match
+    # 1. Exact button text match
     if user_text in SITUATION_DATA_MAP:
         data = SITUATION_DATA_MAP[user_text]
         await send_audio_only_response(message, data)
         return
 
-    # Partial keyword matching for arbitrary typed messages
+    # 2. Keyword fuzzy matching
     for btn_text, data in SITUATION_DATA_MAP.items():
-        if any(word in user_text for word in ["സപ്ലി", "supply", "backlog"]) and "സപ്ലി" in btn_text:
-            await send_audio_only_response(message, data)
-            return
-        if any(word in user_text for word in ["അറ്റൻഡൻസ്", "attendance"]) and "അറ്റൻഡൻസ്" in btn_text:
-            await send_audio_only_response(message, data)
-            return
-        if any(word in user_text for word in ["പ്ലേസ്മെന്റ്", "placement", "job", "ജോലി"]) and "പ്ലേസ്മെന്റ്" in btn_text:
-            await send_audio_only_response(message, data)
-            return
+        key = data["key"]
+        if key in user_text.lower() or any(k in user_text for k in ["സപ്ലി", "അറ്റൻഡൻസ്", "പ്ലേസ്മെന്റ്", "വൈവ", "ഹോസ്റ്റൽ", "കാന്റീൻ", "സിംഗിൾ"]):
+            if data["key"] in user_text.lower() or btn_text in user_text:
+                await send_audio_only_response(message, data)
+                return
 
-    # Random fallback audio from situation map
+    # 3. Default random situation audio
     data = random.choice(list(SITUATION_DATA_MAP.values()))
     await send_audio_only_response(message, data)
