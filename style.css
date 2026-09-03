@@ -2,7 +2,7 @@
    Ponjikkara Cuisine - Traditional Kerala Wedding Aesthetic & Micro-interactions
    ========================================================================== */
 
-/* Custom Animations */
+/* Custom Keyframe Animations */
 @keyframes stampSlam {
   0% { transform: scale(3) rotate(-30deg); opacity: 0; }
   70% { transform: scale(0.9) rotate(-12deg); opacity: 1; }
@@ -20,6 +20,11 @@
 
 .pulse-glow {
   animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+/* Tooltip & Pointer Custom Styling */
+#tableStageContainer:hover #leafTooltip {
+  display: flex !important;
 }
 
 /* Custom Scrollbar */

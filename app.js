@@ -5,29 +5,27 @@
 document.addEventListener('DOMContentLoaded', () => {
   const canvasElem = document.getElementById('leafCanvas');
   const tableStageContainer = document.getElementById('tableStageContainer');
+  const leafTooltip = document.getElementById('leafTooltip');
   const physics = new FoodPhysicsEngine(canvasElem);
 
   // Intro Screen Elements
   const introScreen = document.getElementById('introScreen');
   const btnStartGame = document.getElementById('btnStartGame');
 
-  // UI Step Progress Elements
-  const stepCounterElem = document.getElementById('stepCounter');
-  const itemIconElem = document.getElementById('itemIcon');
-  const itemNameMlElem = document.getElementById('itemNameMl');
-  const itemNameEnElem = document.getElementById('itemNameEn');
-  const progressBarElem = document.getElementById('progressBar');
-  const promptTextMlElem = document.getElementById('promptTextMl');
-  const promptTextEnElem = document.getElementById('promptTextEn');
+  // Bottom HUD Elements
+  const counterBadge = document.getElementById('counterBadge');
+  const itemNameEn = document.getElementById('itemNameEn');
+  const itemNameMl = document.getElementById('itemNameMl');
+  const properEtiquetteText = document.getElementById('properEtiquetteText');
+  const ponjikkaraLogicText = document.getElementById('ponjikkaraLogicText');
+  const btnServe = document.getElementById('btnServe');
+  const btnRestart = document.getElementById('btnRestart');
 
   // Ponjikkara Speech Bubble Elements
   const ponjikkaraSpeechBubble = document.getElementById('ponjikkaraSpeechBubble');
   const speechBubbleText = document.getElementById('speechBubbleText');
 
   // Controls & Modal Buttons
-  const btnSoundToggle = document.getElementById('btnSoundToggle');
-  const btnVoiceToggle = document.getElementById('btnVoiceToggle');
-  const btnRestart = document.getElementById('btnRestart');
   const btnRestartFromModal = document.getElementById('btnRestartFromModal');
   const btnCloseModal = document.getElementById('btnCloseModal');
   const scorecardModal = document.getElementById('scorecardModal');
@@ -57,24 +55,21 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStepUI();
   });
 
-  // Handle Click Anywhere on Leaf Canvas / Table Stage ("Ponjikkara Logic")
+  // Handle Serving Trigger (Clicking Leaf Canvas OR clicking "Serve!" button)
   function handleServingClick(e) {
     if (!gameStarted || isAnimating || currentStep >= SADHYA_ITEMS.length) return;
 
     sadhyaAudio.init();
 
-    const rect = canvasElem.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
-
-    const scaleX = canvasElem.width / rect.width;
-    const scaleY = canvasElem.height / rect.height;
-
-    // User's clicked location (which will be IGNORED completely by Ponjikkara!)
-    const userPos = {
-      x: clickX * scaleX,
-      y: clickY * scaleY
-    };
+    let userPos = { x: canvasElem.width * 0.5, y: canvasElem.height * 0.5 };
+    if (e && e.clientX) {
+      const rect = canvasElem.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+      const scaleX = canvasElem.width / rect.width;
+      const scaleY = canvasElem.height / rect.height;
+      userPos = { x: clickX * scaleX, y: clickY * scaleY };
+    }
 
     const item = SADHYA_ITEMS[currentStep];
     isAnimating = true;
@@ -106,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     handleServingClick(e);
   });
+  if (btnServe) btnServe.addEventListener('click', handleServingClick);
 
   // Display Ponjikkara Speech Bubble
   function showSpeechBubble(quoteText) {
@@ -116,36 +112,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 400);
   }
 
-  // Hover Effect Cursor Tracker
-  canvasElem.addEventListener('mousemove', (e) => {
+  // Hover Crosshair Tooltip Follower over Banana Leaf
+  tableStageContainer.addEventListener('mousemove', (e) => {
     if (!gameStarted) return;
-    const rect = canvasElem.getBoundingClientRect();
+    const rect = tableStageContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    leafTooltip.style.left = `${x + 12}px`;
+    leafTooltip.style.top = `${y - 12}px`;
+    leafTooltip.classList.remove('hidden');
+    leafTooltip.classList.add('flex');
+
     const scaleX = canvasElem.width / rect.width;
     const scaleY = canvasElem.height / rect.height;
 
     physics.setHoverPos({
-      x: (e.clientX - rect.left) * scaleX,
-      y: (e.clientY - rect.top) * scaleY
+      x: x * scaleX,
+      y: y * scaleY
     });
   });
 
-  canvasElem.addEventListener('mouseleave', () => {
+  tableStageContainer.addEventListener('mouseleave', () => {
+    leafTooltip.classList.add('hidden');
+    leafTooltip.classList.remove('flex');
     physics.setHoverPos(null);
   });
 
-  // Update Progress & Prompt UI
+  // Update Progress & Bottom HUD Info
   function updateStepUI() {
     const item = SADHYA_ITEMS[currentStep];
-    stepCounterElem.textContent = `Dishes Served: ${currentStep + 1} / 16`;
-    itemIconElem.textContent = item.icon;
-    itemNameMlElem.textContent = item.nameMl;
-    itemNameEnElem.textContent = item.nameEn;
 
-    promptTextMlElem.textContent = `👉 "${item.instructionMl}"`;
-    promptTextEnElem.textContent = `Click anywhere on the banana leaf to choose where Ponjikkara should serve ${item.nameEn}!`;
+    counterBadge.textContent = `${currentStep} / 16`;
+    itemNameEn.textContent = item.nameEn;
+    itemNameMl.textContent = item.nameMl;
 
-    const progressPct = ((currentStep + 1) / SADHYA_ITEMS.length) * 100;
-    progressBarElem.style.width = `${progressPct}%`;
+    properEtiquetteText.textContent = item.properEtiquette || "Golden dal served directly over center rice mound, followed by hot ghee";
+    ponjikkaraLogicText.textContent = item.ponjikkaraLogic || item.englishQuote;
   }
 
   // Grand Finale Disaster Scorecard Trigger
@@ -153,8 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sadhyaAudio.playChendaVictoryRoll();
     sadhyaAudio.playFailSound();
 
-    promptTextMlElem.textContent = "🏆 സദ്യ റെഡി! പൊഞ്ചിക്കര സ്റ്റൈലിൽ സദ്യ തയ്യാറായി!";
-    promptTextEnElem.textContent = "All 16 dishes served Ponjikkara style! View your disaster report card below!";
+    counterBadge.textContent = `16 / 16`;
     showSpeechBubble("സദ്യ റെഡി! പൊഞ്ചിക്കര സ്റ്റൈലിൽ! തമ്പുരാനേ കഴിക്ക്!");
 
     const scorecardDataUrl = await ScorecardGenerator.generateReportCard(canvasElem, physics.placedItems);
@@ -180,22 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Control Event Listeners
-  btnRestart.addEventListener('click', restartGame);
-  btnRestartFromModal.addEventListener('click', restartGame);
-  btnCloseModal.addEventListener('click', () => {
+  if (btnRestart) btnRestart.addEventListener('click', restartGame);
+  if (btnRestartFromModal) btnRestartFromModal.addEventListener('click', restartGame);
+  if (btnCloseModal) btnCloseModal.addEventListener('click', () => {
     scorecardModal.classList.add('hidden');
     scorecardModal.style.display = 'none';
-  });
-
-  btnSoundToggle.addEventListener('click', () => {
-    const isMuted = sadhyaAudio.toggleMute();
-    document.getElementById('lblSound').textContent = isMuted ? "Sound OFF" : "Sound ON";
-    document.getElementById('iconSound').textContent = isMuted ? "🔇" : "🔊";
-  });
-
-  btnVoiceToggle.addEventListener('click', () => {
-    const isVoiceOn = sadhyaAudio.toggleSpeech();
-    document.getElementById('lblVoice').textContent = isVoiceOn ? "Voice ON" : "Voice OFF";
-    document.getElementById('iconVoice').textContent = isVoiceOn ? "🗣️" : "🔇";
   });
 });

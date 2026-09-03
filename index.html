@@ -8,21 +8,14 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Serif+Malayalam:wght@500;700;900&family=Noto+Sans+Malayalam:wght@400;700;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Noto+Serif+Malayalam:wght@500;700;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-amber-950 text-slate-100 min-h-screen relative overflow-x-hidden font-['Outfit'] select-none">
-
-  <!-- MAIN SCENE BACKDROP WITH UPLOADED POSTER ILLUSTRATION -->
-  <div class="fixed inset-0 bg-slate-950 -z-20"></div>
-  
-  <!-- Backdrop Image (Mahabali & Ponjikkara at Wooden Table) -->
-  <div class="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-25 mix-blend-luminosity scale-105 -z-10 filter blur-[3px]" style="background-image: url('assets/bg_illustration.jpg');"></div>
-  <div class="fixed inset-0 bg-gradient-to-b from-slate-950/85 via-amber-950/50 to-slate-950/90 -z-10"></div>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden font-['Outfit'] select-none">
 
   <!-- INTRO SCREEN / POSTER BANNER -->
   <div id="introScreen" class="fixed inset-0 z-50 bg-slate-950/95 flex flex-col items-center justify-center p-4 sm:p-6 text-center overflow-y-auto transition-all duration-700">
@@ -69,118 +62,143 @@
     </div>
   </div>
 
-  <!-- MAIN TOP NAVIGATION & CONTROL BAR -->
-  <header class="border-b border-amber-500/30 bg-slate-950/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-6 py-3 shadow-xl">
-    <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3">
-      
-      <!-- Left Dish Icon & Progress Title -->
-      <div class="flex items-center gap-3">
-        <span id="itemIcon" class="text-3xl p-2 bg-amber-500/20 border border-amber-400/50 rounded-2xl shadow-inner">🍲</span>
-        <div>
-          <div class="flex items-center gap-2">
-            <span id="stepCounter" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-black font-['Montserrat']">
-              Dishes Served: 1 / 16
-            </span>
-          </div>
-          <h2 id="itemNameMl" class="text-xl sm:text-2xl font-black font-['Noto_Serif_Malayalam'] text-white leading-tight drop-shadow">
-            പരിപ്പും നെയ്യും
-          </h2>
-          <p id="itemNameEn" class="text-xs text-amber-200/70 font-['Montserrat'] font-semibold">Parippu Curry & Ghee</p>
+  <!-- MAIN SCENE STAGE (MAHABALI | CAPSULE BANANA LEAF CANVAS | PONJIKKARA) -->
+  <main id="mainGameStage" class="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 flex flex-col justify-center items-center relative">
+
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center justify-center">
+
+      <!-- LEFT COLUMN: KING MAHABALI CUTOUT & BADGE -->
+      <div class="lg:col-span-3 flex flex-col items-center justify-center relative order-2 lg:order-1">
+        <div class="relative w-48 sm:w-64 h-64 sm:h-80 rounded-3xl overflow-hidden border-2 border-amber-500/30 shadow-2xl bg-slate-900/60 flex items-center justify-center group">
+          <!-- Crop Mahabali from backdrop illustration -->
+          <img src="assets/bg_illustration.jpg" alt="King Mahabali" class="w-full h-full object-cover object-left scale-125 group-hover:scale-135 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
         </div>
-      </div>
 
-      <!-- Audio & Control Buttons -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <button id="btnSoundToggle" class="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-amber-500/30 hover:border-amber-400 text-xs font-bold flex items-center gap-1.5 transition-all text-amber-200 shadow-md">
-          <span id="iconSound">🔊</span> <span id="lblSound">Sound ON</span>
-        </button>
-        <button id="btnVoiceToggle" class="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-amber-500/30 hover:border-amber-400 text-xs font-bold flex items-center gap-1.5 transition-all text-amber-200 shadow-md">
-          <span id="iconVoice">🗣️</span> <span id="lblVoice">Voice ON</span>
-        </button>
-        <button id="btnRestart" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 active:scale-95 text-xs font-bold text-white shadow-lg transition-all flex items-center gap-1">
-          <span>🔄</span> <span>Restart</span>
-        </button>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- USER PROMPT & INTERACTIVE GAME STAGE -->
-  <main id="mainGameStage" class="max-w-6xl mx-auto p-3 sm:p-6 flex flex-col items-center gap-4 transition-all duration-700">
-
-    <!-- SUBTLE USER PROMPT BANNER AT TOP -->
-    <div id="promptBanner" class="w-full bg-gradient-to-r from-amber-900/90 via-slate-900/95 to-amber-900/90 border-2 border-amber-400/60 rounded-2xl p-4 text-center shadow-2xl backdrop-blur-md relative overflow-hidden">
-      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-400"></div>
-      
-      <p id="promptTextMl" class="text-base sm:text-xl font-bold font-['Noto_Serif_Malayalam'] text-amber-300 drop-shadow leading-snug">
-        👉 "പൊഞ്ചിക്കര നിങ്ങളുടെ അടുത്ത കറി എവിടെ വിളമ്പണം എന്ന് തീരുമാനിക്കാൻ വാഴയിലയിൽ എവിടെ വേണമെങ്കിലും ക്ലിക്ക് ചെയ്യൂ!"
-      </p>
-      <p id="promptTextEn" class="text-xs sm:text-sm text-slate-300 font-['Montserrat'] mt-1">
-        Click anywhere on the banana leaf to choose where Ponjikkara should serve your next dish!
-      </p>
-    </div>
-
-    <!-- PROGRESS BAR -->
-    <div class="w-full bg-slate-900/90 rounded-full h-3 p-0.5 border border-amber-500/40 shadow-inner">
-      <div id="progressBar" class="bg-gradient-to-r from-amber-400 via-yellow-300 to-emerald-400 h-full rounded-full transition-all duration-500 shadow-[0_0_12px_rgba(245,158,11,0.8)]" style="width: 6.25%;"></div>
-    </div>
-
-    <!-- SIDE-BY-SIDE DINING SCENE (MAHABALI | WOODEN TABLE WITH EMPTY LEAF | PONJIKKARA) -->
-    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 items-center justify-center">
-
-      <!-- LEFT COLUMN: KING MAHABALI SEATED AT THE TABLE -->
-      <div class="lg:col-span-3 flex flex-col items-center justify-center bg-slate-900/80 border border-amber-500/40 rounded-3xl p-4 backdrop-blur-md shadow-2xl order-2 lg:order-1">
-        <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border-4 border-amber-400 shadow-2xl bg-amber-950/80 flex items-center justify-center group">
-          <img src="assets/bg_illustration.jpg" alt="King Mahabali Seated" class="w-full h-full object-cover object-left scale-125 group-hover:scale-135 transition-transform duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-          <span class="absolute bottom-2 text-center text-xs font-black font-['Noto_Serif_Malayalam'] text-amber-300 px-2 py-0.5 rounded bg-slate-950/80 border border-amber-400/40">
-            👑 മഹാബലി തമ്പുരാൻ
+        <!-- KING MAHABALI PILL BADGE -->
+        <div class="mt-3 bg-slate-900/90 border-2 border-amber-400/60 rounded-full px-5 py-2 flex flex-col items-center shadow-xl backdrop-blur-md">
+          <span class="text-xs font-black font-['Montserrat'] tracking-wider text-amber-400 uppercase">KING MAHABALI</span>
+          <span class="text-xs font-semibold text-amber-200 flex items-center gap-1 font-['Montserrat'] mt-0.5">
+            <span>😍</span> <span>Hungry & Eager</span>
           </span>
         </div>
-        <p class="text-xs text-amber-200/80 font-['Noto_Serif_Malayalam'] text-center mt-3 font-semibold">
-          "പൊഞ്ചിക്കര വിളമ്പുന്ന തനത് സദ്യ കഴിക്കാൻ തമ്പുരാൻ ആവേശത്തോടെ കാത്തിരിക്കുന്നു!" 😋
-        </p>
       </div>
 
-      <!-- CENTER COLUMN: RUSTIC WOODEN DINING TABLE & CLEAN EMPTY BANANA LEAF STAGE -->
-      <div class="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2">
-        <div id="tableStageContainer" class="relative w-full max-w-[550px] aspect-square rounded-3xl overflow-hidden border-4 border-amber-600/70 shadow-[0_0_50px_rgba(0,0,0,0.9)] bg-amber-950 flex items-center justify-center cursor-pointer group">
+      <!-- CENTER COLUMN: CAPSULE BANANA LEAF CANVAS STAGE -->
+      <div class="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 relative w-full">
+        
+        <!-- CAPSULE ROUNDED BANANA LEAF CONTAINER -->
+        <div id="tableStageContainer" class="relative w-full max-w-[620px] aspect-[1.75/1] rounded-full overflow-hidden border-4 border-emerald-500/80 shadow-[0_0_60px_rgba(16,185,129,0.3)] bg-emerald-950 flex items-center justify-center cursor-crosshair group">
           
-          <!-- Wooden Table Texture Overlay -->
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/50 via-amber-950/90 to-slate-950 pointer-events-none"></div>
+          <!-- Leaf Center Spine Line -->
+          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 bg-yellow-200/50 z-20 pointer-events-none shadow-sm"></div>
 
-          <!-- HTML5 CANVAS FOR CLEAN EMPTY BANANA LEAF & SERVING PHYSICS -->
-          <canvas id="leafCanvas" class="relative z-10 w-full h-full object-contain cursor-crosshair drop-shadow-2xl"></canvas>
+          <!-- HTML5 CANVAS FOR CAPSULE BANANA LEAF & SERVING PHYSICS -->
+          <canvas id="leafCanvas" class="relative z-10 w-full h-full object-cover"></canvas>
+
+          <!-- TARGET CROSSHAIR CURSOR TOOLTIP OVERLAY -->
+          <div id="leafTooltip" class="absolute z-30 pointer-events-none bg-slate-950/90 text-slate-100 border border-amber-400/60 px-3 py-1 rounded-lg text-xs font-semibold font-['Montserrat'] shadow-2xl hidden flex items-center gap-1.5">
+            <span class="text-amber-400 text-sm">+</span>
+            <span>Mahabali's Sadhya Leaf</span>
+          </div>
 
         </div>
+
       </div>
 
-      <!-- RIGHT COLUMN: PONJIKKARA KESHAVAN & DYNAMIC SPEECH BUBBLE -->
-      <div class="lg:col-span-3 flex flex-col items-center justify-center bg-slate-900/80 border border-amber-500/40 rounded-3xl p-4 backdrop-blur-md shadow-2xl relative order-3">
+      <!-- RIGHT COLUMN: PONJIKKARA KESHAVAN CUTOUT & BADGE -->
+      <div class="lg:col-span-3 flex flex-col items-center justify-center relative order-3">
         
-        <!-- PONJIKKARA LIVE SPEECH BUBBLE (ANCHORED TO PONJIKKARA!) -->
-        <div id="ponjikkaraSpeechBubble" class="w-full bg-white text-slate-950 p-3.5 rounded-2xl rounded-bl-none shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-2 border-amber-400 font-['Noto_Serif_Malayalam'] font-bold text-xs sm:text-sm mb-3 transition-all duration-300 animate-pulse">
+        <!-- PONJIKKARA LIVE SPEECH BUBBLE OVERLAY -->
+        <div id="ponjikkaraSpeechBubble" class="w-full max-w-xs bg-white text-slate-950 p-3.5 rounded-2xl rounded-br-none shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-2 border-amber-400 font-['Noto_Serif_Malayalam'] font-bold text-xs sm:text-sm mb-3 transition-all duration-300 animate-bounce">
           <span id="speechBubbleText">💬 "ചേട്ടാ ലേശം കറി കോരി ഒഴിക്കട്ടെ?" 🍲</span>
         </div>
 
-        <!-- Ponjikkara Avatar -->
-        <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border-4 border-amber-400 shadow-2xl bg-slate-950 flex items-center justify-center group">
+        <div class="relative w-48 sm:w-64 h-64 sm:h-80 rounded-3xl overflow-hidden border-2 border-amber-500/30 shadow-2xl bg-slate-900/60 flex items-center justify-center group">
+          <!-- Ponjikkara Kesavan Avatar -->
           <img src="assets/ponjikkara_keshavan.png" alt="Ponjikkara Keshavan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-          <span class="absolute bottom-2 text-center text-xs font-black font-['Noto_Serif_Malayalam'] text-emerald-400 px-2 py-0.5 rounded bg-slate-950/80 border border-emerald-400/40">
-            👨‍🍳 പൊഞ്ചിക്കര കേശവൻ
-          </span>
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
         </div>
 
-        <p class="text-xs text-amber-200/80 font-['Noto_Serif_Malayalam'] text-center mt-3 font-semibold">
-          "കഴിക്കുന്ന ആൾ എവിടെ പറഞ്ഞാലും കറി വിളമ്പുന്നത് പൊഞ്ചിക്കരയുടെ സ്വന്തം ഇഷ്ടത്തിനാണ്!" 😜
-        </p>
+        <!-- PONJIKKARA KESHAVAN PILL BADGE -->
+        <div class="mt-3 bg-slate-900/90 border-2 border-amber-400/60 rounded-full px-5 py-2 flex flex-col items-center shadow-xl backdrop-blur-md">
+          <span class="text-xs font-black font-['Montserrat'] tracking-wider text-amber-400 uppercase">PONJIKKARA KESHAVAN</span>
+          <span class="text-xs font-bold text-emerald-400 font-['Noto_Serif_Malayalam'] mt-0.5 flex items-center gap-1">
+            <span>ഹെഡ് കാറ്ററർ & ഫിലോസഫർ</span> <span>🥄</span>
+          </span>
+        </div>
 
       </div>
 
     </div>
 
   </main>
+
+  <!-- BOTTOM CONTROL HUD BAR (MIRRORING REFERENCE UI EXACTLY!) -->
+  <footer class="w-full bg-slate-950/95 border-t-2 border-amber-500/40 backdrop-blur-xl px-4 sm:px-8 py-3 sticky bottom-0 z-40 shadow-2xl">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- LEFT SECTION: DISH COUNTER CIRCLE & NAME -->
+      <div class="flex items-center gap-4 shrink-0">
+        <!-- Orange/Gold Circular Step Badge -->
+        <div class="w-14 h-14 rounded-full border-4 border-amber-500 bg-amber-950/90 flex flex-col items-center justify-center text-center shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+          <span id="counterBadge" class="text-sm font-black font-['Montserrat'] text-amber-300">0 / 16</span>
+        </div>
+
+        <div>
+          <h3 id="itemNameEn" class="text-lg sm:text-xl font-extrabold font-['Montserrat'] text-white leading-tight">
+            Parippu Curry & Ghee
+          </h3>
+          <span id="itemNameMl" class="text-xs sm:text-sm font-bold font-['Noto_Serif_Malayalam'] text-amber-300/90">
+            പരിപ്പും നെയ്യും
+          </span>
+        </div>
+      </div>
+
+      <!-- MIDDLE SECTION: ETIQUETTE VS PONJIKKARA LOGIC COMPARISON -->
+      <div class="flex-1 w-full bg-slate-900/90 border border-slate-800 rounded-2xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-around gap-3 text-xs shadow-inner">
+        
+        <!-- Proper Etiquette -->
+        <div class="flex-1 text-left">
+          <span class="font-black text-[11px] text-emerald-400 uppercase tracking-widest block font-['Montserrat'] mb-0.5">
+            PROPER SADHYA ETIQUETTE:
+          </span>
+          <p id="properEtiquetteText" class="text-slate-300 font-['Montserrat'] leading-snug">
+            Golden dal served directly over center rice mound, followed by hot ghee
+          </p>
+        </div>
+
+        <!-- VS Divider -->
+        <div class="flex flex-col items-center justify-center shrink-0 px-2">
+          <span class="text-amber-400 text-xs font-black">⚡</span>
+          <span class="text-[10px] font-black text-amber-300 font-['Montserrat']">VS</span>
+          <span class="text-amber-400 text-xs font-black">⚡</span>
+        </div>
+
+        <!-- Ponjikkara Logic -->
+        <div class="flex-1 text-left">
+          <span class="font-black text-[11px] text-amber-400 uppercase tracking-widest block font-['Montserrat'] mb-0.5">
+            PONJIKKARA LOGIC:
+          </span>
+          <p id="ponjikkaraLogicText" class="text-amber-200/90 font-['Montserrat'] font-semibold leading-snug italic">
+            "Who puts parippu in the center? Top-right drop! Catch it if you can!"
+          </p>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SECTION: RESET & SERVE BUTTONS -->
+      <div class="flex items-center gap-3 shrink-0">
+        <button id="btnRestart" class="px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 text-xs font-bold text-slate-200 transition-all flex items-center gap-1.5 shadow-md">
+          <span>🔄</span> <span>Reset</span>
+        </button>
+        <button id="btnServe" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 active:scale-95 text-white font-black text-sm shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all flex items-center gap-2 font-['Montserrat'] border border-emerald-400">
+          <span>🧹</span> <span>Serve!</span>
+        </button>
+      </div>
+
+    </div>
+  </footer>
 
   <!-- COMPLETION STATE DRAMATIC POP-UP MODAL -->
   <div id="scorecardModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex items-center justify-center p-4 hidden transition-all duration-500">
