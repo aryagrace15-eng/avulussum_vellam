@@ -294,15 +294,15 @@ body {
 /* 1. SEATED KING MAHABALI (REALISTIC HUMAN PROPORTION) */
 .maveli-figure {
   position: relative;
-  width: 380px;
-  height: 540px;
+  width: 330px;
+  height: 490px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   z-index: 9;
   flex-shrink: 0;
-  margin-right: -70px; /* Natural overlap behind table edge */
+  margin-right: -20px; /* Shifted to the left */
 }
 
 .maveli-actor-img {
@@ -310,7 +310,7 @@ body {
   height: 100%;
   object-fit: contain;
   object-position: bottom center;
-  transform: scale(1.25);
+  transform: scale(1.05);
   transform-origin: bottom center;
   filter: drop-shadow(0 18px 32px rgba(0,0,0,0.8));
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
