@@ -414,9 +414,9 @@ body {
   height: 360px;
   background: 
     url('assets/dishes/clean_leaf_texture.jpg') center / cover no-repeat,
-    linear-gradient(135deg, #4caf50 0%, #2e7d32 45%, #1b5e20 90%);
+    linear-gradient(225deg, #4caf50 0%, #2e7d32 45%, #1b5e20 90%);
   background-blend-mode: overlay;
-  border-radius: 45px 140px 140px 45px / 75px 150px 150px 75px;
+  border-radius: 140px 45px 45px 140px / 150px 75px 75px 150px;
   box-shadow: 
     0 18px 45px rgba(0,0,0,0.75), 
     inset 0 0 35px rgba(0,0,0,0.35),
