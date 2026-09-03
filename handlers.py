@@ -78,8 +78,8 @@ async def handle_moral_policing(message: Message) -> bool:
         try:
             await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
             if os.path.exists(police_audio):
-                await message.answer_voice(
-                    voice=FSInputFile(police_audio),
+                await message.answer_audio(
+                    audio=FSInputFile(police_audio),
                     reply_markup=get_main_keyboard()
                 )
         except Exception as e:
@@ -97,8 +97,8 @@ async def cmd_start(message: Message):
     try:
         await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
         if os.path.exists(welcome_audio):
-            await message.answer_voice(
-                voice=FSInputFile(welcome_audio),
+            await message.answer_audio(
+                audio=FSInputFile(welcome_audio),
                 reply_markup=get_main_keyboard()
             )
         else:
@@ -115,13 +115,13 @@ async def cmd_menu(message: Message):
     await cmd_start(message)
 
 # ==========================================
-# AUDIO ONLY RESPONSE SENDER (NO TEXT MESSAGES)
+# AUDIO ONLY RESPONSE SENDER (NO TEXT MESSAGES AT ALL)
 # ==========================================
 
 async def send_audio_for_situation(message: Message, audio_key: str):
     """
-    Sends ONLY the distinct Malayalam voice note audio file (.ogg / .mp3) for the situation.
-    ZERO text messages!
+    Sends ONLY the distinct Malayalam voice note audio file (.mp3) for the specific situation.
+    ZERO text messages sent to user!
     """
     audio_path = os.path.join("audio", f"{audio_key}.mp3")
 
@@ -132,25 +132,33 @@ async def send_audio_for_situation(message: Message, audio_key: str):
 
     if os.path.exists(audio_path) and os.path.getsize(audio_path) > 1000:
         try:
-            # Send as distinct Telegram Voice Note
-            await message.answer_voice(
-                voice=FSInputFile(audio_path),
+            # Send as Telegram Audio (Compatible with .mp3 format)
+            await message.answer_audio(
+                audio=FSInputFile(audio_path),
                 reply_markup=get_main_keyboard()
             )
             return
         except Exception as e:
-            print(f"Error sending voice note {audio_path}: {e}")
+            print(f"Error sending audio {audio_path}: {e}")
+            try:
+                await message.answer_voice(
+                    voice=FSInputFile(audio_path),
+                    reply_markup=get_main_keyboard()
+                )
+                return
+            except Exception as e2:
+                print(f"Error sending voice fallback {audio_path}: {e2}")
 
     # Fallback if specific audio file missing
     all_files = [os.path.join("audio", f) for f in os.listdir("audio") if f.endswith(".mp3")]
     if all_files:
         try:
-            await message.answer_voice(
-                voice=FSInputFile(random.choice(all_files)),
+            await message.answer_audio(
+                audio=FSInputFile(random.choice(all_files)),
                 reply_markup=get_main_keyboard()
             )
         except Exception as e:
-            print(f"Fallback voice send error: {e}")
+            print(f"Fallback audio send error: {e}")
 
 # ==========================================
 # EXACT SITUATION ROUTING HANDLER
