@@ -8,41 +8,31 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import (
     Message,
-    CallbackQuery,
     ReplyKeyboardMarkup,
     KeyboardButton,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
     FSInputFile
 )
 
-from media_ids import (
-    AUDIO_CLIPS,
-    AMMAVAN_COLLEGE_DATA,
-    AMMAYI_COLLEGE_DATA,
-    NATTUKAR_COLLEGE_DATA,
-    FAKE_NEWS_MALAYALAM,
-    get_comparison_meter
-)
+from media_ids import SITUATION_DATA_MAP
 
 router = Router()
 
 # ==========================================
-# DISTINCT VOICE PROFILES & ASYNC TTS ENGINE
+# DISTINCT ELDERLY VOICE PROFILES & ASYNC TTS ENGINE
 # ==========================================
 
-# Voice profile top-level domains (tld) for different character tones in gTTS
+# Customized voice parameters to simulate elderly Ammavan, Ammayi, Nattukar, and Moral Police
 VOICE_PROFILES = {
-    "ammavan": {"tld": "co.in", "slow": False},  # Stern Kerala boomer tone
-    "ammayi": {"tld": "com", "slow": True},     # High-pitched gossip aunt tone (slow/expressive)
-    "nattukar": {"tld": "ca", "slow": False},   # Dramatic news reporter tone
-    "police": {"tld": "co.uk", "slow": False}   # Deep moral police tone
+    "ammavan": {"tld": "co.in", "slow": True},   # Stern elderly Malayali boomer uncle (slow, authoritative)
+    "ammayi": {"tld": "com", "slow": True},      # High-pitched elderly gossip aunt (slow, expressive)
+    "nattukar": {"tld": "ca", "slow": False},    # Dramatic news reporter / colony gossip
+    "police": {"tld": "co.uk", "slow": True}     # Deep stern moral policing voice
 }
 
 
 def _generate_tts_file(speech_text: str, voice_type: str, file_path: str):
-    """Synchronous gTTS generation worker to be run in a worker thread."""
-    profile = VOICE_PROFILES.get(voice_type, {"tld": "co.in", "slow": False})
+    """Synchronous gTTS worker running in thread pool to prevent async loop freezing."""
+    profile = VOICE_PROFILES.get(voice_type, {"tld": "co.in", "slow": True})
     tts = gTTS(
         text=speech_text,
         lang='ml',
@@ -56,24 +46,23 @@ async def get_or_generate_malayalam_voice_async(speech_text: str, audio_key: str
     """
     Non-blocking async voice generator:
     1. Checks for local custom audio override file in audio/<audio_key>.mp3/ogg/wav
-    2. Otherwise uses asyncio.to_thread so gTTS network IO NEVER blocks concurrent users!
+    2. Uses asyncio.to_thread so gTTS network IO NEVER blocks concurrent users!
     """
     audio_dir = "audio"
     os.makedirs(audio_dir, exist_ok=True)
     
-    # 1. Custom user audio override in audio/ directory
+    # 1. Check for custom recorded audio file override in audio/ directory
     for ext in [".mp3", ".ogg", ".wav", ".m4a"]:
         custom_file = os.path.join(audio_dir, f"{audio_key}{ext}")
         if os.path.exists(custom_file) and os.path.getsize(custom_file) > 1000 and custom_file != os.path.join(audio_dir, "test_ml.mp3"):
             return custom_file
 
-    # 2. Asynchronous gTTS Voice Generation (Non-blocking for multi-user chat)
+    # 2. Asynchronous gTTS Voice Generation
     try:
         text_hash = hashlib.md5(f"{speech_text}_{voice_type}".encode('utf-8')).hexdigest()[:12]
         voice_path = os.path.join(audio_dir, f"ml_{voice_type}_{text_hash}.mp3")
         
         if not os.path.exists(voice_path):
-            # Run blocking TTS network write in thread pool to prevent event loop freeze
             await asyncio.to_thread(_generate_tts_file, speech_text, voice_type, voice_path)
             
         return voice_path
@@ -82,58 +71,53 @@ async def get_or_generate_malayalam_voice_async(speech_text: str, audio_key: str
         return None
 
 # ==========================================
-# KEYBOARD GENERATORS (MALAYALAM COLLEGE EDITION)
+# 18 CLICKABLE MENU BUTTONS (NO TEXT SUBOPTIONS)
 # ==========================================
 
 def get_main_keyboard() -> ReplyKeyboardMarkup:
-    """Generates Malayalam college life reply keyboard options."""
+    """Generates 18 distinct clickable Malayalam youth & college situation menu buttons."""
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
             [
                 KeyboardButton(text="📚 4 സപ്ലി ഉണ്ട്, വീട്ടിൽ അറിഞ്ഞാൽ കൊല്ലും"),
-                KeyboardButton(text="😭 60% അറ്റൻഡൻസ്, കൊണ്ടോണേഷൻ ഫീ അടക്കണം")
+                KeyboardButton(text="😭 60% അറ്റൻഡൻസ്, കൊണ്ടോണേഷൻ ഫീ")
             ],
             [
-                KeyboardButton(text="💼 പ്ലേസ്മെന്റ് കിട്ടിയില്ല, വീട്ടുകാർ ട്രോളുന്നു"),
-                KeyboardButton(text="💔 സിംഗിളായി ജീവിച്ചാൽ മതി എന്ന് തോന്നുന്മൂ")
+                KeyboardButton(text="💼 പ്ലേസ്മെന്റ് കിട്ടിയില്ല, കമ്പനി മടങ്ങി"),
+                KeyboardButton(text="🧪 ലാബ് വൈവക്ക് ഒന്നും പറയാൻ പറ്റിയില്ല")
             ],
             [
-                KeyboardButton(text="✈️ കോളേജ് നിർത്തി യാത്ര പോകണം"),
-                KeyboardButton(text="📊 എൻ്റെ കോളേജ് സ്റ്റാൻഡിംഗ് നോക്കുക")
+                KeyboardButton(text="💻 മെക്കാനിക്കൽ എടുത്തിട്ട് കോഡിംഗ് പഠിക്കുന്നു"),
+                KeyboardButton(text="🏠 ഹോസ്റ്റൽ ഇൻ-ടൈം 8 PM, പുറത്തുപോയി")
+            ],
+            [
+                KeyboardButton(text="🍜 കാന്റീനിലും ചായക്കടയിലും 1500 കടം"),
+                KeyboardButton(text="📝 2 AM അസൈൻമെന്റ് കോപ്പി അടിക്കുന്നു")
+            ],
+            [
+                KeyboardButton(text="🎉 കോളേജ് ഫെസ്റ്റ് കോർഡിനേറ്റർ ടെൻഷൻ"),
+                KeyboardButton(text="🎬 ക്ലാസ്സ് കട്ട് ചെയ്ത് ഫസ്റ്റ് ഷോ പോയി")
+            ],
+            [
+                KeyboardButton(text="💔 സിംഗിളായി ജീവിച്ചാൽ മതി എന്ന് തോന്നുന്മൂ"),
+                KeyboardButton(text="✈️ ജോലി രാജിവെച്ച് യാത്ര പോകണം")
+            ],
+            [
+                KeyboardButton(text="📊 സോഷ്യൽ സ്റ്റാൻഡിംഗ് മീറ്റർ നോക്കുക"),
+                KeyboardButton(text="📜 അമ്മാവന്റെ വാട്സാപ്പ് സന്ദേശം")
+            ],
+            [
+                KeyboardButton(text="🗣️ സെമിനാർ PPT സ്ലൈഡ് വാசித்து തീർത്തു"),
+                KeyboardButton(text="🚌 9 AM കോളേജ് ബസ് മിസ്സായി ഓട്ടോ വിളിച്ചു")
+            ],
+            [
+                KeyboardButton(text="🚨 സീരീസ് പരീക്ഷയ്ക്ക് ബിറ്റ് അടിച്ചപ്പോൾ സ്ക്വാഡ് പിടിച്ചു"),
+                KeyboardButton(text="✈️ GRE എഴുതി വിദേശത്ത് പോകാൻ പദ്ധതി")
             ]
         ],
         resize_keyboard=True,
         persistent=True,
-        input_field_placeholder="നിങ്ങളുടെ കോളേജ് വിഷമം പറയൂ..."
-    )
-    return keyboard
-
-
-def get_action_inline_keyboard() -> InlineKeyboardMarkup:
-    """Generates interactive Malayalam action buttons."""
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text="🙇‍♂️ നാട്ടുകാരുടെ വിധി അംഗീകരിക്കുന്നു",
-                    callback_data="accept_judgment"
-                ),
-                InlineKeyboardButton(
-                    text="😭 മൂലയിൽ പോയി കരയുക",
-                    callback_data="cry_corner"
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="📋 അമ്മായിക്ക് ബയോഡാറ്റ അയക്കുക",
-                    callback_data="send_biodata"
-                ),
-                InlineKeyboardButton(
-                    text="📜 അമ്മാവന്റെ വാട്സാപ്പ് സന്ദേശം",
-                    callback_data="whatsapp_forward"
-                )
-            ]
-        ]
+        input_field_placeholder="വിഷമം തെരഞ്ഞെടുക്കുക..."
     )
     return keyboard
 
@@ -142,29 +126,19 @@ def get_action_inline_keyboard() -> InlineKeyboardMarkup:
 # ==========================================
 
 async def handle_moral_policing(message: Message) -> bool:
-    """Late-night moral policing check (10 PM to 5 AM)."""
+    """Late-night moral policing check (10 PM to 5 AM) - AUDIO ONLY."""
     current_hour = datetime.now().hour
     if current_hour >= 22 or current_hour < 5:
-        speech = "രാത്രി 10 മണി കഴിഞ്ഞിട്ടും നീ കോളേജ് ഗ്രൂപ്പിൽ സന്ദേശം അയക്കുകയാണോ മര്യാദയുള്ള പിള്ളേർ ഈ നേരത്ത് കിടന്നു ഉറങ്ങും പോയി ഉറങ്ങെടാ"
+        speech = "രാത്രി 10 മണി കഴിഞ്ഞിട്ടും നീ കോളേജ് ഗ്രൂപ്പിൽ സന്ദേശം അയക്കുകയാണോ മര്യാദയുള്ള പിള്ളേർ ഈ നേരത്ത് കിടന്നു ഉറങ്ങും ഫോൺ മാറ്റിവെച്ച് പോയി ഉറങ്ങെടാ"
         voice_path = await get_or_generate_malayalam_voice_async(speech, "moral_police", voice_type="police")
         
         try:
             await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
             if voice_path and os.path.exists(voice_path):
+                # AUDIO ONLY - NO TEXT MESSAGE AT ALL
                 await message.answer_audio(audio=FSInputFile(voice_path))
         except Exception as e:
             print(f"Moral policing audio error: {e}")
-
-        standing = get_comparison_meter()
-        police_text = (
-            "🚨 *രാത്രികാല മോറൽ പൊലീസിംഗ് അലർട്ട്!* 🚨\n\n"
-            "👴👵 *സുധാകരൻ അമ്മാവനും ഓമന അമ്മായിയും ഒന്നിച്ചു:*\n"
-            "\"ഈ രാത്രി 10 മണി കഴിഞ്ഞിട്ടും നീ കോളേജ് ഗ്രൂപ്പിൽ എന്തെടുക്കുകയാണ്?! 🕙\n"
-            "പരീക്ഷയ്ക്ക് പഠിക്കാതെ ഫോണും നോക്കി ഇരിക്കുന്നു! "
-            "ഫോൺ മാറ്റി വെച്ച് പോയി ഉറങ്ങെടാ!\"\n\n"
-            f"{standing}"
-        )
-        await message.answer(police_text, reply_markup=get_action_inline_keyboard(), parse_mode="Markdown")
         return True
     return False
 
@@ -174,58 +148,39 @@ async def handle_moral_policing(message: Message) -> bool:
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    welcome_text = (
-        "🌴 *നാട്ടുകാർ.EXE: COLLEGE STUDENT EDITION* 🌴\n\n"
-        "കോളേജ് വിദ്യാർത്ഥികൾക്ക് വേണ്ടിയുള്ള ഔദ്യോഗിക ട്രോൾ ബോട്ട്!\n\n"
-        "❌ *ഇവിടെ സഹതാപം പ്രതീക്ഷിക്കരുത്!* സപ്ലിയും, അറ്റൻഡൻസ് ക്ഷാമവും, പ്ലേസ്മെന്റ് ഇല്ലായ്മയും കേട്ട് അമ്മാവന്മാരും നാട്ടുകാരും നിങ്ങളെ വറുത്തെടുക്കും!\n\n"
-        "👥 *കഥാപാത്രങ്ങൾ:*\n"
-        "• 👴 **സുധാകരൻ അമ്മാവൻ:** PSC & സപ്ലി റോസ്റ്റർ (Stern Voice)\n"
-        "• 👵 **ഓമന അമ്മായി:** പ്ലേസ്മെന്റ് & പ്രശാന്ത് ഫ്ലെക്സർ (Gossip Voice)\n"
-        "• 👀 **നാട്ടുകാർ:** ബ്രേക്കിംഗ് ന്യൂസ് & അറ്റൻഡൻസ് ഡ്രോപ്പർ (News Voice)\n\n"
-        "👇 *താഴെയുള്ള ഓപ്ഷനിൽ നിന്ന് നിങ്ങളുടെ കോളേജ് വിഷമം തെരഞ്ഞെടുക്കുക:* "
-    )
-    await message.answer(
-        welcome_text,
-        reply_markup=get_main_keyboard(),
-        parse_mode="Markdown"
-    )
+    # Set up the menu keyboard and send initial welcoming audio note (AUDIO ONLY)
+    welcome_speech = "കേരള നാട്ടുകാരുടെയും അമ്മാവന്മാരുടെയും ഔദ്യോഗിക ട്രോൾ ബോട്ട് സ്വാഗതം ചെയ്യുന്നു നിങ്ങളുടെ കോളേജ് പ്രശ്നം താഴെ നിന്നും തെരഞ്ഞെടുക്കുക"
+    voice_path = await get_or_generate_malayalam_voice_async(welcome_speech, "welcome", voice_type="ammavan")
+    
+    try:
+        await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
+        if voice_path and os.path.exists(voice_path):
+            await message.answer_audio(
+                audio=FSInputFile(voice_path),
+                reply_markup=get_main_keyboard()
+            )
+        else:
+            await message.answer("🌴 *നാട്ടുകാർ.EXE*", reply_markup=get_main_keyboard(), parse_mode="Markdown")
+    except Exception:
+        await message.answer("🌴 *നാട്ടുകാർ.EXE*", reply_markup=get_main_keyboard(), parse_mode="Markdown")
 
 
 @router.message(Command("help"))
 @router.message(Command("menu"))
-async def cmd_menu(message: Message):
-    await message.answer(
-        "നിങ്ങളുടെ കോളേജ് പ്രശ്നം താഴെ നിന്നും തെരഞ്ഞെടുക്കുക:",
-        reply_markup=get_main_keyboard()
-    )
-
-
 @router.message(Command("standing"))
-@router.message(F.text.contains("സ്റ്റാൻഡിംഗ്"))
-async def cmd_standing(message: Message):
-    meter = get_comparison_meter()
-    await message.answer(
-        f"📊 *ഔദ്യോഗിക കോളേജ് വിദ്യാർത്ഥി സോഷ്യൽ ഓഡിറ്റ്*\n\n{meter}",
-        reply_markup=get_action_inline_keyboard(),
-        parse_mode="Markdown"
-    )
-
-
 @router.message(Command("forward"))
-async def cmd_forward(message: Message):
-    forward = random.choice(FAKE_NEWS_MALAYALAM)
-    await message.answer(forward, reply_markup=get_action_inline_keyboard(), parse_mode="Markdown")
+async def cmd_menu(message: Message):
+    await cmd_start(message)
 
 # ==========================================
-# CHARACTER RESPONSE SENDER (AUDIO ONLY - NO TEXT TRANSCRIPT)
+# AUDIO ONLY RESPONSE SENDER (NO TEXT MESSAGES)
 # ==========================================
 
-async def send_character_response(message: Message, data: dict):
+async def send_audio_only_response(message: Message, data: dict):
     """
-    Sends actual Malayalam voice note audio ONLY (no audio text transcript)
-    followed by roast text & comparison meter underneath.
+    Sends ONLY the Malayalam voice note audio file (.mp3).
+    ZERO text messages sent to user!
     """
-    text_roast = data["text"]
     speech_text = data["speech"]
     audio_key = data["key"]
     voice_type = data.get("voice_type", "ammavan")
@@ -235,137 +190,48 @@ async def send_character_response(message: Message, data: dict):
     except Exception:
         pass
 
-    # Non-blocking async generation of distinct Malayalam voice note
+    # Non-blocking async generation of Malayalam elderly voice note
     voice_path = await get_or_generate_malayalam_voice_async(speech_text, audio_key, voice_type)
     
-    # 1. Send Audio Voice Note directly (No text transcript of speech)
+    # Send AUDIO NOTE ONLY - NO TEXT MESSAGES
     if voice_path and os.path.exists(voice_path):
         try:
-            await message.answer_audio(audio=FSInputFile(voice_path))
+            await message.answer_audio(
+                audio=FSInputFile(voice_path),
+                reply_markup=get_main_keyboard()
+            )
         except Exception as e:
             print(f"Error sending voice note audio: {e}")
 
-    # 2. Send Roast Text with Comparison Meter & Interactive Buttons underneath
-    standing = get_comparison_meter()
-    full_response = f"{text_roast}\n\n{standing}"
-
-    await message.answer(
-        full_response,
-        reply_markup=get_action_inline_keyboard(),
-        parse_mode="Markdown"
-    )
-
 # ==========================================
-# COLLEGE STUDENT ROUTING HANDLERS (20+ SITUATIONS)
+# SITUATION ROUTING HANDLER (MATCHES ALL 18 BUTTONS & TEXT)
 # ==========================================
-
-@router.message(
-    F.text.lower().contains("supply") |
-    F.text.lower().contains("backlog") |
-    F.text.lower().contains("exam") |
-    F.text.lower().contains("ktu") |
-    F.text.lower().contains("viva") |
-    F.text.lower().contains("mark") |
-    F.text.lower().contains("psc") |
-    F.text.lower().contains("gate") |
-    F.text.contains("സപ്ലി") |
-    F.text.contains("പരീക്ഷ") |
-    F.text.contains("മാർക്ക്") |
-    F.text.contains("സെമിനാർ") |
-    F.text.contains("അസൈൻമെന്റ്")
-)
-async def college_exam_handler(message: Message):
-    if await handle_moral_policing(message):
-        return
-    data = random.choice(AMMAVAN_COLLEGE_DATA)
-    await send_character_response(message, data)
-
-
-@router.message(
-    F.text.lower().contains("placement") |
-    F.text.lower().contains("job") |
-    F.text.lower().contains("single") |
-    F.text.lower().contains("love") |
-    F.text.lower().contains("crush") |
-    F.text.contains("പ്ലേസ്മെന്റ്") |
-    F.text.contains("ജോലി") |
-    F.text.contains("സിംഗിൾ") |
-    F.text.contains("പ്രണയം") |
-    F.text.contains("പ്രോജക്ട്")
-)
-async def college_career_handler(message: Message):
-    if await handle_moral_policing(message):
-        return
-    data = random.choice(AMMAYI_COLLEGE_DATA)
-    await send_character_response(message, data)
-
-
-@router.message(
-    F.text.lower().contains("attendance") |
-    F.text.lower().contains("condonation") |
-    F.text.lower().contains("bunk") |
-    F.text.lower().contains("canteen") |
-    F.text.lower().contains("fest") |
-    F.text.lower().contains("hostel") |
-    F.text.contains("അറ്റൻഡൻസ്") |
-    F.text.contains("കാന്റീൻ") |
-    F.text.contains("ഹോസ്റ്റൽ") |
-    F.text.contains("യാത്ര") |
-    F.text.contains("ഫെസ്റ്റ്")
-)
-async def college_life_handler(message: Message):
-    if await handle_moral_policing(message):
-        return
-    data = random.choice(NATTUKAR_COLLEGE_DATA)
-    await send_character_response(message, data)
-
 
 @router.message()
-async def default_college_handler(message: Message):
+async def situation_handler(message: Message):
     if await handle_moral_policing(message):
         return
-    all_data = AMMAVAN_COLLEGE_DATA + AMMAYI_COLLEGE_DATA + NATTUKAR_COLLEGE_DATA
-    data = random.choice(all_data)
-    await send_character_response(message, data)
 
-# ==========================================
-# CALLBACK HANDLERS (MALAYALAM INLINE BUTTONS)
-# ==========================================
+    user_text = message.text.strip() if message.text else ""
 
-@router.callback_query(F.data == "accept_judgment")
-async def cb_accept_judgment(callback: CallbackQuery):
-    await callback.answer("നാട്ടുകാരുടെ വിധി അംഗീകരിച്ചു!")
-    text = (
-        "🙏 *നാട്ടുകാർ നിങ്ങളുടെ കീഴടങ്ങൽ അംഗീകരിച്ചു.*\n\n"
-        "👴 **സുധാകരൻ അമ്മാവൻ:** നല്ലത്! നാളെ രാവിലെ 8 മണിക്ക് ബാങ്ക് കോച്ചിംഗ് സെന്ററിൽ പോയി പഠിക്കാൻ തുടങ്ങിക്കോ!\n\n"
-        "👵 **ഓമന അമ്മായി:** ബ്രോക്കർക്ക് കൊടുക്കാൻ 2 പാസ്‌പോർട്ട് സൈസ് ഫോട്ടോയും ഇങ്ങോട്ട് തന്നേക്ക്!"
-    )
-    await callback.message.reply(text, reply_markup=get_action_inline_keyboard(), parse_mode="Markdown")
+    # Check for exact button match
+    if user_text in SITUATION_DATA_MAP:
+        data = SITUATION_DATA_MAP[user_text]
+        await send_audio_only_response(message, data)
+        return
 
+    # Partial keyword matching for arbitrary typed messages
+    for btn_text, data in SITUATION_DATA_MAP.items():
+        if any(word in user_text for word in ["സപ്ലി", "supply", "backlog"]) and "സപ്ലി" in btn_text:
+            await send_audio_only_response(message, data)
+            return
+        if any(word in user_text for word in ["അറ്റൻഡൻസ്", "attendance"]) and "അറ്റൻഡൻസ്" in btn_text:
+            await send_audio_only_response(message, data)
+            return
+        if any(word in user_text for word in ["പ്ലേസ്മെന്റ്", "placement", "job", "ജോലി"]) and "പ്ലേസ്മെന്റ്" in btn_text:
+            await send_audio_only_response(message, data)
+            return
 
-@router.callback_query(F.data == "cry_corner")
-async def cb_cry_corner(callback: CallbackQuery):
-    await callback.answer("കരച്ചിൽ കണ്ടെത്തി! ബ്രേക്കിംഗ് ന്യൂസ് ഒൺ എയർ!")
-    text = (
-        "🚨 *കോളേജ് ക്യാമ്പസിലെ ബ്രേക്കിംഗ് ന്യൂസ്!* 🚨\n\n"
-        "👀 **നാട്ടുകാർ:** ബ്രേക്കിംഗ്: പയ്യൻ മുറിയിൽ പോയി കരയുന്നു! "
-        "സപ്ലി അടിച്ചതാണോ അറ്റൻഡൻസ് പോയതാണോ എന്ന് നാട്ടുകാർ സംശയിക്കുന്നു!"
-    )
-    await callback.message.reply(text, reply_markup=get_action_inline_keyboard(), parse_mode="Markdown")
-
-
-@router.callback_query(F.data == "send_biodata")
-async def cb_send_biodata(callback: CallbackQuery):
-    await callback.answer("ബയോഡാറ്റ ലഭിച്ചു!")
-    text = (
-        "📋 *വിവാഹ ആലോചന രജിസ്റ്റർ ചെയ്തു*\n\n"
-        "👵 **ഓമന അമ്മായി:** നിന്റെ ബയോഡാറ്റ കിട്ടി! സപ്ലി ഇല്ലാത്ത ആലോചന കിട്ടുമോ എന്ന് ഞാൻ നോക്കട്ടെ!"
-    )
-    await callback.message.reply(text, reply_markup=get_action_inline_keyboard(), parse_mode="Markdown")
-
-
-@router.callback_query(F.data == "whatsapp_forward")
-async def cb_whatsapp_forward(callback: CallbackQuery):
-    await callback.answer("അമ്മാവന്റെ സന്ദേശം അയക്കുന്നു...")
-    forward = random.choice(FAKE_NEWS_MALAYALAM)
-    await callback.message.reply(forward, reply_markup=get_action_inline_keyboard(), parse_mode="Markdown")
+    # Random fallback audio from situation map
+    data = random.choice(list(SITUATION_DATA_MAP.values()))
+    await send_audio_only_response(message, data)
