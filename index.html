@@ -32,13 +32,9 @@
     </div>
 
     <div class="header-controls">
-      <button id="chenda-toggle-btn" class="ctrl-btn" title="Toggle Kerala Chenda Melam Beat">
-        <span class="btn-icon">🥁</span>
-        <span class="btn-text">Chenda Melam</span>
-      </button>
-      <button id="audio-toggle-btn" class="ctrl-btn" title="Toggle Sound Effects">
-        <span class="btn-icon">🔊</span>
-        <span class="btn-text">Sound: ON</span>
+      <button id="song-toggle-btn" class="ctrl-btn" title="Toggle Background Song">
+        <span class="btn-icon">🎵</span>
+        <span class="btn-text" id="song-btn-text">Song: OFF</span>
       </button>
       <button id="guide-btn" class="ctrl-btn" title="How to Play">
         <span class="btn-icon">📜</span>
@@ -46,6 +42,9 @@
       </button>
     </div>
   </header>
+
+  <!-- Background Song Audio Element -->
+  <audio id="bgm-audio" loop src="assets/song.mp3" preload="auto"></audio>
 
   <!-- Interactive Instruction Banner -->
   <div class="prompt-bar-container">

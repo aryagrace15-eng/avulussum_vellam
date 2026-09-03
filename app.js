@@ -9,289 +9,53 @@
 // ============================================================================
 class AudioEngine {
   constructor() {
-    this.ctx = null;
-    this.enabled = true;
-    this.voiceEnabled = true;
-    this.chendaInterval = null;
-    this.isChendaPlaying = false;
-    this.chendaStep = 0;
+    this.bgmAudio = document.getElementById('bgm-audio');
+    this.isSongPlaying = false;
   }
 
-  init() {
-    if (!this.ctx) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      this.ctx = new AudioContext();
+  toggleSong() {
+    if (!this.bgmAudio) return false;
+    if (this.isSongPlaying) {
+      this.pauseSong();
+    } else {
+      this.playSong();
     }
-    if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
-    }
+    return this.isSongPlaying;
   }
 
-  playWhoosh() {
-    if (!this.enabled) return;
-    this.init();
-    const ctx = this.ctx;
-    const now = ctx.currentTime;
-
-    const bufferSize = ctx.sampleRate * 0.35;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = Math.random() * 2 - 1;
-    }
-
-    const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(300, now);
-    filter.frequency.exponentialRampToValueAtTime(1600, now + 0.15);
-    filter.frequency.exponentialRampToValueAtTime(400, now + 0.35);
-    filter.Q.value = 3.5;
-
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.01, now);
-    gain.gain.linearRampToValueAtTime(0.45, now + 0.12);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-
-    noise.start(now);
-  }
-
-  playSplat() {
-    if (!this.enabled) return;
-    this.init();
-    const ctx = this.ctx;
-    const now = ctx.currentTime;
-
-    const osc = ctx.createOscillator();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(210, now);
-    osc.frequency.exponentialRampToValueAtTime(40, now + 0.22);
-
-    const oscGain = ctx.createGain();
-    oscGain.gain.setValueAtTime(0.55, now);
-    oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-
-    osc.connect(oscGain);
-    oscGain.connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + 0.26);
-
-    const bufferSize = ctx.sampleRate * 0.22;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-    }
-    const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(750, now);
-
-    const noiseGain = ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.65, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
-
-    noise.connect(filter);
-    filter.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
-    noise.start(now);
-  }
-
-  playCrunch() {
-    if (!this.enabled) return;
-    this.init();
-    const ctx = this.ctx;
-    const now = ctx.currentTime;
-
-    for (let c = 0; c < 4; c++) {
-      const offset = c * 0.035;
-      const bufferSize = ctx.sampleRate * 0.045;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-      const noise = ctx.createBufferSource();
-      noise.buffer = buffer;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'highpass';
-      filter.frequency.setValueAtTime(2200 + Math.random() * 1600, now + offset);
-
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.45, now + offset);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + offset + 0.04);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-      noise.start(now + offset);
-    }
-  }
-
-  playSizzle() {
-    if (!this.enabled) return;
-    this.init();
-    const ctx = this.ctx;
-    const now = ctx.currentTime;
-
-    const bufferSize = ctx.sampleRate * 0.5;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * 0.5;
-    }
-    const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(3400, now);
-    filter.Q.value = 4.5;
-
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.01, now);
-    gain.gain.linearRampToValueAtTime(0.45, now + 0.1);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-    noise.start(now);
-  }
-
-  playRejectBuzzer() {
-    if (!this.enabled) return;
-    this.init();
-    const ctx = this.ctx;
-    const now = ctx.currentTime;
-
-    const osc = ctx.createOscillator();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(150, now);
-    osc.frequency.exponentialRampToValueAtTime(75, now + 0.28);
-
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.28, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + 0.3);
-  }
-
-  playVictoryFanfare() {
-    if (!this.enabled) return;
-    this.init();
-    const ctx = this.ctx;
-    const now = ctx.currentTime;
-
-    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
-    notes.forEach((freq, idx) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, now + idx * 0.11);
-
-      gain.gain.setValueAtTime(0.01, now + idx * 0.11);
-      gain.gain.linearRampToValueAtTime(0.38, now + idx * 0.11 + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.11 + 0.45);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now + idx * 0.11);
-      osc.stop(now + idx * 0.11 + 0.5);
+  playSong() {
+    if (!this.bgmAudio) return;
+    this.bgmAudio.play().then(() => {
+      this.isSongPlaying = true;
+      this.updateSongUI();
+    }).catch(err => {
+      console.log("Audio playback waiting for user interaction:", err);
     });
   }
 
-  toggleChenda() {
-    this.init();
-    if (this.isChendaPlaying) {
-      clearInterval(this.chendaInterval);
-      this.isChendaPlaying = false;
-      return false;
-    } else {
-      this.isChendaPlaying = true;
-      this.chendaStep = 0;
-      this.chendaInterval = setInterval(() => this.tickChenda(), 130);
-      return true;
+  pauseSong() {
+    if (!this.bgmAudio) return;
+    this.bgmAudio.pause();
+    this.isSongPlaying = false;
+    this.updateSongUI();
+  }
+
+  updateSongUI() {
+    const btn = document.getElementById('song-toggle-btn');
+    const text = document.getElementById('song-btn-text');
+    if (btn && text) {
+      btn.classList.toggle('active', this.isSongPlaying);
+      text.textContent = this.isSongPlaying ? 'Song: ON' : 'Song: OFF';
     }
   }
 
-  tickChenda() {
-    if (!this.enabled || !this.isChendaPlaying) return;
-    const ctx = this.ctx;
-    const now = ctx.currentTime;
-    const step = this.chendaStep % 8;
-
-    if (step === 0 || step === 2 || step === 3 || step === 5 || step === 6) {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'triangle';
-      const baseFreq = step === 0 ? 115 : (step === 3 ? 145 : 130);
-      osc.frequency.setValueAtTime(baseFreq, now);
-      osc.frequency.exponentialRampToValueAtTime(45, now + 0.09);
-
-      gain.gain.setValueAtTime(0.38, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.11);
-    }
-
-    if (step === 0 || step === 4) {
-      const bufferSize = ctx.sampleRate * 0.08;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-      const noise = ctx.createBufferSource();
-      noise.buffer = buffer;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'highpass';
-      filter.frequency.setValueAtTime(5800, now);
-
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.2, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-      noise.start(now);
-    }
-
-    this.chendaStep++;
-  }
-
-  speak(text) {
-    if (!this.enabled || !this.voiceEnabled || !('speechSynthesis' in window)) return;
-    try {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.05;
-      utterance.pitch = 1.15;
-      const voices = window.speechSynthesis.getVoices();
-      const targetVoice = voices.find(v => v.lang.startsWith('en-IN')) || voices[0];
-      if (targetVoice) utterance.voice = targetVoice;
-      window.speechSynthesis.speak(utterance);
-    } catch (e) {
-      // Ignore fallback
-    }
-  }
+  // Sound effects disabled per request ("no need any other audio other than this song")
+  playWhoosh() {}
+  playSplat() {}
+  playCrunch() {}
+  playSizzle() {}
+  playRejectBuzzer() {}
+  speak() {}
 }
 
 // ============================================================================
@@ -601,8 +365,7 @@ class PonjikkaraSadhyaGame {
     this.ponjikkaraRule = document.getElementById('ponjikkara-rule');
 
     // Buttons & Modals
-    this.audioToggleBtn = document.getElementById('audio-toggle-btn');
-    this.chendaToggleBtn = document.getElementById('chenda-toggle-btn');
+    this.songToggleBtn = document.getElementById('song-toggle-btn');
     this.guideBtn = document.getElementById('guide-btn');
     this.resetBtn = document.getElementById('reset-btn');
     this.serveNextBtn = document.getElementById('serve-next-btn');
@@ -633,6 +396,15 @@ class PonjikkaraSadhyaGame {
       this.handleUserClick(e);
     });
 
+    // Auto start song on first user click
+    const autoPlaySongOnInteraction = () => {
+      if (!this.audio.isSongPlaying) {
+        this.audio.playSong();
+      }
+      window.removeEventListener('click', autoPlaySongOnInteraction);
+    };
+    window.addEventListener('click', autoPlaySongOnInteraction);
+
     // 2. Click serve button in footer
     this.serveNextBtn.addEventListener('click', () => {
       if (this.currentDishIndex < SADHYA_DISHES.length) {
@@ -650,20 +422,12 @@ class PonjikkaraSadhyaGame {
       this.resetGame();
     });
 
-    // 4. Audio Toggles
-    this.audioToggleBtn.addEventListener('click', () => {
-      this.audio.enabled = !this.audio.enabled;
-      this.audioToggleBtn.classList.toggle('active', this.audio.enabled);
-      this.audioToggleBtn.querySelector('.btn-text').textContent = 
-        this.audio.enabled ? 'Sound: ON' : 'Sound: OFF';
-      this.audioToggleBtn.querySelector('.btn-icon').textContent = 
-        this.audio.enabled ? '🔊' : '🔇';
-    });
-
-    this.chendaToggleBtn.addEventListener('click', () => {
-      const playing = this.audio.toggleChenda();
-      this.chendaToggleBtn.classList.toggle('active', playing);
-    });
+    // 4. Background Song Toggle
+    if (this.songToggleBtn) {
+      this.songToggleBtn.addEventListener('click', () => {
+        this.audio.toggleSong();
+      });
+    }
 
     // 5. Guide Modal
     this.guideBtn.addEventListener('click', () => {
