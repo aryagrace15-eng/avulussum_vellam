@@ -11,7 +11,7 @@ from aiogram.types import (
     FSInputFile
 )
 
-from media_ids import SITUATION_DATA_MAP
+from media_ids import SITUATION_LIST, SITUATION_MAP
 
 router = Router()
 
@@ -78,7 +78,10 @@ async def handle_moral_policing(message: Message) -> bool:
         try:
             await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
             if os.path.exists(police_audio):
-                await message.answer_audio(audio=FSInputFile(police_audio))
+                await message.answer_voice(
+                    voice=FSInputFile(police_audio),
+                    reply_markup=get_main_keyboard()
+                )
         except Exception as e:
             print(f"Moral policing audio error: {e}")
         return True
@@ -94,8 +97,8 @@ async def cmd_start(message: Message):
     try:
         await message.bot.send_chat_action(chat_id=message.chat.id, action="record_voice")
         if os.path.exists(welcome_audio):
-            await message.answer_audio(
-                audio=FSInputFile(welcome_audio),
+            await message.answer_voice(
+                voice=FSInputFile(welcome_audio),
                 reply_markup=get_main_keyboard()
             )
         else:
@@ -112,15 +115,14 @@ async def cmd_menu(message: Message):
     await cmd_start(message)
 
 # ==========================================
-# AUDIO ONLY RESPONSE SENDER (NO TEXT MESSAGES AT ALL)
+# AUDIO ONLY RESPONSE SENDER (NO TEXT MESSAGES)
 # ==========================================
 
-async def send_audio_only_response(message: Message, data: dict):
+async def send_audio_for_situation(message: Message, audio_key: str):
     """
-    Sends ONLY the distinct Malayalam voice note audio file (.mp3) for the specific situation.
-    ZERO text messages sent to user!
+    Sends ONLY the distinct Malayalam voice note audio file (.ogg / .mp3) for the situation.
+    ZERO text messages!
     """
-    audio_key = data["key"]
     audio_path = os.path.join("audio", f"{audio_key}.mp3")
 
     try:
@@ -128,29 +130,30 @@ async def send_audio_only_response(message: Message, data: dict):
     except Exception:
         pass
 
-    if os.path.exists(audio_path):
+    if os.path.exists(audio_path) and os.path.getsize(audio_path) > 1000:
         try:
-            await message.answer_audio(
-                audio=FSInputFile(audio_path),
+            # Send as distinct Telegram Voice Note
+            await message.answer_voice(
+                voice=FSInputFile(audio_path),
                 reply_markup=get_main_keyboard()
             )
             return
         except Exception as e:
-            print(f"Error sending audio {audio_path}: {e}")
+            print(f"Error sending voice note {audio_path}: {e}")
 
-    # Fallback to any available audio file if specific key missing
+    # Fallback if specific audio file missing
     all_files = [os.path.join("audio", f) for f in os.listdir("audio") if f.endswith(".mp3")]
     if all_files:
         try:
-            await message.answer_audio(
-                audio=FSInputFile(random.choice(all_files)),
+            await message.answer_voice(
+                voice=FSInputFile(random.choice(all_files)),
                 reply_markup=get_main_keyboard()
             )
         except Exception as e:
-            print(f"Fallback audio send error: {e}")
+            print(f"Fallback voice send error: {e}")
 
 # ==========================================
-# SITUATION ROUTING HANDLER (MATCHES ALL 18 SITUATIONS)
+# EXACT SITUATION ROUTING HANDLER
 # ==========================================
 
 @router.message()
@@ -161,19 +164,46 @@ async def situation_handler(message: Message):
     user_text = message.text.strip() if message.text else ""
 
     # 1. Exact button text match
-    if user_text in SITUATION_DATA_MAP:
-        data = SITUATION_DATA_MAP[user_text]
-        await send_audio_only_response(message, data)
+    if user_text in SITUATION_MAP:
+        key = SITUATION_MAP[user_text]["key"]
+        await send_audio_for_situation(message, key)
         return
 
-    # 2. Keyword fuzzy matching
-    for btn_text, data in SITUATION_DATA_MAP.items():
-        key = data["key"]
-        if key in user_text.lower() or any(k in user_text for k in ["സപ്ലി", "അറ്റൻഡൻസ്", "പ്ലേസ്മെന്റ്", "വൈവ", "ഹോസ്റ്റൽ", "കാന്റീൻ", "സിംഗിൾ"]):
-            if data["key"] in user_text.lower() or btn_text in user_text:
-                await send_audio_only_response(message, data)
-                return
+    # 2. Match by button keywords / substrings
+    for item in SITUATION_LIST:
+        key = item["key"]
+        btn_text = item["button"]
+        if key in user_text.lower() or btn_text in user_text or any(k in user_text for k in [key, btn_text[:6]]):
+            await send_audio_for_situation(message, key)
+            return
 
-    # 3. Default random situation audio
-    data = random.choice(list(SITUATION_DATA_MAP.values()))
-    await send_audio_only_response(message, data)
+    # 3. Fuzzy keyword checks
+    keyword_key_map = {
+        "സപ്ലി": "supplies", "supply": "supplies", "backlog": "supplies",
+        "അറ്റൻഡൻസ്": "attendance", "attendance": "attendance",
+        "പ്ലേസ്മെന്റ്": "placement", "placement": "placement", "job": "placement",
+        "വൈവ": "viva", "viva": "viva",
+        "മെക്കാനിക്കൽ": "mechanical", "coding": "mechanical",
+        "ഹോസ്റ്റൽ": "hostel", "hostel": "hostel",
+        "കാന്റീൻ": "canteen", "canteen": "canteen",
+        "അസൈൻമെന്റ്": "assignment", "assignment": "assignment",
+        "ഫെസ്റ്റ്": "fest", "fest": "fest",
+        "ഫസ്റ്റ് ഷോ": "movie", "movie": "movie", "cinema": "movie",
+        "സിംഗിൾ": "single", "single": "single",
+        "യാത്ര": "travel", "travel": "travel",
+        "സ്റ്റാൻഡിംഗ്": "standing", "standing": "standing",
+        "വാട്സാപ്പ്": "whatsapp", "whatsapp": "whatsapp",
+        "സെമിനാർ": "seminar", "seminar": "seminar",
+        "ബസ്": "bus", "bus": "bus",
+        "സ്ക്വാഡ്": "squad", "squad": "squad", "bit": "squad",
+        "gre": "gre", "വിദേശം": "gre"
+    }
+
+    for kw, key in keyword_key_map.items():
+        if kw in user_text.lower() or kw in user_text:
+            await send_audio_for_situation(message, key)
+            return
+
+    # 4. Fallback random situation key
+    random_item = random.choice(SITUATION_LIST)
+    await send_audio_for_situation(message, random_item["key"])

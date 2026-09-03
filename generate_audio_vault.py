@@ -1,49 +1,50 @@
 import asyncio
 import os
 import edge_tts
-from media_ids import SITUATION_DATA_MAP
+from media_ids import SITUATION_LIST
 
 VOICE_CONFIGS = {
-    "ammavan": {"voice": "ml-IN-MidhunNeural", "pitch": "-15Hz", "rate": "-10%"},
-    "ammayi": {"voice": "ml-IN-SobhanaNeural", "pitch": "+12Hz", "rate": "-5%"},
-    "nattukar": {"voice": "ml-IN-SobhanaNeural", "pitch": "-5Hz", "rate": "+10%"},
-    "police": {"voice": "ml-IN-MidhunNeural", "pitch": "-25Hz", "rate": "-15%"}
+    "ammavan": {"voice": "ml-IN-MidhunNeural", "pitch": "-10Hz", "rate": "+25%"},
+    "ammayi": {"voice": "ml-IN-SobhanaNeural", "pitch": "+15Hz", "rate": "+30%"},
+    "nattukar": {"voice": "ml-IN-SobhanaNeural", "pitch": "-5Hz", "rate": "+25%"},
+    "police": {"voice": "ml-IN-MidhunNeural", "pitch": "-20Hz", "rate": "+20%"}
 }
 
-async def generate_single_audio(key: str, speech: str, voice_type: str):
+async def generate_all_audios():
     audio_dir = "audio"
     os.makedirs(audio_dir, exist_ok=True)
-    out_path = os.path.join(audio_dir, f"{key}.mp3")
-    
-    if os.path.exists(out_path) and os.path.getsize(out_path) > 5000:
-        print(f"⏩ {key}.mp3 already exists ({os.path.getsize(out_path)} bytes), skipping.")
-        return
 
-    config = VOICE_CONFIGS.get(voice_type, VOICE_CONFIGS["ammavan"])
+    print("🎙️ Force re-generating all 18 Malayalam audio files with faster speaking speed & distinct voices...")
     
-    for attempt in range(1, 4):
-        try:
-            print(f"🎙️ Generating [{voice_type}] {key}.mp3 (Attempt {attempt})...")
-            communicate = edge_tts.Communicate(
-                text=speech,
-                voice=config["voice"],
-                pitch=config["pitch"],
-                rate=config["rate"]
-            )
-            await communicate.save(out_path)
-            print(f"✅ Successfully saved {out_path} ({os.path.getsize(out_path)} bytes)")
-            return
-        except Exception as e:
-            print(f"⚠️ Attempt {attempt} failed for {key}.mp3: {e}")
-            await asyncio.sleep(2)
-
-async def generate_all_audios():
-    for btn_text, data in SITUATION_DATA_MAP.items():
+    for idx, data in enumerate(SITUATION_LIST):
         key = data["key"]
         speech = data["speech"]
         voice_type = data.get("voice_type", "ammavan")
-        await generate_single_audio(key, speech, voice_type)
-        await asyncio.sleep(1)
+        config = VOICE_CONFIGS.get(voice_type, VOICE_CONFIGS["ammavan"])
+
+        out_path = os.path.join(audio_dir, f"{key}.mp3")
+        
+        # Remove old file if exists to force fresh fast voice generation
+        if os.path.exists(out_path):
+            os.remove(out_path)
+
+        for attempt in range(1, 4):
+            try:
+                print(f"[{idx+1}/18] Generating [{voice_type} | fast {config['rate']}] {key}.mp3 ...")
+                communicate = edge_tts.Communicate(
+                    text=speech,
+                    voice=config["voice"],
+                    pitch=config["pitch"],
+                    rate=config["rate"]
+                )
+                await communicate.save(out_path)
+                print(f"✅ Generated {out_path} ({os.path.getsize(out_path)} bytes)")
+                break
+            except Exception as e:
+                print(f"⚠️ Attempt {attempt} failed for {key}.mp3: {e}")
+                await asyncio.sleep(1.5)
+        
+        await asyncio.sleep(0.5)
 
 if __name__ == "__main__":
     asyncio.run(generate_all_audios())
