@@ -1262,19 +1262,20 @@ body {
 }
 
 /* ============================================================================
-   INTRO LANDING SCREEN OVERLAY
+   TRADITIONAL KERALA INTRO LANDING SCREEN (AESTHETIC ROYAL EDITION)
    ============================================================================ */
 .intro-screen-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: radial-gradient(circle at center, rgba(20, 36, 26, 0.96) 0%, rgba(8, 14, 10, 0.98) 100%);
-  backdrop-filter: blur(16px);
+  background: radial-gradient(ellipse at center, #122b1c 0%, #08140c 70%, #030805 100%);
+  backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  overflow: hidden;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s ease;
 }
 
 .intro-screen-overlay.fade-out {
@@ -1283,85 +1284,204 @@ body {
   pointer-events: none;
 }
 
+/* Traditional Pookkalam Floral Pattern Spinner */
+.intro-pookkalam-bg {
+  position: absolute;
+  width: 750px;
+  height: 750px;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle, transparent 40%, rgba(245, 176, 37, 0.08) 41%, transparent 42%),
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(212, 175, 55, 0.04) 0deg 15deg,
+      rgba(211, 47, 47, 0.04) 15deg 30deg,
+      rgba(76, 175, 80, 0.04) 30deg 45deg
+    );
+  animation: rotatePookkalam 120s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotatePookkalam {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Floating Gold Sparkles */
+.gold-sparks-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: floatSpark 4s infinite ease-in-out;
+}
+
+.spark.s1 { top: 20%; left: 18%; animation-delay: 0s; }
+.spark.s2 { top: 75%; left: 15%; animation-delay: 1.5s; }
+.spark.s3 { top: 25%; right: 20%; animation-delay: 0.8s; }
+.spark.s4 { top: 80%; right: 18%; animation-delay: 2.2s; }
+
+@keyframes floatSpark {
+  0% { transform: translateY(10px) scale(0.6); opacity: 0; }
+  50% { transform: translateY(-15px) scale(1.2); opacity: 0.8; }
+  100% { transform: translateY(-30px) scale(0.6); opacity: 0; }
+}
+
+/* Main Traditional Card Container */
 .intro-card-content {
-  background: rgba(16, 28, 22, 0.9);
-  border: 2px solid var(--gold-primary);
-  border-radius: 28px;
-  padding: 32px 40px;
-  max-width: 580px;
+  background: linear-gradient(165deg, rgba(20, 38, 28, 0.94) 0%, rgba(10, 20, 15, 0.96) 100%);
+  border: 2.5px solid var(--gold-primary);
+  border-radius: 32px;
+  padding: 36px 48px;
+  max-width: 620px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   box-shadow: 
-    0 0 60px rgba(245, 176, 37, 0.35),
-    inset 0 0 30px rgba(0, 0, 0, 0.6);
+    0 0 80px rgba(245, 176, 37, 0.38),
+    0 25px 50px rgba(0, 0, 0, 0.85),
+    inset 0 0 40px rgba(0, 0, 0, 0.7),
+    inset 0 2px 8px rgba(255, 235, 150, 0.3);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+}
+
+/* Nilavilakku Lamps on Sides */
+.nilavilakku-side {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.nilavilakku-side.left-lamp { left: -32px; }
+.nilavilakku-side.right-lamp { right: -32px; }
+
+.lamp-symbol {
+  font-size: 2.6rem;
+  filter: drop-shadow(0 0 15px rgba(255, 213, 79, 0.9));
+  animation: flickerLamp 3s infinite alternate ease-in-out;
+}
+
+@keyframes flickerLamp {
+  0% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(255, 213, 79, 0.7)); }
+  50% { transform: scale(1.06); filter: drop-shadow(0 0 22px rgba(255, 213, 79, 1)); }
+  100% { transform: scale(0.98); filter: drop-shadow(0 0 15px rgba(255, 213, 79, 0.8)); }
 }
 
 .intro-badge {
-  background: rgba(245, 176, 37, 0.15);
-  border: 1px solid var(--gold-primary);
+  background: rgba(245, 176, 37, 0.12);
+  border: 1.5px solid var(--gold-primary);
   color: var(--gold-glow);
-  padding: 4px 16px;
-  border-radius: 20px;
-  font-size: 0.76rem;
+  padding: 6px 20px;
+  border-radius: 25px;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 1.5px;
-  margin-bottom: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
 .intro-malayalam-title {
-  font-size: 2.5rem;
+  font-family: 'Noto Serif Malayalam', 'Cinzel', serif;
+  font-size: 2.8rem;
   font-weight: 900;
-  color: var(--gold-glow);
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 176, 37, 0.4);
-  margin-bottom: 4px;
+  background: linear-gradient(180deg, #ffe082 0%, #ffb300 50%, #e65100 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+  margin-bottom: 6px;
   text-align: center;
+  line-height: 1.25;
 }
 
 .intro-subtitle {
-  font-size: 0.85rem;
-  color: #aed581;
+  font-size: 0.82rem;
+  color: #c8e6c9;
   font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
+  letter-spacing: 1.5px;
+  margin-bottom: 22px;
   text-align: center;
+  opacity: 0.9;
 }
 
+/* Center Artwork Frame */
 .intro-hero-art {
+  position: relative;
   width: 100%;
-  max-width: 440px;
-  height: 240px;
-  border-radius: 18px;
+  max-width: 480px;
+  height: 250px;
+  border-radius: 20px;
   overflow: hidden;
-  border: 2px solid rgba(245, 176, 37, 0.4);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-  margin-bottom: 24px;
+  border: 2px solid var(--gold-primary);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.75);
+  margin-bottom: 26px;
 }
 
 .intro-hero-art img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.8s ease;
 }
 
+.intro-hero-art:hover img {
+  transform: scale(1.05);
+}
+
+.art-overlay-caption {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(10, 18, 12, 0.92) 100%);
+  color: #fffde7;
+  font-family: 'Noto Serif Malayalam', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 18px 16px 10px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+}
+
+/* CTA Enter Button */
 .intro-enter-btn {
-  background: linear-gradient(135deg, #f5b025 0%, #ff8f00 100%);
-  color: #1a0c02;
+  background: linear-gradient(135deg, #ffd54f 0%, #ff8f00 50%, #d84315 100%);
+  color: #1a0800;
+  font-family: 'Outfit', sans-serif;
   font-weight: 900;
-  font-size: 1.1rem;
-  padding: 14px 36px;
-  border-radius: 30px;
-  border: 2px solid #ffe082;
+  font-size: 1.15rem;
+  padding: 16px 42px;
+  border-radius: 35px;
+  border: 2.5px solid #fff8e1;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(245, 176, 37, 0.45);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 
+    0 8px 25px rgba(245, 176, 37, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
 }
 
 .intro-enter-btn:hover {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 10px 28px rgba(245, 176, 37, 0.65);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 14px 35px rgba(245, 176, 37, 0.7),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.intro-enter-btn:active {
+  transform: translateY(1px) scale(0.98);
 }
