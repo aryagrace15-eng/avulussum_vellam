@@ -1,0 +1,7 @@
+.env
+venv/
+__pycache__/
+*.pyc
+audio/ml_voice_*.mp3
+audio/test_ml.mp3
+.DS_Store
