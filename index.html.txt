@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watermelon Drop Simulator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+    body { font-family: 'Quicksand', sans-serif; }
+  </style>
+</head>
+<body>
+
+<div class="flex flex-col items-center justify-center min-h-screen p-8" style="background: linear-gradient(135deg, #fef9f3 0%, #fff0f5 50%, #f0fff4 100%);">
+  
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-2" style="color: #e8a0bf; text-shadow: 2px 2px 0px #fce7f3;">🍉 Watermelon Drop</h1>
+    <p class="text-lg" style="color: #b4a7d6;">How many pieces from floor <span style="color:#e8a0bf; font-weight:bold;">N</span>?</p>
+  </div>
+
+  <div class="flex gap-4 mb-8 items-center flex-wrap justify-center">
+    <input id="floorInput" type="number" placeholder="Enter floor (1-1000)" min="1" 
+      class="px-6 py-3 rounded-2xl text-center text-xl outline-none border-2 transition-all duration-300"
+      style="border-color: #e8d5e0; background: rgba(255,255,255,0.8); color: #8b7aa0; width: 220px;"
+      onfocus="this.style.borderColor='#e8a0bf'; this.style.boxShadow='0 0 20px rgba(232,160,191,0.3)'"
+      onblur="this.style.borderColor='#e8d5e0'; this.style.boxShadow='none'"
+    />
+    <button onclick="dropWatermelon()"
+      class="px-8 py-3 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95"
+      style="background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); color: #5a7d6a; box-shadow: 0 4px 15px rgba(168,230,207,0.4);"
+      onmouseover="this.style.boxShadow='0 6px 25px rgba(168,230,207,0.6)'"
+      onmouseout="this.style.boxShadow='0 4px 15px rgba(168,230,207,0.4)'"
+    >Drop it!</button>
+  </div>
+
+  <div id="messageBox" class="text-xl font-bold mb-6 min-h-[2rem] text-center" style="color: #e8a0bf;"></div>
+
+  <div class="relative w-full max-w-md" style="height: 500px;">
+    <div id="building" class="absolute left-1/2 -translate-x-1/2 w-48 rounded-t-3xl overflow-hidden" 
+      style="bottom: 0; height: 480px; background: linear-gradient(to top, #fce7f3 0%, #f0e6ff 50%, #e6f7ff 100%); border: 3px solid #e8d5e0;">
+      <div id="windows" class="grid grid-cols-3 gap-2 p-3 pt-4"></div>
+      <div class="absolute bottom-0 w-full h-4" style="background: #d4a5a5;"></div>
+    </div>
+    
+    <div id="floorIndicator" class="absolute left-full ml-3 text-sm font-bold transition-all duration-300" 
+      style="color: #b4a7d6; bottom: 460px;">1000</div>
+
+    <div id="watermelon" class="absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full transition-all duration-100 z-10"
+      style="bottom: 460px; background: radial-gradient(circle at 30% 30%, #ff9a9e, #fecfef); border: 2px solid #ff758c; opacity: 0;">
+      <div class="absolute inset-0 flex items-center justify-center text-lg">🍉</div>
+    </div>
+
+    <div id="splatContainer" class="absolute left-1/2 -translate-x-1/2 w-64 h-32 pointer-events-none" style="bottom: -10px;"></div>
+  </div>
+
+  <div id="result" class="mt-6 text-center">
+    <div id="pieceCount" class="text-5xl font-bold mb-2" style="color: #e8a0bf; text-shadow: 2px 2px 0px #fce7f3;"></div>
+    <div id="pieceLabel" class="text-lg" style="color: #b4a7d6;"></div>
+  </div>
+
+</div>
+
+<script>
+  const building = document.getElementById('building');
+  const windowsContainer = document.getElementById('windows');
+  const watermelon = document.getElementById('watermelon');
+  const messageBox = document.getElementById('messageBox');
+  const pieceCount = document.getElementById('pieceCount');
+  const pieceLabel = document.getElementById('pieceLabel');
+  const splatContainer = document.getElementById('splatContainer');
+  const floorIndicator = document.getElementById('floorIndicator');
+
+  for (let i = 0; i < 30; i++) {
+    const win = document.createElement('div');
+    win.className = 'h-6 rounded-lg';
+    win.style.background = 'rgba(255,255,255,0.6)';
+    win.style.border = '1px solid rgba(232,213,224,0.5)';
+    windowsContainer.appendChild(win);
+  }
+
+  function dropWatermelon() {
+    const input = document.getElementById('floorInput');
+    const floor = parseInt(input.value);
+    
+    splatContainer.innerHTML = '';
+    pieceCount.textContent = '';
+    pieceLabel.textContent = '';
+    watermelon.style.opacity = '1';
+    watermelon.style.transform = 'translateX(-50%) rotate(0deg)';
+    
+    if (!floor || floor <= 0) {
+      messageBox.textContent = 'Please enter a valid floor number!';
+      messageBox.style.color = '#e8a0bf';
+      watermelon.style.opacity = '0';
+      return;
+    }
+
+    if (floor > 1000) {
+      messageBox.innerHTML = '<span style="font-size: 1.2em;">🏢</span> show me a apartment that big you bafoon <span style="font-size: 1.2em;">😤</span>';
+      messageBox.style.color = '#ff758c';
+      watermelon.style.opacity = '0';
+      shakeBuilding();
+      return;
+    }
+
+    messageBox.textContent = `Dropping from floor ${floor}...`;
+    messageBox.style.color = '#a8e6cf';
+
+    const maxFloor = 1000;
+    const buildingHeight = 460;
+    const startBottom = Math.min(460, (floor / maxFloor) * buildingHeight + 20);
+    
+    watermelon.style.bottom = startBottom + 'px';
+    watermelon.style.opacity = '1';
+    floorIndicator.style.bottom = startBottom + 'px';
+    floorIndicator.textContent = floor;
+
+    const duration = Math.min(2000, 300 + (floor * 2));
+    const rotations = Math.floor(floor / 50) + 2;
+    
+    setTimeout(() => {
+      watermelon.style.transition = `bottom ${duration}ms cubic-bezier(0.5, 0, 1, 1), transform ${duration}ms linear`;
+      watermelon.style.bottom = '20px';
+      watermelon.style.transform = `translateX(-50%) rotate(${rotations * 360}deg)`;
+    }, 50);
+
+    setTimeout(() => {
+      watermelon.style.opacity = '0';
+      createSplat(floor);
+      
+      const pieces = Math.min(9999, Math.floor(floor * 1.5) + Math.floor(Math.random() * floor * 0.5) + 3);
+      
+      setTimeout(() => {
+        pieceCount.textContent = pieces.toLocaleString();
+        pieceLabel.textContent = pieces === 1 ? 'piece' : 'pieces';
+        messageBox.innerHTML = `<span style="color:#a8e6cf">Splat!</span> From floor ${floor}`;
+      }, 200);
+      
+    }, duration + 100);
+  }
+
+  function createSplat(floor) {
+    const colors = ['#ff9a9e', '#fecfef', '#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94'];
+    const intensity = Math.min(floor / 100, 1);
+    const particleCount = Math.min(50, 10 + Math.floor(floor / 20));
+    
+    for (let i = 0; i < particleCount; i++) {
+      const p = document.createElement('div');
+      const size = Math.random() * 20 + 5;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const left = 50 + (Math.random() - 0.5) * 120 * intensity;
+      const bottom = Math.random() * 30;
+      
+      p.style.position = 'absolute';
+      p.style.width = size + 'px';
+      p.style.height = size * (0.6 + Math.random() * 0.8) + 'px';
+      p.style.background = color;
+      p.style.borderRadius = '50%';
+      p.style.left = left + 'px';
+      p.style.bottom = bottom + 'px';
+      p.style.opacity = '0';
+      p.style.transform = 'scale(0)';
+      p.style.transition = `all ${0.3 + Math.random() * 0.4}s cubic-bezier(0.175, 0.885, 0.32, 1.275)`;
+      
+      splatContainer.appendChild(p);
+      
+      setTimeout(() => {
+        p.style.opacity = '0.85';
+        p.style.transform = `scale(1) rotate(${Math.random() * 360}deg)`;
+      }, i * 15);
+    }
+  }
+
+  function shakeBuilding() {
+    building.style.transition = 'transform 0.1s';
+    let shakes = 0;
+    const interval = setInterval(() => {
+      const offset = (Math.random() - 0.5) * 8;
+      building.style.transform = `translateX(calc(-50% + ${offset}px))`;
+      shakes++;
+      if (shakes > 10) {
+        clearInterval(interval);
+        building.style.transform = 'translateX(-50%)';
+      }
+    }, 50);
+  }
+
+  document.getElementById('floorInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') dropWatermelon();
+  });
+</script>
+
+</body>
+</html>
