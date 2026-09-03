@@ -10,9 +10,8 @@
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Arya K A - Govt. Model Engineering College
+- Member 2: Akshita Sivasankaran - Govt. Model Engineering College
 
 ### Project Description
 [2-3 lines about what your project does]
