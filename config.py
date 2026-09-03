@@ -1,11 +1,10 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# Load environment variables if .env exists
+try:
+    load_dotenv()
+except Exception:
+    pass
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-if not BOT_TOKEN:
-    print("⚠️ WARNING: BOT_TOKEN is not set in your .env file!")
-    print("Please create a .env file with: BOT_TOKEN=your_telegram_bot_token_here")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8702603119:AAHOO7sjhYNYbSiRYoTkPwHSbHAICwMn4C4")
