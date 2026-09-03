@@ -361,8 +361,6 @@ class PonjikkaraSadhyaGame {
     this.progressFill = document.getElementById('hud-progress-fill');
     this.currentDishName = document.getElementById('current-dish-name');
     this.currentDishMal = document.getElementById('current-dish-malayalam');
-    this.traditionRule = document.getElementById('tradition-rule');
-    this.ponjikkaraRule = document.getElementById('ponjikkara-rule');
 
     // Buttons & Modals
     this.songToggleBtn = document.getElementById('song-toggle-btn');
@@ -657,13 +655,9 @@ class PonjikkaraSadhyaGame {
       const nextDish = SADHYA_DISHES[count];
       this.currentDishName.textContent = nextDish.name;
       this.currentDishMal.textContent = nextDish.malayalam;
-      this.traditionRule.textContent = nextDish.traditionRule;
-      this.ponjikkaraRule.textContent = nextDish.ponjiRule;
     } else {
       this.currentDishName.textContent = "Sadhya Complete!";
       this.currentDishMal.textContent = "സദ്യ പൂർത്തിയായി!";
-      this.traditionRule.textContent = "All 16 dishes successfully violated!";
-      this.ponjikkaraRule.textContent = '"Ponjikkara style! Enjoy the feast!"';
     }
   }
 
