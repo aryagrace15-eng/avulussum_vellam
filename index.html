@@ -1,263 +1,296 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>പൊഞ്ചിക്കര ഓണ സദ്യ സിമുലേറ്റർ | Ponjikkara Sadhya Simulator</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Noto+Serif+Malayalam:wght@500;700;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ponjikkara's Sadhya Serving | ഒരു പോഞ്ഞിക്കര സദ്യ വിളമ്പ്</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍃</text></svg>" />
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden font-['Outfit'] select-none">
+<body>
 
-  <!-- INTRO SCREEN / POSTER BANNER -->
-  <div id="introScreen" class="fixed inset-0 z-50 bg-slate-950/95 flex flex-col items-center justify-center p-4 sm:p-6 text-center overflow-y-auto transition-all duration-700">
-    <div class="max-w-3xl w-full bg-slate-900/90 border-2 border-amber-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(245,158,11,0.3)] backdrop-blur-2xl flex flex-col items-center gap-6 relative overflow-hidden">
-      
-      <!-- Title Header -->
-      <div class="flex flex-col items-center gap-2">
-        <span class="px-4 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-widest font-['Montserrat']">
-          CEYLON BAKE HOUSE & KALYANARAMAN SPECIAL
-        </span>
-        <h1 class="text-4xl sm:text-6xl font-black font-['Noto_Serif_Malayalam'] text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-          പൊഞ്ചിക്കര ഓണ സദ്യ 🍃
-        </h1>
-        <p class="text-xs sm:text-sm text-amber-200/80 font-['Montserrat'] tracking-wide">
-          PONJIKKARA KESHAVAN'S CHAOTIC SADHYA SERVING SIMULATOR
-        </p>
+  <!-- Hanging Incandescent Bulb (Inspired by Reference Artwork) -->
+  <div class="bulb-fixture">
+    <div class="bulb-wire"></div>
+    <div class="bulb-holder"></div>
+    <div class="bulb-glass">
+      <div class="bulb-filament"></div>
+    </div>
+  </div>
+  <div class="ambient-light-cone"></div>
+
+  <!-- Header & Navigation -->
+  <header class="game-header">
+    <div class="title-container">
+      <div class="title-badge">
+        <span>ONAM SPECIAL</span>
       </div>
-
-      <!-- Poster Backdrop Card Preview -->
-      <div class="relative w-full max-w-lg aspect-[4/3] rounded-2xl overflow-hidden border-2 border-amber-400/50 shadow-2xl group">
-        <img src="assets/bg_illustration.jpg" alt="Mahabali and Ponjikkara at Table" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-        
-        <!-- Speech Bubble Overlay -->
-        <div class="absolute bottom-4 right-4 bg-white/95 text-slate-950 px-4 py-2 rounded-2xl rounded-br-none shadow-2xl font-black font-['Noto_Serif_Malayalam'] text-sm sm:text-base animate-bounce border-2 border-amber-400">
-          💬 ചേട്ടാ ലേശം ചോറ്... 🍚
-        </div>
-
-        <div class="absolute top-4 left-4 bg-amber-950/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-amber-400/40 text-amber-300 text-xs font-bold font-['Noto_Serif_Malayalam']">
-          👑 മഹാബലി തമ്പുരാന്റെ സദ്യ
-        </div>
+      <div class="title-text">
+        <h1>Mr. Ponjikkara's Sadhya</h1>
+        <span class="malayalam-subtitle">പോഞ്ഞിക്കരയുടെ സദ്യ വിളമ്പ്!</span>
       </div>
+    </div>
 
-      <!-- Intro Instructions -->
-      <div class="bg-amber-950/60 border border-amber-500/30 rounded-2xl p-4 text-amber-200/90 text-sm max-w-md font-['Noto_Serif_Malayalam'] leading-relaxed">
-        <p class="font-bold text-amber-300 mb-1">🎮 എങ്ങനെ കളിക്കാം?</p>
-        <p>ഇലയിൽ എവിടെ ക്ലിക്ക് ചെയ്താലും പൊഞ്ചിക്കര കേശവൻ അദ്ദേഹത്തിന്റെ സ്വന്തം ഇഷ്ടത്തിന് കറി കോരി ഒഴിക്കും! ഓരോ കറി വിളമ്പുമ്പോഴും പൊഞ്ചിക്കര നിങ്ങളോട് സംസാരിക്കും! 🤪</p>
-      </div>
-
-      <!-- Start Button -->
-      <button id="btnStartGame" class="w-full sm:w-auto px-12 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 font-black text-2xl shadow-[0_0_35px_rgba(245,158,11,0.6)] hover:scale-105 active:scale-95 transition-all cursor-pointer font-['Noto_Serif_Malayalam'] border-2 border-yellow-200 flex items-center justify-center gap-3">
-        <span>🍃 സദ്യ കഴിക്കാം! (Let's Eat!)</span>
+    <div class="header-controls">
+      <button id="chenda-toggle-btn" class="ctrl-btn" title="Toggle Kerala Chenda Melam Beat">
+        <span class="btn-icon">🥁</span>
+        <span class="btn-text">Chenda Melam</span>
       </button>
+      <button id="audio-toggle-btn" class="ctrl-btn" title="Toggle Sound Effects">
+        <span class="btn-icon">🔊</span>
+        <span class="btn-text">Sound: ON</span>
+      </button>
+      <button id="guide-btn" class="ctrl-btn" title="How to Play">
+        <span class="btn-icon">📜</span>
+        <span class="btn-text">Rules?</span>
+      </button>
+    </div>
+  </header>
 
+  <!-- Interactive Instruction Banner -->
+  <div class="prompt-bar-container">
+    <div class="prompt-banner">
+      <span class="prompt-icon">👉</span>
+      <span class="prompt-text">
+        Click <span class="highlight">anywhere on Mahabali's banana leaf</span> to choose where Ponjikkara should serve your next dish!
+      </span>
+      <span class="prompt-subtext">(...Ponjikkara serves strictly by his own chaotic logic!)</span>
     </div>
   </div>
 
-  <!-- MAIN SCENE STAGE (MAHABALI | CAPSULE BANANA LEAF CANVAS | PONJIKKARA) -->
-  <main id="mainGameStage" class="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 flex flex-col justify-center items-center relative">
+  <!-- MAIN STAGE: INTEGRATED DINING ROOM ARENA -->
+  <main class="game-stage-wrapper">
+    <div class="integrated-dining-hall" id="dining-table-arena">
+      <span class="table-flower-left">🌼🌺</span>
+      <span class="table-flower-right">🌺🌼</span>
 
-    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center justify-center">
-
-      <!-- LEFT COLUMN: KING MAHABALI CUTOUT & BADGE -->
-      <div class="lg:col-span-3 flex flex-col items-center justify-center relative order-2 lg:order-1">
-        <div class="relative w-48 sm:w-64 h-64 sm:h-80 rounded-3xl overflow-hidden border-2 border-amber-500/30 shadow-2xl bg-slate-900/60 flex items-center justify-center group">
-          <!-- Crop Mahabali from backdrop illustration -->
-          <img src="assets/bg_illustration.jpg" alt="King Mahabali" class="w-full h-full object-cover object-left scale-125 group-hover:scale-135 transition-transform duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+      <!-- 1. LEFT: King Mahabali Seated on Chair at the Table (Realistic Proportion) -->
+      <section class="maveli-figure" id="maveli-card" aria-label="King Mahabali seated at dining table">
+        <img src="assets/maveli_clean.png" alt="King Mahabali seated at dining table" class="maveli-actor-img" id="maveli-img" />
+        <div class="actor-status-pill maveli-pill">
+          <span class="actor-title">King Mahabali</span>
+          <span class="actor-mood" id="maveli-mood">Mood: Hungry & Eager 😋</span>
         </div>
+      </section>
 
-        <!-- KING MAHABALI PILL BADGE -->
-        <div class="mt-3 bg-slate-900/90 border-2 border-amber-400/60 rounded-full px-5 py-2 flex flex-col items-center shadow-xl backdrop-blur-md">
-          <span class="text-xs font-black font-['Montserrat'] tracking-wider text-amber-400 uppercase">KING MAHABALI</span>
-          <span class="text-xs font-semibold text-amber-200 flex items-center gap-1 font-['Montserrat'] mt-0.5">
-            <span>😍</span> <span>Hungry & Eager</span>
-          </span>
-        </div>
-      </div>
+      <!-- 2. CENTER: Rustic Wooden Dining Table with Banana Leaf Placed in Front of Mahabali -->
+      <section class="wooden-table-surface" aria-label="Dining Table and Banana Leaf Setting">
+        <div class="table-wood-grain">
+          <!-- The Realistic Banana Leaf Plate Resting Directly on the Tabletop -->
+          <div class="banana-leaf" id="banana-leaf" title="Mahabali's Sadhya Leaf">
+            <!-- Leaf Midrib Spine & Parallel Veins -->
+            <div class="leaf-spine"></div>
+            <div class="leaf-veins"></div>
 
-      <!-- CENTER COLUMN: CAPSULE BANANA LEAF CANVAS STAGE -->
-      <div class="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 relative w-full">
-        
-        <!-- CAPSULE ROUNDED BANANA LEAF CONTAINER -->
-        <div id="tableStageContainer" class="relative w-full max-w-[620px] aspect-[1.75/1] rounded-full overflow-hidden border-4 border-emerald-500/80 shadow-[0_0_60px_rgba(16,185,129,0.3)] bg-emerald-950 flex items-center justify-center cursor-crosshair group">
-          
-          <!-- Leaf Center Spine Line -->
-          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 bg-yellow-200/50 z-20 pointer-events-none shadow-sm"></div>
+            <!-- Natural Dewdrops on Leaf -->
+            <div class="leaf-dewdrop" style="top: 22%; left: 14%;"></div>
+            <div class="leaf-dewdrop" style="top: 78%; left: 24%;"></div>
+            <div class="leaf-dewdrop" style="top: 18%; right: 26%;"></div>
+            <div class="leaf-dewdrop" style="top: 82%; right: 16%;"></div>
 
-          <!-- HTML5 CANVAS FOR CAPSULE BANANA LEAF & SERVING PHYSICS -->
-          <canvas id="leafCanvas" class="relative z-10 w-full h-full object-cover"></canvas>
+            <!-- Pre-served small Kerala Banana (Poovan / Rasakadali Pazham) -->
+            <div class="real-banana-garnish" title="Poovan / Kadali Pazham">
+              <img src="assets/dishes/real_banana.png" alt="Fresh Kerala Banana" />
+            </div>
 
-          <!-- TARGET CROSSHAIR CURSOR TOOLTIP OVERLAY -->
-          <div id="leafTooltip" class="absolute z-30 pointer-events-none bg-slate-950/90 text-slate-100 border border-amber-400/60 px-3 py-1 rounded-lg text-xs font-semibold font-['Montserrat'] shadow-2xl hidden flex items-center gap-1.5">
-            <span class="text-amber-400 text-sm">+</span>
-            <span>Mahabali's Sadhya Leaf</span>
+            <!-- Steaming Mound of Real Kerala Matta Rice -->
+            <div class="matta-rice-mound" id="rice-mound" title="Steaming Kerala Matta Rice">
+              <img src="assets/dishes/real_rice.png" alt="Kerala Matta Rice" class="real-rice-img" />
+              <div class="steam-container">
+                <div class="steam-wisp"></div>
+                <div class="steam-wisp"></div>
+                <div class="steam-wisp"></div>
+              </div>
+            </div>
+
+            <!-- Container where Ponjikkara's served realistic dishes are injected -->
+            <div id="dishes-container"></div>
+
+            <!-- Marker where rejected user click appears -->
+            <div id="click-markers-container"></div>
           </div>
+        </div>
+      </section>
 
+      <!-- 3. RIGHT: Ponjikkara Kesavan Standing at the Table (Realistic Proportion) -->
+      <section class="ponjikkara-figure" id="ponjikkara-card" aria-label="Ponjikkara Kesavan standing at dining table">
+        <!-- Comic Speech Bubble directly above his head -->
+        <div class="comic-speech-bubble" id="speech-bubble">
+          <div class="bubble-malayalam" id="bubble-malayalam">
+            "തന്നോടല്ലേ രണ്ടാമത് പപ്പടം ചോദിക്കല്ലേ എന്ന് പറഞ്ഞത്!"
+          </div>
+          <div class="bubble-manglish" id="bubble-manglish">
+            "Thannodalle randaamathu pappadam chodikkallennu paranjathu!"
+          </div>
+          <div class="bubble-english" id="bubble-english">
+            "Didn't I tell you not to ask for a second pappadam?!"
+          </div>
         </div>
 
-      </div>
-
-      <!-- RIGHT COLUMN: PONJIKKARA KESHAVAN CUTOUT & BADGE -->
-      <div class="lg:col-span-3 flex flex-col items-center justify-center relative order-3">
+        <img src="assets/ponjikkara_clean.png" alt="Ponjikkara Kesavan holding pappadam basin" class="ponji-actor-img" id="ponji-img" />
         
-        <!-- PONJIKKARA LIVE SPEECH BUBBLE OVERLAY -->
-        <div id="ponjikkaraSpeechBubble" class="w-full max-w-xs bg-white text-slate-950 p-3.5 rounded-2xl rounded-br-none shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-2 border-amber-400 font-['Noto_Serif_Malayalam'] font-bold text-xs sm:text-sm mb-3 transition-all duration-300 animate-bounce">
-          <span id="speechBubbleText">💬 "ചേട്ടാ ലേശം കറി കോരി ഒഴിക്കട്ടെ?" 🍲</span>
+        <div class="actor-status-pill ponji-pill">
+          <span class="actor-title">Ponjikkara Kesavan</span>
+          <span class="actor-subtitle">ഹെഡ് കാറ്ററർ & ഫിലോസഫർ 🥄</span>
         </div>
+      </section>
 
-        <div class="relative w-48 sm:w-64 h-64 sm:h-80 rounded-3xl overflow-hidden border-2 border-amber-500/30 shadow-2xl bg-slate-900/60 flex items-center justify-center group">
-          <!-- Ponjikkara Kesavan Avatar -->
-          <img src="assets/ponjikkara_keshavan.png" alt="Ponjikkara Keshavan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
-        </div>
-
-        <!-- PONJIKKARA KESHAVAN PILL BADGE -->
-        <div class="mt-3 bg-slate-900/90 border-2 border-amber-400/60 rounded-full px-5 py-2 flex flex-col items-center shadow-xl backdrop-blur-md">
-          <span class="text-xs font-black font-['Montserrat'] tracking-wider text-amber-400 uppercase">PONJIKKARA KESHAVAN</span>
-          <span class="text-xs font-bold text-emerald-400 font-['Noto_Serif_Malayalam'] mt-0.5 flex items-center gap-1">
-            <span>ഹെഡ് കാറ്ററർ & ഫിലോസഫർ</span> <span>🥄</span>
-          </span>
-        </div>
-
+      <!-- Dynamic Flying Ladle Graphic -->
+      <div class="ladle-flight-container" id="ladle-anim-container">
+        <svg class="steel-ladle" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="40%" stop-color="#cfd8dc" />
+              <stop offset="80%" stop-color="#78909c" />
+              <stop offset="100%" stop-color="#37474f" />
+            </linearGradient>
+            <linearGradient id="woodHandle" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#8d6e63" />
+              <stop offset="100%" stop-color="#3e2723" />
+            </linearGradient>
+          </defs>
+          <path d="M75 10 L45 55" stroke="url(#woodHandle)" stroke-width="7" stroke-linecap="round" />
+          <path d="M48 50 L38 65" stroke="url(#metalGrad)" stroke-width="6" stroke-linecap="round" />
+          <ellipse cx="28" cy="72" rx="22" ry="16" fill="url(#metalGrad)" stroke="#455a64" stroke-width="2" />
+          <ellipse cx="28" cy="71" rx="17" ry="11" fill="#90a4ae" opacity="0.6" />
+        </svg>
       </div>
 
     </div>
-
   </main>
 
-  <!-- BOTTOM CONTROL HUD BAR (MIRRORING REFERENCE UI EXACTLY!) -->
-  <footer class="w-full bg-slate-950/95 border-t-2 border-amber-500/40 backdrop-blur-xl px-4 sm:px-8 py-3 sticky bottom-0 z-40 shadow-2xl">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      
-      <!-- LEFT SECTION: DISH COUNTER CIRCLE & NAME -->
-      <div class="flex items-center gap-4 shrink-0">
-        <!-- Orange/Gold Circular Step Badge -->
-        <div class="w-14 h-14 rounded-full border-4 border-amber-500 bg-amber-950/90 flex flex-col items-center justify-center text-center shadow-[0_0_15px_rgba(245,158,11,0.5)]">
-          <span id="counterBadge" class="text-sm font-black font-['Montserrat'] text-amber-300">0 / 16</span>
-        </div>
-
-        <div>
-          <h3 id="itemNameEn" class="text-lg sm:text-xl font-extrabold font-['Montserrat'] text-white leading-tight">
-            Parippu Curry & Ghee
-          </h3>
-          <span id="itemNameMl" class="text-xs sm:text-sm font-bold font-['Noto_Serif_Malayalam'] text-amber-300/90">
-            പരിപ്പും നെയ്യും
-          </span>
-        </div>
+  <!-- Bottom Game HUD -->
+  <footer class="game-hud-footer">
+    <div class="hud-progress-section">
+      <!-- Brass Uruli Counter -->
+      <div class="brass-counter-uruli">
+        <span class="counter-num" id="counter-num">0</span>
+        <span class="counter-total">/ 16</span>
       </div>
 
-      <!-- MIDDLE SECTION: ETIQUETTE VS PONJIKKARA LOGIC COMPARISON -->
-      <div class="flex-1 w-full bg-slate-900/90 border border-slate-800 rounded-2xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-around gap-3 text-xs shadow-inner">
-        
-        <!-- Proper Etiquette -->
-        <div class="flex-1 text-left">
-          <span class="font-black text-[11px] text-emerald-400 uppercase tracking-widest block font-['Montserrat'] mb-0.5">
-            PROPER SADHYA ETIQUETTE:
-          </span>
-          <p id="properEtiquetteText" class="text-slate-300 font-['Montserrat'] leading-snug">
-            Golden dal served directly over center rice mound, followed by hot ghee
-          </p>
+      <div class="hud-info-box">
+        <div class="hud-dish-title">
+          <span class="hud-dish-name" id="current-dish-name">Parippu Curry & Ghee</span>
+          <span class="hud-dish-malayalam" id="current-dish-malayalam">പരിപ്പും നെയ്യും</span>
         </div>
-
-        <!-- VS Divider -->
-        <div class="flex flex-col items-center justify-center shrink-0 px-2">
-          <span class="text-amber-400 text-xs font-black">⚡</span>
-          <span class="text-[10px] font-black text-amber-300 font-['Montserrat']">VS</span>
-          <span class="text-amber-400 text-xs font-black">⚡</span>
+        <div class="hud-progress-track">
+          <div class="hud-progress-fill" id="hud-progress-fill"></div>
         </div>
-
-        <!-- Ponjikkara Logic -->
-        <div class="flex-1 text-left">
-          <span class="font-black text-[11px] text-amber-400 uppercase tracking-widest block font-['Montserrat'] mb-0.5">
-            PONJIKKARA LOGIC:
-          </span>
-          <p id="ponjikkaraLogicText" class="text-amber-200/90 font-['Montserrat'] font-semibold leading-snug italic">
-            "Who puts parippu in the center? Top-right drop! Catch it if you can!"
-          </p>
-        </div>
-
       </div>
+    </div>
 
-      <!-- RIGHT SECTION: RESET & SERVE BUTTONS -->
-      <div class="flex items-center gap-3 shrink-0">
-        <button id="btnRestart" class="px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 text-xs font-bold text-slate-200 transition-all flex items-center gap-1.5 shadow-md">
-          <span>🔄</span> <span>Reset</span>
-        </button>
-        <button id="btnServe" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 active:scale-95 text-white font-black text-sm shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all flex items-center gap-2 font-['Montserrat'] border border-emerald-400">
-          <span>🧹</span> <span>Serve!</span>
-        </button>
+    <!-- Etiquette vs Ponjikkara Logic Display -->
+    <div class="hud-rule-comparison">
+      <div class="rule-col">
+        <span class="rule-label tradition">Proper Sadhya Etiquette:</span>
+        <span class="rule-value" id="tradition-rule">Mashed dal poured gently on center rice</span>
       </div>
+      <div style="color: #ffd54f; font-weight: 900;">⚡ VS ⚡</div>
+      <div class="rule-col">
+        <span class="rule-label ponjikkara">Ponjikkara Logic:</span>
+        <span class="rule-value" id="ponjikkara-rule">"Who puts dal on rice? Top-corner drop!"</span>
+      </div>
+    </div>
 
+    <!-- Quick Action Buttons -->
+    <div class="hud-actions">
+      <button id="reset-btn" class="action-btn secondary" title="Reset Sadhya">
+        <span>🔄</span> Reset
+      </button>
+      <button id="serve-next-btn" class="action-btn" title="Trigger Ponjikkara's Next Serve">
+        <span>🥄</span> Serve!
+      </button>
     </div>
   </footer>
 
-  <!-- COMPLETION STATE DRAMATIC POP-UP MODAL -->
-  <div id="scorecardModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex items-center justify-center p-4 hidden transition-all duration-500">
-    <div class="bg-slate-900 border-2 border-amber-500/60 rounded-3xl p-6 sm:p-8 max-w-4xl w-full shadow-[0_0_60px_rgba(245,158,11,0.4)] flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
-      
-      <!-- Header -->
-      <div class="flex justify-between items-center border-b border-amber-500/30 pb-4">
-        <div class="flex items-center gap-3">
-          <span class="text-4xl animate-bounce">👑</span>
-          <div>
-            <h3 class="text-2xl sm:text-3xl font-black font-['Noto_Serif_Malayalam'] text-amber-300">
-              സദ്യ റെഡി! പൊഞ്ചിക്കര സ്റ്റൈലിൽ! 🍃
-            </h3>
-            <p class="text-xs text-amber-200/70 font-['Montserrat']">"Sadhya is ready! Ponjikkara style!"</p>
-          </div>
-        </div>
-        <button id="btnCloseModal" class="w-10 h-10 rounded-full bg-slate-800 border border-amber-500/40 text-amber-400 hover:text-white flex items-center justify-center text-xl font-bold transition-all">&times;</button>
+  <!-- Confetti Canvas for Grand Finale -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- GRAND COMPLETION MODAL -->
+  <div class="modal-overlay" id="completion-modal">
+    <div class="modal-content">
+      <div class="modal-banner-top">
+        <span>SADHYA COMPLETE!</span>
       </div>
 
-      <!-- Ponjikkara Victory Speech & Avatar Banner -->
-      <div class="bg-amber-950/60 border border-amber-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-        <div class="w-24 h-24 rounded-full border-4 border-amber-400 overflow-hidden shrink-0 shadow-xl bg-slate-950">
-          <img src="assets/ponjikkara_keshavan.png" alt="Ponjikkara Keshavan" class="w-full h-full object-cover">
-        </div>
-        <div>
-          <span class="text-xs font-bold text-amber-400 font-['Montserrat'] uppercase">PONJIKKARA KESHAVAN SAYS:</span>
-          <p class="text-lg font-black font-['Noto_Serif_Malayalam'] text-white mt-0.5">
-            "ഞാൻ ആന കെട്ടിയ തറിയിലാടാ നീ ആട് മേയ്ക്കുന്നത്! എന്റെ സദ്യ എങ്ങനെയുണ്ട് തമ്പുരാനേ?" 🤣
-          </p>
-          <p class="text-xs text-amber-200/80 font-['Montserrat'] mt-1">
-            (You thought you could dictate where curries go on a Sadhya leaf? Think again!)
-          </p>
-        </div>
+      <div class="modal-hero-art">
+        <img src="assets/reference_art.jpg" alt="Ponjikkara Kesavan and King Mahabali poster" />
       </div>
 
-      <!-- Final Cursed Sadhya Report Card Image Container -->
-      <div class="flex justify-center items-center">
-        <div id="scorecardPreview" class="rounded-2xl overflow-hidden border-2 border-amber-400/50 shadow-2xl max-w-full">
+      <h2 class="modal-dialogue-headline">
+        "സദ്യ കഴിഞ്ഞു! പോഞ്ഞിക്കര സ്റ്റൈൽ!"
+      </h2>
+      <p class="modal-dialogue-manglish">
+        "Sadhya is ready! Ponjikkara style! Njan aana kettiya thariyil aada nee aadu mekkunnath!"
+      </p>
+
+      <div class="modal-stats-grid">
+        <div class="stat-item">
+          <div class="stat-val">16 / 16</div>
+          <div class="stat-desc">Realistic Dishes Served</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">0 / 16</div>
+          <div class="stat-desc">Etiquette Rules Followed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">100%</div>
+          <div class="stat-desc">Ponjikkara Chaos</div>
         </div>
       </div>
 
-      <!-- Actions -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-end pt-2">
-        <a id="btnDownloadScorecard" href="#" download="Ponjikkara_Sadhya_Disaster.png" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-sm shadow-xl hover:scale-105 transition-all text-center flex items-center justify-center gap-2 font-['Noto_Serif_Malayalam'] border border-yellow-200">
-          📥 Download Report Card (PNG)
-        </a>
-        <button id="btnRestartFromModal" class="px-8 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-bold text-sm shadow-xl transition-all text-center flex items-center justify-center gap-2 font-['Noto_Serif_Malayalam']">
-          🔄 തറവാട്ടിൽ പോയി വീണ്ടും കഴിക്കാം! (Serve Again)
+      <div class="modal-actions">
+        <button id="modal-replay-btn" class="modal-btn-primary">
+          🍽️ Serve Again (Take 2)
         </button>
       </div>
-
     </div>
   </div>
 
-  <!-- JavaScript Scripts -->
-  <script src="js/dialogues.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/foodPhysics.js"></script>
-  <script src="js/scorecard.js"></script>
+  <!-- HOW TO PLAY / RULES MODAL -->
+  <div class="modal-overlay" id="guide-modal">
+    <div class="modal-content guide-modal-content">
+      <div class="modal-banner-top">
+        <span>HOW TO PLAY</span>
+      </div>
+
+      <h3 style="color: #ffd54f; font-family: 'Cinzel', serif; margin: 15px 0 10px; font-size: 1.2rem;">
+        The Rules of Ponjikkara's Sadhya
+      </h3>
+
+      <div class="guide-step">
+        <div class="guide-step-num">1</div>
+        <div class="guide-step-body">
+          <h4>Choose Your Spot on Mahabali's Leaf</h4>
+          <p>Click anywhere on the realistic banana leaf in front of King Mahabali where you think the next dish belongs.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">2</div>
+        <div class="guide-step-body">
+          <h4>Experience Ponjikkara Chaos</h4>
+          <p>Ponjikkara Kesavan will disregard your click, scoff with a classic punchline, and launch the realistic dish wherever he feels like!</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">3</div>
+        <div class="guide-step-body">
+          <h4>16 Authentic Delicacies</h4>
+          <p>Serve all 16 realistic dishes from Parippu to Palada Payasam and watch King Mahabali's hysterical reactions!</p>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button id="guide-close-btn" class="action-btn" style="padding: 10px 24px;">
+          Got It, Let's Serve!
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>

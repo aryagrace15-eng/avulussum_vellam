@@ -1,47 +1,1260 @@
-/* ==========================================================================
-   Ponjikkara Cuisine - Traditional Kerala Wedding Aesthetic & Micro-interactions
-   ========================================================================== */
+/* =========================================================
+   PONJIKKARA SADHYA - MASTER STYLESHEET
+   Integrated Real-Life Scene: Mahabali, Ponjikkara & Table
+   True-to-Life Human & Dining Proportions
+========================================================= */
 
-/* Custom Keyframe Animations */
-@keyframes stampSlam {
-  0% { transform: scale(3) rotate(-30deg); opacity: 0; }
-  70% { transform: scale(0.9) rotate(-12deg); opacity: 1; }
-  100% { transform: scale(1) rotate(-15deg); opacity: 1; }
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Gayathri:wght@400;700&family=Kavivanar&family=Yatra+One&family=Outfit:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg-wall: #182c20;
+  --bg-wall-light: #2c4938;
+  --table-wood-dark: #331a0d;
+  --table-wood-mid: #542d16;
+  --table-wood-light: #7b4523;
+  --gold-primary: #f5b025;
+  --gold-glow: #ffd460;
+  --kasavu-gold: #cfa838;
+  --leaf-green-base: #2e7d32;
+  --leaf-green-dark: #1b5e20;
+  --leaf-green-light: #4caf50;
+  --leaf-green-bright: #81c784;
+  --accent-red: #d32f2f;
+  --bubble-bg: #fffdf2;
+  --text-dark: #212121;
 }
 
-.animate-stamp-slam {
-  animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }
-  50% { box-shadow: 0 0 50px rgba(245, 158, 11, 0.8); }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: radial-gradient(circle at 50% 25%, var(--bg-wall-light) 0%, var(--bg-wall) 60%, #0c1710 100%);
+  color: #fff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-.pulse-glow {
-  animation: pulseGlow 2.5s infinite ease-in-out;
+/* Atmospheric Lighting Effect (Hanging Incandescent Bulb) */
+.bulb-fixture {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: bulbSway 8s ease-in-out infinite alternate;
 }
 
-/* Tooltip & Pointer Custom Styling */
-#tableStageContainer:hover #leafTooltip {
-  display: flex !important;
+.bulb-wire {
+  width: 2px;
+  height: 44px;
+  background: #222;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
+.bulb-holder {
+  width: 12px;
+  height: 14px;
+  background: #444;
+  border-radius: 2px 2px 0 0;
+}
+
+.bulb-glass {
+  width: 24px;
+  height: 32px;
+  background: radial-gradient(circle at 40% 30%, #fff8db 20%, #ffc83b 70%, #f39c12 100%);
+  border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+  box-shadow: 0 0 35px 15px rgba(255, 204, 0, 0.7), 0 0 80px 40px rgba(255, 170, 0, 0.3);
+  position: relative;
+}
+
+.bulb-filament {
+  position: absolute;
+  top: 8px;
+  left: 8px;
   width: 8px;
+  height: 10px;
+  border: 1.5px solid #fff;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  opacity: 0.9;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.8);
+.ambient-light-cone {
+  position: absolute;
+  top: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 950px;
+  height: 950px;
+  background: radial-gradient(circle at 50% 18%, rgba(255, 235, 150, 0.2) 0%, rgba(255, 180, 50, 0.08) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes bulbSway {
+  0% { transform: translateX(-50%) rotate(-1.5deg); }
+  100% { transform: translateX(-50%) rotate(1.5deg); }
+}
+
+/* Header & Top Bar */
+.game-header {
+  position: relative;
+  z-index: 30;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-badge {
+  background: linear-gradient(135deg, #b71c1c, #880e4f);
+  border: 2px solid var(--gold-primary);
   border-radius: 8px;
+  padding: 4px 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(245, 158, 11, 0.5);
-  border-radius: 8px;
+.title-badge span {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--gold-glow);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(245, 158, 11, 0.9);
+.title-text h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 12px rgba(255, 215, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.title-text .malayalam-subtitle {
+  font-family: 'Gayathri', sans-serif;
+  font-size: 1rem;
+  color: var(--gold-glow);
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ctrl-btn {
+  background: rgba(25, 42, 32, 0.88);
+  border: 1.5px solid var(--gold-primary);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.ctrl-btn:hover {
+  background: var(--gold-primary);
+  color: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(245, 176, 37, 0.4);
+}
+
+.ctrl-btn.active {
+  background: var(--gold-primary);
+  color: #1a1a1a;
+}
+
+/* Instructional Prompt Bar */
+.prompt-bar-container {
+  position: relative;
+  z-index: 25;
+  display: flex;
+  justify-content: center;
+  padding: 6px 16px 2px;
+}
+
+.prompt-banner {
+  background: linear-gradient(90deg, rgba(20, 40, 25, 0.95), rgba(40, 70, 45, 0.95), rgba(20, 40, 25, 0.95));
+  border: 2px solid var(--gold-primary);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(255, 215, 0, 0.2);
+  border-radius: 30px;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: bannerPulse 3s ease-in-out infinite;
+}
+
+.prompt-icon {
+  font-size: 1.4rem;
+  animation: pointHand 1.5s infinite alternate;
+}
+
+.prompt-text {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #fffdf0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+.prompt-text .highlight {
+  color: var(--gold-glow);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prompt-subtext {
+  font-size: 0.82rem;
+  color: #d1e7dd;
+  margin-left: 6px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+@keyframes bannerPulse {
+  0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 0 rgba(245, 176, 37, 0); }
+  50% { box-shadow: 0 6px 24px rgba(0,0,0,0.6), 0 0 15px rgba(245, 176, 37, 0.4); }
+}
+
+@keyframes pointHand {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* ==========================================================================
+   MAIN INTEGRATED DINING STAGE (REAL-LIFE PROPORTIONS)
+========================================================================== */
+.game-stage-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px 85px;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.integrated-dining-hall {
+  position: relative;
+  width: 100%;
+  max-width: 1380px;
+  min-height: 560px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0px;
+  padding: 0 10px;
+}
+
+.table-flower-left, .table-flower-right {
+  position: absolute;
+  bottom: 8px;
+  font-size: 1.5rem;
+  opacity: 0.75;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+  pointer-events: none;
+  z-index: 16;
+}
+.table-flower-left { left: 30px; }
+.table-flower-right { right: 30px; }
+
+/* 1. SEATED KING MAHABALI (REALISTIC HUMAN PROPORTION) */
+.maveli-figure {
+  position: relative;
+  width: 270px;
+  height: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 15;
+  flex-shrink: 0;
+  margin-right: -45px; /* Natural overlap onto table edge */
+}
+
+.maveli-actor-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 16px 28px rgba(0,0,0,0.75));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.maveli-shocked .maveli-actor-img {
+  animation: maveliTremble 0.5s ease-in-out;
+}
+
+@keyframes maveliTremble {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-4px, -2px) rotate(-2deg); }
+  40% { transform: translate(4px, 2px) rotate(2deg); }
+  60% { transform: translate(-3px, 1px) rotate(-1deg); }
+  80% { transform: translate(3px, -1px) rotate(1deg); }
+}
+
+/* Elegant Pill Badge */
+.actor-status-pill {
+  position: absolute;
+  bottom: 8px;
+  background: rgba(12, 24, 18, 0.9);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 20px;
+  padding: 4px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  z-index: 20;
+  backdrop-filter: blur(4px);
+}
+
+.maveli-pill {
+  left: 20px;
+}
+
+.ponji-pill {
+  right: 20px;
+  border-color: #ffeb3b;
+}
+
+.actor-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--gold-glow);
+}
+
+.ponji-pill .actor-title {
+  color: #ffeb3b;
+}
+
+.actor-mood, .actor-subtitle {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* 2. RUSTIC WOODEN DINING TABLE (CENTRAL DINING SURFACE) */
+.wooden-table-surface {
+  position: relative;
+  flex: 1;
+  max-width: 760px;
+  height: 420px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.table-wood-grain {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(90deg, 
+      rgba(0,0,0,0.18) 0px, 
+      rgba(0,0,0,0.18) 2px, 
+      transparent 2px, 
+      transparent 75px),
+    linear-gradient(180deg, var(--table-wood-dark) 0%, var(--table-wood-mid) 42%, var(--table-wood-dark) 100%);
+  border-radius: 22px;
+  border: 7px solid #241209;
+  box-shadow: 
+    0 24px 65px rgba(0,0,0,0.85),
+    inset 0 0 35px rgba(0,0,0,0.7),
+    inset 0 4px 12px rgba(255, 180, 100, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* REALISTIC BANANA LEAF RESTING ON TABLETOP IN FRONT OF MAHABALI */
+.banana-leaf {
+  position: relative;
+  width: 660px;
+  height: 360px;
+  background: 
+    url('assets/dishes/clean_leaf_texture.jpg') center / cover no-repeat,
+    linear-gradient(135deg, #4caf50 0%, #2e7d32 45%, #1b5e20 90%);
+  background-blend-mode: overlay;
+  border-radius: 45px 140px 140px 45px / 75px 150px 150px 75px;
+  box-shadow: 
+    0 18px 45px rgba(0,0,0,0.75), 
+    inset 0 0 35px rgba(0,0,0,0.35),
+    inset 0 2px 6px rgba(255, 255, 255, 0.2);
+  cursor: crosshair;
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  transition: box-shadow 0.2s ease;
+}
+
+.banana-leaf:hover {
+  box-shadow: 
+    0 22px 55px rgba(0,0,0,0.8), 
+    0 0 25px rgba(129, 199, 132, 0.35),
+    inset 0 0 35px rgba(0,0,0,0.3);
+}
+
+.leaf-spine {
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  right: 2%;
+  height: 6px;
+  background: linear-gradient(180deg, #dcedc8 0%, #aed581 40%, #689f38 100%);
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.leaf-veins {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    repeating-linear-gradient(70deg, 
+      transparent, 
+      transparent 28px, 
+      rgba(255, 255, 255, 0.06) 29px, 
+      transparent 30px),
+    repeating-linear-gradient(-70deg, 
+      transparent, 
+      transparent 28px, 
+      rgba(0, 0, 0, 0.04) 29px, 
+      transparent 30px);
+}
+
+.leaf-dewdrop {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9), rgba(255,255,255,0.2) 60%, transparent 80%);
+  border-radius: 50%;
+  box-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+
+/* Pre-served Small Kerala Banana (Pazham) */
+.real-banana-garnish {
+  position: absolute;
+  bottom: 22%;
+  left: 4%;
+  width: 85px;
+  height: 105px;
+  z-index: 14;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  transform: rotate(-12deg);
+}
+
+.real-banana-garnish img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* STEAMING MATTA RICE PILE */
+.matta-rice-mound {
+  position: absolute;
+  bottom: 10%;
+  left: 46%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 180px;
+  z-index: 12;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,0.6));
+}
+
+.real-rice-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.08);
+}
+
+.steam-container {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 80px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.steam-wisp {
+  position: absolute;
+  bottom: 0;
+  width: 14px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  filter: blur(6px);
+  animation: riseSteam 3.5s infinite ease-out;
+}
+
+.steam-wisp:nth-child(1) { left: 25%; animation-delay: 0s; }
+.steam-wisp:nth-child(2) { left: 50%; animation-delay: 1.2s; }
+.steam-wisp:nth-child(3) { left: 75%; animation-delay: 2.1s; }
+
+@keyframes riseSteam {
+  0% {
+    transform: translateY(0) scaleX(1) scaleY(1);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.65;
+    transform: translateY(-20px) scaleX(1.4) scaleY(1.3);
+  }
+  100% {
+    transform: translateY(-65px) scaleX(2.5) scaleY(2);
+    opacity: 0;
+  }
+}
+
+/* 3. STANDING PONJIKKARA KESAVAN (TALLER STANDING PROPORTION) */
+.ponjikkara-figure {
+  position: relative;
+  width: 275px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 18;
+  flex-shrink: 0;
+  margin-left: -50px; /* Natural overlap onto table edge */
+}
+
+.ponji-actor-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,0.75));
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ponjikkara-serving-action .ponji-actor-img {
+  animation: ponjiServeWindup 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes ponjiServeWindup {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.08) rotate(-5deg) translateY(-10px); }
+  50% { transform: scale(1.05) rotate(6deg) translateY(4px); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Comic Speech Bubble Above Ponjikkara's Head */
+.comic-speech-bubble {
+  position: absolute;
+  top: -105px;
+  right: -10px;
+  width: 300px;
+  background: var(--bubble-bg);
+  border: 3px solid #111;
+  border-radius: 18px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6), 4px 4px 0px #111;
+  z-index: 35;
+  color: var(--text-dark);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.6) translateY(20px);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.comic-speech-bubble.show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.comic-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  right: 60px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 16px solid var(--bubble-bg);
+}
+
+.comic-speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  right: 58px;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 19px solid #111;
+}
+
+.bubble-malayalam {
+  font-family: 'Gayathri', sans-serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #b71c1c;
+  margin-bottom: 4px;
+}
+
+.bubble-manglish {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #212121;
+  font-style: italic;
+  margin-bottom: 2px;
+}
+
+.bubble-english {
+  font-size: 0.74rem;
+  color: #555;
+  border-top: 1px dashed #ccc;
+  padding-top: 3px;
+}
+
+/* CLICKED REJECT TARGET MARKER */
+.click-reject-marker {
+  position: absolute;
+  pointer-events: none;
+  z-index: 28;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: rejectAnim 1.6s forwards;
+}
+
+.reject-target-ring {
+  width: 44px;
+  height: 44px;
+  border: 3px dashed #ff1744;
+  border-radius: 50%;
+  background: rgba(255, 23, 68, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(255, 23, 68, 0.6);
+}
+
+.reject-stamp {
+  margin-top: -6px;
+  background: #d50000;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1.5px solid #fff;
+  transform: rotate(-12deg);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+@keyframes rejectAnim {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) rotate(-8deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(1) rotate(-5deg);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7) translateY(-25px);
+  }
+}
+
+/* SERVING LADLE (THAVI) FLIGHT ANIMATION */
+.ladle-flight-container {
+  position: absolute;
+  pointer-events: none;
+  z-index: 40;
+  display: none;
+}
+
+.ladle-flight-container.active {
+  display: block;
+}
+
+.steel-ladle {
+  width: 95px;
+  height: 95px;
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,0.65));
+  transform-origin: 20% 80%;
+}
+
+/* REALISTIC DISH ITEMS PLACED ON LEAF */
+.placed-dish {
+  position: absolute;
+  z-index: 15;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45));
+}
+
+.placed-dish img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.placed-dish:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  z-index: 25;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.6));
+}
+
+/* Landing Splat / Wobble Animation */
+.dish-splat-anim {
+  animation: dishDropSplat 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes dishDropSplat {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.1) translateY(-60px) rotate(-20deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.3, 0.78) translateY(5px) rotate(5deg);
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(0.92, 1.12) translateY(-3px) rotate(-2deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) translateY(0) rotate(0deg);
+  }
+}
+
+/* Comic Impact Text ("SPLAT!", "DUM!", "CRUNCH!") */
+.comic-impact-text {
+  position: absolute;
+  z-index: 30;
+  font-family: 'Yatra One', cursive, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #ffeb3b;
+  -webkit-text-stroke: 2px #d50000;
+  text-shadow: 3px 3px 0 #000, 0 0 15px rgba(255, 235, 59, 0.8);
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  animation: impactPop 0.85s ease-out forwards;
+}
+
+@keyframes impactPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(-25deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.4) rotate(10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.8) translateY(-40px) rotate(-10deg);
+  }
+}
+
+/* BOTTOM HUD & COUNTER */
+.game-hud-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 28;
+  background: linear-gradient(0deg, rgba(12, 22, 16, 0.98) 0%, rgba(20, 36, 26, 0.92) 80%, transparent 100%);
+  padding: 10px 24px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1.5px solid rgba(255, 215, 0, 0.25);
+  box-shadow: 0 -8px 25px rgba(0,0,0,0.6);
+}
+
+.hud-progress-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brass-counter-uruli {
+  background: radial-gradient(circle at 40% 35%, #ffd54f 0%, #f57f17 75%, #b26a00 100%);
+  border: 2.5px solid #fff8e1;
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.6), inset 0 2px 6px rgba(255,255,255,0.6);
+  flex-shrink: 0;
+}
+
+.counter-num {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: #3e2723;
+  line-height: 1;
+}
+
+.counter-total {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #4e342e;
+  line-height: 1;
+}
+
+.hud-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hud-dish-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-dish-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.hud-dish-malayalam {
+  font-family: 'Gayathri', sans-serif;
+  font-size: 0.95rem;
+  color: var(--gold-glow);
+}
+
+.hud-progress-track {
+  width: 240px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.hud-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ffd54f, #ff6f00);
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Rule comparison bar (Etiquette vs Ponjikkara) */
+.hud-rule-comparison {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 12px;
+  padding: 6px 16px;
+  max-width: 520px;
+}
+
+.rule-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.rule-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 800;
+}
+
+.rule-label.tradition { color: #81c784; }
+.rule-label.ponjikkara { color: #ffb74d; }
+
+.rule-value {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+/* Action Controls (Reset & Chenda) */
+.hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #2e7d32, #1b5e20);
+  border: 1.5px solid var(--gold-primary);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.action-btn:hover {
+  background: linear-gradient(135deg, #388e3c, #2e7d32);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.6);
+}
+
+.action-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--gold-primary);
+}
+
+/* GRAND COMPLETION MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: radial-gradient(circle at 50% 20%, #2e4a36 0%, #15271d 70%, #0c1811 100%);
+  border: 3px solid var(--gold-primary);
+  border-radius: 24px;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.9), 0 0 40px rgba(255, 215, 0, 0.4);
+  max-width: 650px;
+  width: 100%;
+  padding: 30px;
+  position: relative;
+  text-align: center;
+  transform: scale(0.7) translateY(40px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.modal-banner-top {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #d32f2f, #b71c1c);
+  border: 2px solid var(--gold-glow);
+  padding: 8px 24px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.modal-banner-top span {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  color: #fff;
+}
+
+.modal-hero-art {
+  width: 100%;
+  max-height: 240px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 15px 0;
+  border: 2px solid var(--gold-primary);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+.modal-hero-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.modal-dialogue-headline {
+  font-family: 'Gayathri', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--gold-glow);
+  line-height: 1.35;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+.modal-dialogue-manglish {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffeb3b;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.stat-item {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--gold-primary);
+}
+
+.stat-desc {
+  font-size: 0.75rem;
+  color: #ccc;
+  margin-top: 2px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 15px;
+}
+
+.modal-btn-primary {
+  background: linear-gradient(135deg, #f57f17, #ffb300);
+  border: 2px solid #fff;
+  color: #212121;
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 900;
+  padding: 12px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(245, 127, 23, 0.6);
+  transition: all 0.2s ease;
+}
+
+.modal-btn-primary:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 127, 23, 0.8);
+}
+
+/* Confetti Canvas for Grand Finale */
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* INSTRUCTIONS MODAL */
+.guide-modal-content {
+  max-width: 520px;
+  text-align: left;
+}
+
+.guide-step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.guide-step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  color: #111;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.guide-step-body h4 {
+  color: var(--gold-glow);
+  font-size: 0.95rem;
+  margin-bottom: 3px;
+}
+
+.guide-step-body p {
+  font-size: 0.82rem;
+  color: #d1e7dd;
+  line-height: 1.4;
+}
+
+/* RESPONSIVE DESIGN ADJUSTMENTS */
+@media (max-width: 1120px) {
+  .integrated-dining-hall {
+    flex-direction: column;
+    align-items: center;
+    min-height: auto;
+  }
+
+  .maveli-figure, .ponjikkara-figure {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .maveli-actor-img {
+    width: 150px;
+    height: 180px;
+  }
+
+  .ponji-actor-img {
+    width: 160px;
+    height: 220px;
+  }
+
+  .wooden-table-surface {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .banana-leaf {
+    width: 100%;
+    height: 320px;
+  }
+
+  .comic-speech-bubble {
+    top: -85px;
+    right: 10px;
+    width: 260px;
+  }
+
+  .game-hud-footer {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 15px;
+  }
+
+  .hud-rule-comparison {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .title-text h1 {
+    font-size: 1.1rem;
+  }
+  .title-text .malayalam-subtitle {
+    font-size: 0.8rem;
+  }
+  .prompt-text {
+    font-size: 0.88rem;
+  }
+  .banana-leaf {
+    height: 260px;
+  }
+  .matta-rice-mound {
+    width: 170px;
+    height: 120px;
+  }
+  .real-banana-garnish {
+    width: 60px;
+    height: 75px;
+  }
 }

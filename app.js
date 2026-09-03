@@ -1,191 +1,998 @@
 /**
- * Ponjikkara Cuisine - Main Game Logic & Chaos State Orchestrator
+ * PONJIKKARA'S SADHYA SERVING GAME
+ * A Comedic Kerala Onam Sadhya Experience
+ * Inspired by Ponjikkara Kesavan (Kalyanaraman) & King Mahabali
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const canvasElem = document.getElementById('leafCanvas');
-  const tableStageContainer = document.getElementById('tableStageContainer');
-  const leafTooltip = document.getElementById('leafTooltip');
-  const physics = new FoodPhysicsEngine(canvasElem);
+// ============================================================================
+// 1. WEB AUDIO SOUND SYNTHESIZER (100% Procedural & Self-Contained)
+// ============================================================================
+class AudioEngine {
+  constructor() {
+    this.ctx = null;
+    this.enabled = true;
+    this.voiceEnabled = true;
+    this.chendaInterval = null;
+    this.isChendaPlaying = false;
+    this.chendaStep = 0;
+  }
 
-  // Intro Screen Elements
-  const introScreen = document.getElementById('introScreen');
-  const btnStartGame = document.getElementById('btnStartGame');
+  init() {
+    if (!this.ctx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AudioContext();
+    }
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
 
-  // Bottom HUD Elements
-  const counterBadge = document.getElementById('counterBadge');
-  const itemNameEn = document.getElementById('itemNameEn');
-  const itemNameMl = document.getElementById('itemNameMl');
-  const properEtiquetteText = document.getElementById('properEtiquetteText');
-  const ponjikkaraLogicText = document.getElementById('ponjikkaraLogicText');
-  const btnServe = document.getElementById('btnServe');
-  const btnRestart = document.getElementById('btnRestart');
+  playWhoosh() {
+    if (!this.enabled) return;
+    this.init();
+    const ctx = this.ctx;
+    const now = ctx.currentTime;
 
-  // Ponjikkara Speech Bubble Elements
-  const ponjikkaraSpeechBubble = document.getElementById('ponjikkaraSpeechBubble');
-  const speechBubbleText = document.getElementById('speechBubbleText');
+    const bufferSize = ctx.sampleRate * 0.35;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
 
-  // Controls & Modal Buttons
-  const btnRestartFromModal = document.getElementById('btnRestartFromModal');
-  const btnCloseModal = document.getElementById('btnCloseModal');
-  const scorecardModal = document.getElementById('scorecardModal');
-  const scorecardPreview = document.getElementById('scorecardPreview');
-  const btnDownloadScorecard = document.getElementById('btnDownloadScorecard');
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
 
-  // Game State
-  let currentStep = 0;
-  let isAnimating = false;
-  let gameStarted = false;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(300, now);
+    filter.frequency.exponentialRampToValueAtTime(1600, now + 0.15);
+    filter.frequency.exponentialRampToValueAtTime(400, now + 0.35);
+    filter.Q.value = 3.5;
 
-  // Intro Start Game Button ("കഴിക്കാം!")
-  btnStartGame.addEventListener('click', () => {
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.45, now + 0.12);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+
+    noise.start(now);
+  }
+
+  playSplat() {
+    if (!this.enabled) return;
+    this.init();
+    const ctx = this.ctx;
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(210, now);
+    osc.frequency.exponentialRampToValueAtTime(40, now + 0.22);
+
+    const oscGain = ctx.createGain();
+    oscGain.gain.setValueAtTime(0.55, now);
+    oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+    osc.connect(oscGain);
+    oscGain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+
+    const bufferSize = ctx.sampleRate * 0.22;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(750, now);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.65, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noise.start(now);
+  }
+
+  playCrunch() {
+    if (!this.enabled) return;
+    this.init();
+    const ctx = this.ctx;
+    const now = ctx.currentTime;
+
+    for (let c = 0; c < 4; c++) {
+      const offset = c * 0.035;
+      const bufferSize = ctx.sampleRate * 0.045;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(2200 + Math.random() * 1600, now + offset);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.45, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + offset + 0.04);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      noise.start(now + offset);
+    }
+  }
+
+  playSizzle() {
+    if (!this.enabled) return;
+    this.init();
+    const ctx = this.ctx;
+    const now = ctx.currentTime;
+
+    const bufferSize = ctx.sampleRate * 0.5;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.5;
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(3400, now);
+    filter.Q.value = 4.5;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.45, now + 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    noise.start(now);
+  }
+
+  playRejectBuzzer() {
+    if (!this.enabled) return;
+    this.init();
+    const ctx = this.ctx;
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(150, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.28);
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  playVictoryFanfare() {
+    if (!this.enabled) return;
+    this.init();
+    const ctx = this.ctx;
+    const now = ctx.currentTime;
+
+    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.11);
+
+      gain.gain.setValueAtTime(0.01, now + idx * 0.11);
+      gain.gain.linearRampToValueAtTime(0.38, now + idx * 0.11 + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.11 + 0.45);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + idx * 0.11);
+      osc.stop(now + idx * 0.11 + 0.5);
+    });
+  }
+
+  toggleChenda() {
+    this.init();
+    if (this.isChendaPlaying) {
+      clearInterval(this.chendaInterval);
+      this.isChendaPlaying = false;
+      return false;
+    } else {
+      this.isChendaPlaying = true;
+      this.chendaStep = 0;
+      this.chendaInterval = setInterval(() => this.tickChenda(), 130);
+      return true;
+    }
+  }
+
+  tickChenda() {
+    if (!this.enabled || !this.isChendaPlaying) return;
+    const ctx = this.ctx;
+    const now = ctx.currentTime;
+    const step = this.chendaStep % 8;
+
+    if (step === 0 || step === 2 || step === 3 || step === 5 || step === 6) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      const baseFreq = step === 0 ? 115 : (step === 3 ? 145 : 130);
+      osc.frequency.setValueAtTime(baseFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(45, now + 0.09);
+
+      gain.gain.setValueAtTime(0.38, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.11);
+    }
+
+    if (step === 0 || step === 4) {
+      const bufferSize = ctx.sampleRate * 0.08;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(5800, now);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      noise.start(now);
+    }
+
+    this.chendaStep++;
+  }
+
+  speak(text) {
+    if (!this.enabled || !this.voiceEnabled || !('speechSynthesis' in window)) return;
     try {
-      sadhyaAudio.init();
-      sadhyaAudio.playChendaStroke(200, 0.3);
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.05;
+      utterance.pitch = 1.15;
+      const voices = window.speechSynthesis.getVoices();
+      const targetVoice = voices.find(v => v.lang.startsWith('en-IN')) || voices[0];
+      if (targetVoice) utterance.voice = targetVoice;
+      window.speechSynthesis.speak(utterance);
     } catch (e) {
-      console.warn("Audio init error:", e);
+      // Ignore fallback
     }
-    introScreen.style.opacity = '0';
-    setTimeout(() => {
-      introScreen.style.display = 'none';
-      introScreen.style.opacity = '1';
-    }, 400);
+  }
+}
 
-    gameStarted = true;
-    updateStepUI();
-  });
-
-  // Handle Serving Trigger (Clicking Leaf Canvas OR clicking "Serve!" button)
-  function handleServingClick(e) {
-    if (!gameStarted || isAnimating || currentStep >= SADHYA_ITEMS.length) return;
-
-    sadhyaAudio.init();
-
-    let userPos = { x: canvasElem.width * 0.5, y: canvasElem.height * 0.5 };
-    if (e && e.clientX) {
-      const rect = canvasElem.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-      const scaleX = canvasElem.width / rect.width;
-      const scaleY = canvasElem.height / rect.height;
-      userPos = { x: clickX * scaleX, y: clickY * scaleY };
+// ============================================================================
+// 2. THE 16 AUTHENTIC REALISTIC ONAM SADHYA DISHES
+// ============================================================================
+const SADHYA_DISHES = [
+  {
+    id: 1,
+    name: "Parippu Curry & Ghee",
+    malayalam: "പരിപ്പും നെയ്യും",
+    traditionRule: "Golden dal served directly over center rice mound, followed by hot ghee",
+    ponjiRule: '"Who puts parippu in the center? Top-right drop! Catch it if you can!"',
+    soundType: "sizzle",
+    impactText: "SIZZLE-POUR!",
+    imgSrc: "assets/dishes/real_parippu.png",
+    targetPos: { top: 22, left: 74, width: 90, height: 90 },
+    dialogue: {
+      mal: "പരിപ്പ് ചോറിന്റെ മേൽ അല്ല, ആ മൂലയ്ക്കാണ് കിടക്കേണ്ടത്! കഴിക്കെടാ!",
+      mang: "Parippu chorinte mel alla, aa moolaykkaanu kidakkendath! Kazhikkeda!",
+      eng: "Dal doesn't go on rice! It stays in that corner! Eat it!"
     }
+  },
+  {
+    id: 2,
+    name: "Sambar",
+    malayalam: "സാമ്പാർ",
+    traditionRule: "Poured lavishly on rice after parippu",
+    ponjiRule: '"Sambar is an emotion! It flows wherever Kesavan throws it!"',
+    soundType: "splat",
+    impactText: "SPLAAAT!",
+    imgSrc: "assets/dishes/real_sambar.png",
+    targetPos: { top: 70, left: 24, width: 110, height: 110 },
+    dialogue: {
+      mal: "സാമ്പാർ ഒഴിക്കാൻ എന്നെ ആരും പഠിപ്പിക്കണ്ട! ദാ വീണു!",
+      mang: "Sambar ozhikkaan enne aarum padippikkanda! Dhaa veenu!",
+      eng: "Nobody needs to teach me how to pour Sambar! There it goes!"
+    }
+  },
+  {
+    id: 3,
+    name: "Avial",
+    malayalam: "അവിയൽ",
+    traditionRule: "Placed carefully on the upper half of leaf near center",
+    ponjiRule: '"Smack on the far left edge! Avial goes where Kesavan dictates!"',
+    soundType: "splat",
+    impactText: "DUM-THUD!",
+    imgSrc: "assets/dishes/real_avial.png",
+    targetPos: { top: 32, left: 14, width: 105, height: 105 },
+    dialogue: {
+      mal: "ദാ കിടക്കുന്നു അവിയൽ... വേണേൽ തിന്ന്! അത്ര തന്നെ!",
+      mang: "Dha kidakkunnu Avial... venel thinnu! Athra thanne!",
+      eng: "There lies your Avial... eat it if you want! That is that!"
+    }
+  },
+  {
+    id: 4,
+    name: "Thoran",
+    malayalam: "തോരൻ (ക്യാബേജ് & പയർ)",
+    traditionRule: "Upper right area of banana leaf",
+    ponjiRule: '"Wind-blown thoran right onto the top leaf spine!"',
+    soundType: "crunch",
+    impactText: "SWOOSH-DROP!",
+    imgSrc: "assets/dishes/real_thoran.png",
+    targetPos: { top: 18, left: 34, width: 100, height: 85 },
+    dialogue: {
+      mal: "ഞാൻ ആന കെട്ടിയ തറിയിലാടാ നീ തോരൻ തപ്പുന്നത്!",
+      mang: "Njan aana kettiya thariyilaada nee thoran thappunnath!",
+      eng: "You are looking for Thoran where I used to tie elephants!"
+    }
+  },
+  {
+    id: 5,
+    name: "Olan",
+    malayalam: "ഓലൻ",
+    traditionRule: "Placed gently next to avial on the top leaf section",
+    ponjiRule: '"Directly brushing against the hot rice! White river meeting mountain!"',
+    soundType: "splat",
+    impactText: "SILKY-SPLAT!",
+    imgSrc: "assets/dishes/real_olan.png",
+    targetPos: { top: 46, left: 30, width: 95, height: 85 },
+    dialogue: {
+      mal: "ഓലൻ ഇത്ര പാവം ആണെന്ന് കരുതിയോ? ഇതാണ് പോഞ്ഞിക്കര ഓലൻ!",
+      mang: "Olan ithra paavam aanennu karuthiyo? Ithaanu Ponjikkara Olan!",
+      eng: "Did you think Olan is innocent? Behold Ponjikkara's Olan!"
+    }
+  },
+  {
+    id: 6,
+    name: "Kalan",
+    malayalam: "കാളൻ",
+    traditionRule: "Top center-right row of curries",
+    ponjiRule: '"Top-left edge right where pickles should be sitting!"',
+    soundType: "splat",
+    impactText: "THICK-SPLAT!",
+    imgSrc: "assets/dishes/real_kalan.png",
+    targetPos: { top: 16, left: 16, width: 90, height: 80 },
+    dialogue: {
+      mal: "കാളൻ കണ്ടിട്ട് കണ്ണു തള്ളിയോ മാവേലീ? ഇതാണ് ഒറിജിനൽ കാളൻ!",
+      mang: "Kalan kandittu kannu thalliyo Maveli? Ithaanu original Kalan!",
+      eng: "Eyes bulging looking at Kalan, Maveli? This is the real deal!"
+    }
+  },
+  {
+    id: 7,
+    name: "Erissery",
+    malayalam: "എരിശ്ശേരി (മത്തങ്ങ & പയർ)",
+    traditionRule: "Upper right edge alongside Kalan and Thoran",
+    ponjiRule: '"Directly below the rice! Erissery foundation brick!"',
+    soundType: "splat",
+    impactText: "ROAST-SLAM!",
+    imgSrc: "assets/dishes/real_erissery.png",
+    targetPos: { top: 76, left: 66, width: 90, height: 90 },
+    dialogue: {
+      mal: "പോഞ്ഞിക്കര കേശവന്റെ കൈ കൊണ്ട് ഒരു തവി വീണാൽ പിന്നെ അവിടെ വേറെ ആരും വിളമ്പണ്ട!",
+      mang: "Ponjikkara Kesavante kai kondu oru thavi veenal pinne avide vere aarum vilambanda!",
+      eng: "Once Kesavan serves a ladle, nobody else dares to touch that spot!"
+    }
+  },
+  {
+    id: 8,
+    name: "Pachadi (Pineapple)",
+    malayalam: "പൈനാപ്പിൾ പച്ചടി",
+    traditionRule: "Top center row of the leaf",
+    ponjiRule: '"Precise aerial parachute landing on the upper boundary!"',
+    soundType: "splat",
+    impactText: "SWEET-DROP!",
+    imgSrc: "assets/dishes/real_pachadi.png",
+    targetPos: { top: 15, left: 52, width: 95, height: 95 },
+    dialogue: {
+      mal: "ഇതൊക്കെ എന്റെ ഓരോ... സ്റ്റൈൽ ആണ് മോനേ!",
+      mang: "Ithokke ente oro... style aanu mone!",
+      eng: "This is all part of my signature style, dear boy!"
+    }
+  },
+  {
+    id: 9,
+    name: "Khichadi (Cucumber)",
+    malayalam: "വെള്ളരിക്ക കിച്ചടി",
+    traditionRule: "Right alongside Pachadi on the top row",
+    ponjiRule: '"Sling-shotted sideways towards the far left leaf tip!"',
+    soundType: "splat",
+    impactText: "COOL-SPLAT!",
+    imgSrc: "assets/dishes/real_khichadi.png",
+    targetPos: { top: 26, left: 8, width: 95, height: 95 },
+    dialogue: {
+      mal: "കിച്ചടി ഇവിടെ ഇരുന്നാൽ എന്താ കുഴപ്പം? ആർക്കെങ്കിലും പരാതി ഉണ്ടോ?",
+      mang: "Khichadi ivide irunnal entha kuzhappam? Aarkkengilum paraathi undo?",
+      eng: "What is the problem if Khichadi sits here? Anyone got a complaint?!"
+    }
+  },
+  {
+    id: 10,
+    name: "Inji Puli (Puli Inji)",
+    malayalam: "ഇഞ്ചിപ്പുളി (പുളിയിഞ്ചി)",
+    traditionRule: "Far top-left corner of the leaf (The 101 Curry Equal)",
+    ponjiRule: '"Smack-dab in the center of the leaf! The King of Curries reigns everywhere!"',
+    soundType: "splat",
+    impactText: "TANGY-DROP!",
+    imgSrc: "assets/dishes/real_injipuli.png",
+    targetPos: { top: 45, left: 62, width: 75, height: 70 },
+    dialogue: {
+      mal: "101 കറിക്ക് തുല്യമാണ് പുളിയിഞ്ചി! അത് നടുക്ക് തന്നെ ഇരിക്കും!",
+      mang: "101 karikku thulyamaanu Puliyinji! Athu nadukku thanne irikkum!",
+      eng: "Puli Inji equals 101 curries! It will sit right in the center!"
+    }
+  },
+  {
+    id: 11,
+    name: "Mango Pickle",
+    malayalam: "കടുമാങ്ങ അച്ചാർ",
+    traditionRule: "Top-left edge beside Inji Puli",
+    ponjiRule: '"Flinged all the way to the right side next to Payasam territory!"',
+    soundType: "splat",
+    impactText: "SPICY-SPLAT!",
+    imgSrc: "assets/dishes/real_mangopickle.png",
+    targetPos: { top: 32, left: 88, width: 80, height: 75 },
+    dialogue: {
+      mal: "എരിവുള്ള കടുമാങ്ങ ഒടുക്കത്തെ ടേബിളിൽ ഇരുന്നാലേ സദ്യക്ക് ഒരു ഗുമ്മുണ്ടാവൂ!",
+      mang: "Erivulla kadumaanga odukkatha table-il irunnale sadhyakku oru gummundaavoo!",
+      eng: "Spicy mango pickle must sit on the far side for the Sadhya to have punch!"
+    }
+  },
+  {
+    id: 12,
+    name: "Naranga Pickle",
+    malayalam: "നാരങ്ങ അച്ചാർ",
+    traditionRule: "Top-left edge next to Mango Pickle",
+    ponjiRule: '"Dropped right by Maveli\'s hand! Enjoy the wild citron zest!"',
+    soundType: "splat",
+    impactText: "ZEST-DROP!",
+    imgSrc: "assets/dishes/real_narangapickle.png",
+    targetPos: { top: 60, left: 10, width: 75, height: 70 },
+    dialogue: {
+      mal: "അങ്ങോട്ട് മാറി ഇരിയെടോ, തവി വന്ന് മൂക്കിൽ കൊള്ളും!",
+      mang: "Angottu maari iriyedo, thavi vannu mookkil kollum!",
+      eng: "Move aside, man! The ladle will strike right on your nose!"
+    }
+  },
+  {
+    id: 13,
+    name: "Banana Chips (Upperi)",
+    malayalam: "ഉപ്പേരി (കായ വറുത്തത്)",
+    traditionRule: "Bottom-left corner of the leaf",
+    ponjiRule: '"Dropped from 3,000 feet in the air! Scattered across the top edge!"',
+    soundType: "crunch",
+    impactText: "CRISPY-CRUNCH!",
+    imgSrc: "assets/dishes/real_upperi.png",
+    targetPos: { top: 18, left: 65, width: 85, height: 85 },
+    dialogue: {
+      mal: "ഉപ്പേരി ഇട്ടത് കണ്ടില്ലേ? എയറിൽ നിന്നാണ് ഡ്രോപ്പ് ചെയ്തത്!",
+      mang: "Upperi ittathu kandille? Air-il ninnanu drop cheythathu!",
+      eng: "Did you see that Upperi drop? Dropped straight from mid-air!"
+    }
+  },
+  {
+    id: 14,
+    name: "Sharkara Varatti",
+    malayalam: "ശർക്കര വരട്ടി",
+    traditionRule: "Beside banana chips on the bottom-left leaf corner",
+    ponjiRule: '"Parked right next to the hot spicy sambar! Sweet and sour clash!"',
+    soundType: "crunch",
+    impactText: "JAGGERY-CRUNCH!",
+    imgSrc: "assets/dishes/real_sharkara.png",
+    targetPos: { top: 76, left: 35, width: 80, height: 80 },
+    dialogue: {
+      mal: "ശർക്കര വരട്ടി തിന്ന് വായ മധുരിപ്പിക്ക്... എന്നിട്ട് വാദിക്കാം!",
+      mang: "Sharkara varatti thinnu vaaya madhurippikku... ennittu vaadhikkaam!",
+      eng: "Sweeten your mouth with Sharkara Varatti... then we can argue!"
+    }
+  },
+  {
+    id: 15,
+    name: "Pappadam",
+    malayalam: "പപ്പടം (രണ്ടാമത് ചോദിക്കരുത്!)",
+    traditionRule: "Crushed over rice or placed beside banana chips",
+    ponjiRule: '"SLAMMED right on top of rice! And DO NOT dare ask for a second one!"',
+    soundType: "crunch",
+    impactText: "PAP-PA-DAM-CRACK!",
+    imgSrc: "assets/dishes/real_pappadam.png",
+    targetPos: { top: 55, left: 45, width: 145, height: 135 },
+    dialogue: {
+      mal: "എടോ... തന്നോടല്ലേ രണ്ടാമത് പപ്പടം ചോദിക്കല്ലേ എന്ന് പറഞ്ഞത്?!",
+      mang: "Edo.. thannodalle randaamathu pappadam chodikkallennu paranjathu?!",
+      eng: "Didn't I specifically tell you NOT to ask for a second pappadam?!"
+    }
+  },
+  {
+    id: 16,
+    name: "Palada Payasam",
+    malayalam: "പാലട പായസം",
+    traditionRule: "Served on the right corner of leaf in clean fold or tumbler after meal",
+    ponjiRule: '"DROWN THE ENTIRE RICE MOUND! That\'s how Kesavan delivers sweet perfection!"',
+    soundType: "splat",
+    impactText: "PAYASAM-AVALANCHE!",
+    imgSrc: "assets/dishes/real_payasam.png",
+    targetPos: { top: 62, left: 48, width: 175, height: 120 },
+    dialogue: {
+      mal: "പായസം ചോറിന്റെ മേലെ ഒഴിച്ചാലേ അതിന്റെ ഒറിജിനൽ കിക്ക് കിട്ടൂ! സദ്യ ഫിനിഷ്!",
+      mang: "Payasam chorinte mele ozhichale athinte original kick kittoo! Sadhya finish!",
+      eng: "Only when Payasam smothers the rice do you get the true kick! Sadhya is complete!"
+    }
+  }
+];
 
-    const item = SADHYA_ITEMS[currentStep];
-    isAnimating = true;
+// ============================================================================
+// 3. MAVELI REACTION STATES
+// ============================================================================
+const MAVELI_REACTIONS = [
+  { count: 0, text: "Mood: Hungry & Eager 😋" },
+  { count: 2, text: "Mood: Confused by the placement 🤨" },
+  { count: 5, text: "Mood: Watching Ponjikkara nervously 😟" },
+  { count: 9, text: "Mood: Silently protesting the chaos 😨" },
+  { count: 12, text: "Mood: Wondering who invited Kesavan 😱" },
+  { count: 14, text: "Mood: Desperately wanting a 2nd pappadam 🥺" },
+  { count: 16, text: "Mood: Complete surrender to Kesavan! 🙌" }
+];
 
-    // Speak Sarcastic Malayalam Quote Out Loud via Web Speech API
-    sadhyaAudio.speakText(item.malayalamQuote);
+// ============================================================================
+// 4. GAME STATE & CONTROLLER
+// ============================================================================
+class PonjikkaraSadhyaGame {
+  constructor() {
+    this.audio = new AudioEngine();
+    this.currentDishIndex = 0;
+    this.isServing = false;
 
-    // Update Ponjikkara Live Speech Bubble
-    showSpeechBubble(item.malayalamQuote);
+    // DOM Elements
+    this.tableArena = document.getElementById('dining-table-arena');
+    this.bananaLeaf = document.getElementById('banana-leaf');
+    this.dishesContainer = document.getElementById('dishes-container');
+    this.clickMarkersContainer = document.getElementById('click-markers-container');
+    this.ladleContainer = document.getElementById('ladle-anim-container');
+    this.speechBubble = document.getElementById('speech-bubble');
+    this.bubbleMal = document.getElementById('bubble-malayalam');
+    this.bubbleMang = document.getElementById('bubble-manglish');
+    this.bubbleEng = document.getElementById('bubble-english');
+    this.ponjiCard = document.getElementById('ponjikkara-card');
+    this.maveliCard = document.getElementById('maveli-card');
+    this.maveliMood = document.getElementById('maveli-mood');
 
-    // Trigger Malicious Redirect Placement Animation with Ponjikkara Keshavan Hand Serving Motion!
-    physics.triggerPlacement(userPos, item.wrongTarget, item, () => {
-      isAnimating = false;
+    // HUD Elements
+    this.counterNum = document.getElementById('counter-num');
+    this.progressFill = document.getElementById('hud-progress-fill');
+    this.currentDishName = document.getElementById('current-dish-name');
+    this.currentDishMal = document.getElementById('current-dish-malayalam');
+    this.traditionRule = document.getElementById('tradition-rule');
+    this.ponjikkaraRule = document.getElementById('ponjikkara-rule');
 
-      // Advance Step
-      currentStep++;
+    // Buttons & Modals
+    this.audioToggleBtn = document.getElementById('audio-toggle-btn');
+    this.chendaToggleBtn = document.getElementById('chenda-toggle-btn');
+    this.guideBtn = document.getElementById('guide-btn');
+    this.resetBtn = document.getElementById('reset-btn');
+    this.serveNextBtn = document.getElementById('serve-next-btn');
+    this.completionModal = document.getElementById('completion-modal');
+    this.modalReplayBtn = document.getElementById('modal-replay-btn');
+    this.guideModal = document.getElementById('guide-modal');
+    this.guideCloseBtn = document.getElementById('guide-close-btn');
 
-      if (currentStep < SADHYA_ITEMS.length) {
-        updateStepUI();
+    this.confettiCanvas = document.getElementById('confetti-canvas');
+    this.confettiCtx = this.confettiCanvas.getContext('2d');
+    this.confettiParticles = [];
+    this.confettiAnimId = null;
+
+    this.init();
+  }
+
+  init() {
+    this.bindEvents();
+    this.updateHUD();
+    this.resizeCanvas();
+    window.addEventListener('resize', () => this.resizeCanvas());
+  }
+
+  bindEvents() {
+    // 1. User clicks anywhere on the dining table or banana leaf in front of Mahabali
+    this.tableArena.addEventListener('click', (e) => {
+      if (e.target.closest('.ctrl-btn, .action-btn, .modal-content, .placed-dish')) return;
+      this.handleUserClick(e);
+    });
+
+    // 2. Click serve button in footer
+    this.serveNextBtn.addEventListener('click', () => {
+      if (this.currentDishIndex < SADHYA_DISHES.length) {
+        const leafRect = this.bananaLeaf.getBoundingClientRect();
+        this.triggerPonjikkaraServe(leafRect.left + leafRect.width * 0.5, leafRect.top + leafRect.height * 0.5);
       } else {
-        // Grand Finale! 16 Items Complete -> Show Disaster Scorecard
-        triggerDisasterScorecard();
+        this.openCompletionModal();
+      }
+    });
+
+    // 3. Reset Button
+    this.resetBtn.addEventListener('click', () => this.resetGame());
+    this.modalReplayBtn.addEventListener('click', () => {
+      this.closeCompletionModal();
+      this.resetGame();
+    });
+
+    // 4. Audio Toggles
+    this.audioToggleBtn.addEventListener('click', () => {
+      this.audio.enabled = !this.audio.enabled;
+      this.audioToggleBtn.classList.toggle('active', this.audio.enabled);
+      this.audioToggleBtn.querySelector('.btn-text').textContent = 
+        this.audio.enabled ? 'Sound: ON' : 'Sound: OFF';
+      this.audioToggleBtn.querySelector('.btn-icon').textContent = 
+        this.audio.enabled ? '🔊' : '🔇';
+    });
+
+    this.chendaToggleBtn.addEventListener('click', () => {
+      const playing = this.audio.toggleChenda();
+      this.chendaToggleBtn.classList.toggle('active', playing);
+    });
+
+    // 5. Guide Modal
+    this.guideBtn.addEventListener('click', () => {
+      this.guideModal.classList.add('active');
+    });
+    this.guideCloseBtn.addEventListener('click', () => {
+      this.guideModal.classList.remove('active');
+    });
+    this.guideModal.addEventListener('click', (e) => {
+      if (e.target === this.guideModal) {
+        this.guideModal.classList.remove('active');
       }
     });
   }
 
-  tableStageContainer.addEventListener('click', handleServingClick);
-  canvasElem.addEventListener('click', (e) => {
-    e.stopPropagation();
-    handleServingClick(e);
-  });
-  if (btnServe) btnServe.addEventListener('click', handleServingClick);
+  handleUserClick(event) {
+    if (this.isServing) return;
+    if (this.currentDishIndex >= SADHYA_DISHES.length) {
+      this.openCompletionModal();
+      return;
+    }
 
-  // Display Ponjikkara Speech Bubble
-  function showSpeechBubble(quoteText) {
-    speechBubbleText.textContent = `💬 "${quoteText}"`;
-    ponjikkaraSpeechBubble.classList.add('scale-105', 'border-amber-400');
+    this.triggerPonjikkaraServe(event.clientX, event.clientY);
+  }
+
+  triggerPonjikkaraServe(clientX, clientY) {
+    if (this.isServing) return;
+    this.isServing = true;
+
+    const dish = SADHYA_DISHES[this.currentDishIndex];
+
+    // Step 1: Render REJECTED Marker on User's Click Location
+    this.renderRejectMarker(clientX, clientY);
+    this.audio.playRejectBuzzer();
+
+    // Step 2: Ponjikkara reacts! Speech bubble + Voice + Windup animation
+    this.displayDialogue(dish.dialogue);
+    this.audio.speak(dish.dialogue.mang);
+
+    this.ponjiCard.classList.remove('ponjikkara-serving-action');
+    void this.ponjiCard.offsetWidth; // trigger reflow
+    this.ponjiCard.classList.add('ponjikkara-serving-action');
+
+    // Step 3: Ladle Flight Animation across table onto Mahabali's leaf
+    this.audio.playWhoosh();
+    this.animateLadleFlight(dish.targetPos, () => {
+      // Step 4: Realistic dish lands on Mahabali's leaf
+      this.placeDishOnLeaf(dish);
+
+      // Step 5: Sound effect according to dish type
+      if (dish.soundType === 'splat') {
+        this.audio.playSplat();
+      } else if (dish.soundType === 'crunch') {
+        this.audio.playCrunch();
+      } else if (dish.soundType === 'sizzle') {
+        this.audio.playSizzle();
+      } else {
+        this.audio.playSplat();
+      }
+
+      // Step 6: Comic Impact Text ("SPLAT!", "DUM!", "CRUNCH!")
+      this.renderComicImpactText(dish.targetPos, dish.impactText);
+
+      // Step 7: Update Maveli Reaction right behind the leaf
+      this.updateMaveliReaction();
+
+      // Step 8: Increment counter & update HUD
+      this.currentDishIndex++;
+      this.updateHUD();
+
+      // Step 9: Check completion
+      if (this.currentDishIndex >= SADHYA_DISHES.length) {
+        setTimeout(() => {
+          this.audio.playVictoryFanfare();
+          this.startConfetti();
+          this.openCompletionModal();
+        }, 850);
+      }
+
+      this.isServing = false;
+    });
+  }
+
+  renderRejectMarker(clientX, clientY) {
+    const leafRect = this.bananaLeaf.getBoundingClientRect();
+    const x = clientX - leafRect.left;
+    const y = clientY - leafRect.top;
+
+    const marker = document.createElement('div');
+    marker.className = 'click-reject-marker';
+    marker.style.left = `${x}px`;
+    marker.style.top = `${y}px`;
+
+    marker.innerHTML = `
+      <div class="reject-target-ring"></div>
+      <div class="reject-stamp">❌ REJECTED!</div>
+    `;
+
+    this.clickMarkersContainer.appendChild(marker);
+
     setTimeout(() => {
-      ponjikkaraSpeechBubble.classList.remove('scale-105');
+      if (marker.parentNode) {
+        marker.parentNode.removeChild(marker);
+      }
+    }, 1600);
+  }
+
+  displayDialogue(dialogue) {
+    this.bubbleMal.textContent = `"${dialogue.mal}"`;
+    this.bubbleMang.textContent = `"${dialogue.mang}"`;
+    this.bubbleEng.textContent = `"${dialogue.eng}"`;
+
+    this.speechBubble.classList.add('show');
+
+    if (this.speechTimeout) clearTimeout(this.speechTimeout);
+    this.speechTimeout = setTimeout(() => {
+      this.speechBubble.classList.remove('show');
+    }, 4500);
+  }
+
+  animateLadleFlight(targetPos, onComplete) {
+    const leafRect = this.bananaLeaf.getBoundingClientRect();
+    const tableRect = this.tableArena.getBoundingClientRect();
+    const ponjiRect = this.ponjiCard.getBoundingClientRect();
+
+    // Start position: Originates right from Ponjikkara's avatar hands
+    const startX = (ponjiRect.left - tableRect.left) + ponjiRect.width * 0.25;
+    const startY = (ponjiRect.top - tableRect.top) + ponjiRect.height * 0.35;
+
+    // Target landing coordinate inside table directly on Mahabali's leaf
+    const destX = (leafRect.left - tableRect.left) + (leafRect.width * (targetPos.left / 100));
+    const destY = (leafRect.top - tableRect.top) + (leafRect.height * (targetPos.top / 100));
+
+    const ladle = this.ladleContainer;
+    ladle.classList.add('active');
+    ladle.style.left = `${startX}px`;
+    ladle.style.top = `${startY}px`;
+    ladle.style.transform = 'scale(0.8) rotate(-45deg)';
+    ladle.style.transition = 'none';
+
+    // Force reflow
+    void ladle.offsetWidth;
+
+    // High speed curved physics swoop across the dining table
+    ladle.style.transition = 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    ladle.style.left = `${destX - 25}px`;
+    ladle.style.top = `${destY - 60}px`;
+    ladle.style.transform = 'scale(1.15) rotate(22deg)';
+
+    setTimeout(() => {
+      // Retract ladle back to Kesavan
+      ladle.style.transition = 'all 0.35s ease-out';
+      ladle.style.left = `${startX}px`;
+      ladle.style.top = `${startY}px`;
+      ladle.style.transform = 'scale(0.7) rotate(-35deg)';
+
+      setTimeout(() => {
+        ladle.classList.remove('active');
+      }, 350);
+
+      if (onComplete) onComplete();
     }, 400);
   }
 
-  // Hover Crosshair Tooltip Follower over Banana Leaf
-  tableStageContainer.addEventListener('mousemove', (e) => {
-    if (!gameStarted) return;
-    const rect = tableStageContainer.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  placeDishOnLeaf(dish) {
+    const dishElem = document.createElement('div');
+    dishElem.className = 'placed-dish dish-splat-anim';
+    dishElem.id = `dish-item-${dish.id}`;
+    dishElem.title = `${dish.name} (${dish.malayalam})`;
+    dishElem.style.top = `${dish.targetPos.top}%`;
+    dishElem.style.left = `${dish.targetPos.left}%`;
+    dishElem.style.width = `${dish.targetPos.width}px`;
+    dishElem.style.height = `${dish.targetPos.height}px`;
 
-    leafTooltip.style.left = `${x + 12}px`;
-    leafTooltip.style.top = `${y - 12}px`;
-    leafTooltip.classList.remove('hidden');
-    leafTooltip.classList.add('flex');
+    dishElem.innerHTML = `<img src="${dish.imgSrc}" alt="${dish.name}" />`;
 
-    const scaleX = canvasElem.width / rect.width;
-    const scaleY = canvasElem.height / rect.height;
-
-    physics.setHoverPos({
-      x: x * scaleX,
-      y: y * scaleY
+    // Clicking an already placed dish repeats Ponjikkara's quote!
+    dishElem.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.displayDialogue(dish.dialogue);
+      this.audio.speak(dish.dialogue.mang);
+      this.audio.playSplat();
     });
-  });
 
-  tableStageContainer.addEventListener('mouseleave', () => {
-    leafTooltip.classList.add('hidden');
-    leafTooltip.classList.remove('flex');
-    physics.setHoverPos(null);
-  });
-
-  // Update Progress & Bottom HUD Info
-  function updateStepUI() {
-    const item = SADHYA_ITEMS[currentStep];
-
-    counterBadge.textContent = `${currentStep} / 16`;
-    itemNameEn.textContent = item.nameEn;
-    itemNameMl.textContent = item.nameMl;
-
-    properEtiquetteText.textContent = item.properEtiquette || "Golden dal served directly over center rice mound, followed by hot ghee";
-    ponjikkaraLogicText.textContent = item.ponjikkaraLogic || item.englishQuote;
+    this.dishesContainer.appendChild(dishElem);
   }
 
-  // Grand Finale Disaster Scorecard Trigger
-  async function triggerDisasterScorecard() {
-    sadhyaAudio.playChendaVictoryRoll();
-    sadhyaAudio.playFailSound();
+  renderComicImpactText(targetPos, text) {
+    const impact = document.createElement('div');
+    impact.className = 'comic-impact-text';
+    impact.textContent = text;
+    impact.style.top = `${Math.max(10, targetPos.top - 8)}%`;
+    impact.style.left = `${targetPos.left}%`;
 
-    counterBadge.textContent = `16 / 16`;
-    showSpeechBubble("സദ്യ റെഡി! പൊഞ്ചിക്കര സ്റ്റൈലിൽ! തമ്പുരാനേ കഴിക്ക്!");
+    this.dishesContainer.appendChild(impact);
 
-    const scorecardDataUrl = await ScorecardGenerator.generateReportCard(canvasElem, physics.placedItems);
-
-    scorecardPreview.innerHTML = `<img src="${scorecardDataUrl}" alt="Disaster Scorecard" class="max-w-full">`;
-    btnDownloadScorecard.href = scorecardDataUrl;
-    scorecardModal.classList.remove('hidden');
-    scorecardModal.style.display = 'flex';
+    setTimeout(() => {
+      if (impact.parentNode) {
+        impact.parentNode.removeChild(impact);
+      }
+    }, 850);
   }
 
-  // Restart Game Function
-  function restartGame() {
-    currentStep = 0;
-    isAnimating = false;
-    physics.reset();
+  updateMaveliReaction() {
+    let reaction = MAVELI_REACTIONS[0];
+    for (let r of MAVELI_REACTIONS) {
+      if (this.currentDishIndex + 1 >= r.count) {
+        reaction = r;
+      }
+    }
 
-    scorecardModal.classList.add('hidden');
-    scorecardModal.style.display = 'none';
+    this.maveliMood.textContent = reaction.text;
 
-    speechBubbleText.textContent = `💬 "ചേട്ടാ ലേശം കറി കോരി ഒഴിക്കട്ടെ?" 🍲`;
-
-    updateStepUI();
+    this.maveliCard.classList.remove('maveli-shocked');
+    void this.maveliCard.offsetWidth; // trigger reflow
+    this.maveliCard.classList.add('maveli-shocked');
   }
 
-  // Control Event Listeners
-  if (btnRestart) btnRestart.addEventListener('click', restartGame);
-  if (btnRestartFromModal) btnRestartFromModal.addEventListener('click', restartGame);
-  if (btnCloseModal) btnCloseModal.addEventListener('click', () => {
-    scorecardModal.classList.add('hidden');
-    scorecardModal.style.display = 'none';
-  });
+  updateHUD() {
+    const count = this.currentDishIndex;
+    const total = SADHYA_DISHES.length;
+
+    this.counterNum.textContent = count;
+    this.progressFill.style.width = `${(count / total) * 100}%`;
+
+    if (count < total) {
+      const nextDish = SADHYA_DISHES[count];
+      this.currentDishName.textContent = nextDish.name;
+      this.currentDishMal.textContent = nextDish.malayalam;
+      this.traditionRule.textContent = nextDish.traditionRule;
+      this.ponjikkaraRule.textContent = nextDish.ponjiRule;
+    } else {
+      this.currentDishName.textContent = "Sadhya Complete!";
+      this.currentDishMal.textContent = "സദ്യ പൂർത്തിയായി!";
+      this.traditionRule.textContent = "All 16 dishes successfully violated!";
+      this.ponjikkaraRule.textContent = '"Ponjikkara style! Enjoy the feast!"';
+    }
+  }
+
+  resetGame() {
+    this.currentDishIndex = 0;
+    this.dishesContainer.innerHTML = '';
+    this.clickMarkersContainer.innerHTML = '';
+    this.maveliMood.textContent = "Mood: Hungry & Eager 😋";
+    this.stopConfetti();
+    this.updateHUD();
+    this.displayDialogue({
+      mal: "തന്നോടല്ലേ രണ്ടാമത് പപ്പടം ചോദിക്കല്ലേ എന്ന് പറഞ്ഞത്!",
+      mang: "Thannodalle randaamathu pappadam chodikkallennu paranjathu!",
+      eng: "Didn't I tell you not to ask for a second pappadam?!"
+    });
+    this.audio.speak("Thannodalle randaamathu pappadam chodikkallennu paranjathu!");
+  }
+
+  openCompletionModal() {
+    this.completionModal.classList.add('active');
+  }
+
+  closeCompletionModal() {
+    this.completionModal.classList.remove('active');
+    this.stopConfetti();
+  }
+
+  // ==========================================================================
+  // CONFETTI CELEBRATION ENGINE
+  // ==========================================================================
+  resizeCanvas() {
+    this.confettiCanvas.width = window.innerWidth;
+    this.confettiCanvas.height = window.innerHeight;
+  }
+
+  startConfetti() {
+    this.confettiParticles = [];
+    const colors = ['#f5b025', '#ffd460', '#d32f2f', '#4caf50', '#ffffff', '#ff9800'];
+    const count = 140;
+
+    for (let i = 0; i < count; i++) {
+      this.confettiParticles.push({
+        x: Math.random() * this.confettiCanvas.width,
+        y: Math.random() * -this.confettiCanvas.height,
+        size: Math.random() * 8 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: Math.random() * 4 - 2,
+        vy: Math.random() * 3 + 2,
+        rot: Math.random() * 360,
+        rotSpeed: Math.random() * 8 - 4
+      });
+    }
+
+    if (this.confettiAnimId) cancelAnimationFrame(this.confettiAnimId);
+    this.renderConfetti();
+  }
+
+  renderConfetti() {
+    const ctx = this.confettiCtx;
+    ctx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
+
+    for (let p of this.confettiParticles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.rotSpeed;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rot * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+      ctx.restore();
+
+      // Wrap around
+      if (p.y > this.confettiCanvas.height) {
+        p.y = -20;
+        p.x = Math.random() * this.confettiCanvas.width;
+      }
+    }
+
+    this.confettiAnimId = requestAnimationFrame(() => this.renderConfetti());
+  }
+
+  stopConfetti() {
+    if (this.confettiAnimId) {
+      cancelAnimationFrame(this.confettiAnimId);
+      this.confettiAnimId = null;
+    }
+    this.confettiCtx.clearRect(0, 0, this.confettiCanvas.width, this.confettiCanvas.height);
+  }
+}
+
+// Start Game on Page Load
+window.addEventListener('DOMContentLoaded', () => {
+  window.ponjiGame = new PonjikkaraSadhyaGame();
 });
