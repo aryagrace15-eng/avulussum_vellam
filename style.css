@@ -1260,3 +1260,108 @@ body {
     height: 75px;
   }
 }
+
+/* ============================================================================
+   INTRO LANDING SCREEN OVERLAY
+   ============================================================================ */
+.intro-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(circle at center, rgba(20, 36, 26, 0.96) 0%, rgba(8, 14, 10, 0.98) 100%);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.intro-screen-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-card-content {
+  background: rgba(16, 28, 22, 0.9);
+  border: 2px solid var(--gold-primary);
+  border-radius: 28px;
+  padding: 32px 40px;
+  max-width: 580px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 
+    0 0 60px rgba(245, 176, 37, 0.35),
+    inset 0 0 30px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-badge {
+  background: rgba(245, 176, 37, 0.15);
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-glow);
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+
+.intro-malayalam-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--gold-glow);
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 176, 37, 0.4);
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.intro-subtitle {
+  font-size: 0.85rem;
+  color: #aed581;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.intro-hero-art {
+  width: 100%;
+  max-width: 440px;
+  height: 240px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid rgba(245, 176, 37, 0.4);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+  margin-bottom: 24px;
+}
+
+.intro-hero-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.intro-enter-btn {
+  background: linear-gradient(135deg, #f5b025 0%, #ff8f00 100%);
+  color: #1a0c02;
+  font-weight: 900;
+  font-size: 1.1rem;
+  padding: 14px 36px;
+  border-radius: 30px;
+  border: 2px solid #ffe082;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(245, 176, 37, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.intro-enter-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 28px rgba(245, 176, 37, 0.65);
+}

@@ -394,6 +394,21 @@ class PonjikkaraSadhyaGame {
       this.handleUserClick(e);
     });
 
+    // Intro Screen Enter Button
+    const introScreen = document.getElementById('intro-screen');
+    const startGameBtn = document.getElementById('start-game-btn');
+    if (startGameBtn && introScreen) {
+      startGameBtn.addEventListener('click', () => {
+        if (!this.audio.isSongPlaying) {
+          this.audio.playSong();
+        }
+        introScreen.classList.add('fade-out');
+        setTimeout(() => {
+          introScreen.style.display = 'none';
+        }, 550);
+      });
+    }
+
     // Auto start song on first user click
     const autoPlaySongOnInteraction = () => {
       if (!this.audio.isSongPlaying) {
