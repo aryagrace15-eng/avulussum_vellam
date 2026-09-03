@@ -104,7 +104,9 @@
   </header>
 
   <!-- Background Song Audio Element -->
-  <audio id="bgm-audio" loop src="assets/song.mp3" preload="auto"></audio>
+  <audio id="bgm-audio" loop preload="auto" playsinline>
+    <source src="assets/song.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- Interactive Instruction Banner -->
   <div class="prompt-bar-container">

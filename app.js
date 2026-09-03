@@ -9,13 +9,21 @@
 // ============================================================================
 class AudioEngine {
   constructor() {
-    this.bgmAudio = document.getElementById('bgm-audio');
+    this.bgmAudio = null;
     this.isSongPlaying = false;
   }
 
+  getAudio() {
+    if (!this.bgmAudio) {
+      this.bgmAudio = document.getElementById('bgm-audio');
+    }
+    return this.bgmAudio;
+  }
+
   toggleSong() {
-    if (!this.bgmAudio) return false;
-    if (this.isSongPlaying) {
+    const audio = this.getAudio();
+    if (!audio) return false;
+    if (this.isSongPlaying && !audio.paused) {
       this.pauseSong();
     } else {
       this.playSong();
@@ -24,18 +32,26 @@ class AudioEngine {
   }
 
   playSong() {
-    if (!this.bgmAudio) return;
-    this.bgmAudio.play().then(() => {
-      this.isSongPlaying = true;
-      this.updateSongUI();
-    }).catch(err => {
-      console.log("Audio playback waiting for user interaction:", err);
-    });
+    const audio = this.getAudio();
+    if (!audio) return;
+    audio.volume = 1.0;
+    const promise = audio.play();
+    if (promise !== undefined) {
+      promise.then(() => {
+        this.isSongPlaying = true;
+        this.updateSongUI();
+      }).catch(err => {
+        console.log("Audio playback user gesture required:", err);
+        this.isSongPlaying = false;
+        this.updateSongUI();
+      });
+    }
   }
 
   pauseSong() {
-    if (!this.bgmAudio) return;
-    this.bgmAudio.pause();
+    const audio = this.getAudio();
+    if (!audio) return;
+    audio.pause();
     this.isSongPlaying = false;
     this.updateSongUI();
   }
