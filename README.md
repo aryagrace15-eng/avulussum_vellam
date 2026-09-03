@@ -1,4 +1,4 @@
-# 🍃 പൊഞ്ചിക്കര ഓണ സദ്യ സിമുലേറ്റർ | Ponjikkara Onam Sadhya Simulator
+# 🍃 പോഞ്ഞിക്കര ഓണ സദ്യ സിമുലേറ്റർ | Ponjikkara Onam Sadhya Simulator
 
 An interactive, single-page web application featuring a traditional **Kerala Onam Sadhya** serving game with a comedic twist based on the movie character **Ponjikkara Kesavan** (*Kalyanaraman*).
 
