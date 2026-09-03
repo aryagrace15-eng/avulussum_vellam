@@ -1009,71 +1009,100 @@ body {
 
 .ponjikkara-stamp-ring {
   position: relative;
-  width: 310px;
-  height: 310px;
+  width: 330px;
+  height: 330px;
   border: 6px double #d32f2f;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 15px;
+  justify-content: space-between;
+  padding: 24px 16px;
   color: #ef5350;
+  background: rgba(183, 28, 28, 0.06);
   box-shadow: 
-    0 0 0 4px rgba(211, 47, 47, 0.3),
-    inset 0 0 0 4px rgba(211, 47, 47, 0.3);
-  transform: rotate(-6deg);
+    0 0 0 4px rgba(211, 47, 47, 0.35),
+    inset 0 0 0 4px rgba(211, 47, 47, 0.35),
+    0 0 35px rgba(211, 47, 47, 0.25);
+  transform: rotate(-7deg);
   animation: stampDrop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes stampDrop {
   0% { transform: scale(3) rotate(15deg); opacity: 0; }
-  100% { transform: scale(1) rotate(-6deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-7deg); opacity: 1; }
 }
 
-.stamp-outer-text {
-  font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
-  font-weight: 900;
-  letter-spacing: 1.2px;
+.stamp-stars-top, .stamp-stars-bottom {
+  font-size: 0.85rem;
+  letter-spacing: 4px;
   color: #ff5252;
-  margin-bottom: 10px;
+  text-shadow: 0 0 6px rgba(255, 82, 82, 0.6);
+}
+
+.stamp-outer-header {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ff5252;
   text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  margin: 4px 0;
+  text-align: center;
 }
 
 .stamp-center-box {
   border-top: 3px dashed #d32f2f;
   border-bottom: 3px dashed #d32f2f;
-  padding: 12px 10px;
+  padding: 14px 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: rgba(211, 47, 47, 0.08);
 }
 
-.stamp-verified-icon {
-  font-size: 2.2rem;
-  color: #4caf50;
-  margin-bottom: 2px;
+.stamp-star-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.stamp-star-icon {
+  font-size: 1.1rem;
+  color: #ffd54f;
+  filter: drop-shadow(0 0 4px rgba(255, 213, 79, 0.8));
+}
+
+.stamp-seal-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffcdd2;
 }
 
 .stamp-main-text {
-  font-family: 'Noto Serif Malayalam', 'Gayathri', serif;
-  font-size: 2.2rem;
+  font-family: 'Cinzel', 'Noto Serif Malayalam', serif;
+  font-size: 2.3rem;
   font-weight: 900;
   color: #ff5252;
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-  line-height: 1.2;
+  letter-spacing: 4px;
+  margin: 2px 0;
+  text-shadow: 0 0 2px rgba(211,47,47,0.8), 2px 2px 0px rgba(0,0,0,0.7);
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .stamp-sub-text {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: #ff8a80;
-  margin-top: 6px;
+  font-family: 'Noto Serif Malayalam', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffab91;
+  margin-top: 4px;
 }
 
 .modal-banner-top {
@@ -1428,66 +1457,88 @@ body {
 }
 
 .intro-badge {
-  background: rgba(245, 176, 37, 0.12);
-  border: 1.5px solid var(--gold-primary);
+  background: rgba(245, 176, 37, 0.15);
+  border: 2px solid var(--gold-primary);
   color: var(--gold-glow);
-  padding: 6px 20px;
-  border-radius: 25px;
-  font-size: 0.75rem;
+  padding: 8px 26px;
+  border-radius: 30px;
+  font-size: 0.82rem;
   font-weight: 800;
-  letter-spacing: 2px;
-  margin-bottom: 16px;
+  letter-spacing: 2.5px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(245, 176, 37, 0.25);
 }
 
 .intro-malayalam-title {
   font-family: 'Noto Serif Malayalam', 'Cinzel', serif;
-  font-size: 2.8rem;
+  font-size: 3.5rem;
   font-weight: 900;
-  background: linear-gradient(180deg, #ffe082 0%, #ffb300 50%, #e65100 100%);
+  background: linear-gradient(180deg, #fff3e0 0%, #ffd54f 35%, #ff8f00 70%, #d84315 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
-  margin-bottom: 6px;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.95));
+  margin-bottom: 8px;
   text-align: center;
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: 1px;
 }
 
 .intro-subtitle {
-  font-size: 0.82rem;
-  color: #c8e6c9;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  margin-bottom: 22px;
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  color: #ffe082;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin-bottom: 28px;
   text-align: center;
-  opacity: 0.9;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
 }
 
-/* Center Artwork Frame */
-.intro-hero-art {
+/* Big Fancy Traditional Quote Box (Replaces Intro Image) */
+.intro-fancy-quote-box {
   position: relative;
   width: 100%;
-  max-width: 480px;
-  height: 250px;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 2px solid var(--gold-primary);
-  box-shadow: 0 14px 35px rgba(0,0,0,0.75);
-  margin-bottom: 26px;
+  max-width: 520px;
+  background: linear-gradient(145deg, rgba(12, 28, 20, 0.92) 0%, rgba(20, 45, 32, 0.95) 100%);
+  border: 2.5px solid var(--gold-primary);
+  border-radius: 24px;
+  padding: 26px 32px;
+  box-shadow: 
+    0 16px 40px rgba(0,0,0,0.8),
+    inset 0 0 25px rgba(255, 215, 0, 0.12);
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.intro-hero-art img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s ease;
+.quote-stars {
+  font-size: 1.1rem;
+  color: var(--gold-glow);
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
 }
 
-.intro-hero-art:hover img {
-  transform: scale(1.05);
+.intro-quote-text {
+  font-family: 'Noto Serif Malayalam', serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fffde7;
+  line-height: 1.5;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+  margin-bottom: 10px;
+}
+
+.intro-quote-sub {
+  font-family: 'Cinzel', 'Noto Serif Malayalam', serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--gold-glow);
+  letter-spacing: 1px;
 }
 
 .art-overlay-caption {
