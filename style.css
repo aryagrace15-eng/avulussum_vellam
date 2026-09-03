@@ -571,7 +571,7 @@ body {
   justify-content: flex-end;
   z-index: 18;
   flex-shrink: 0;
-  margin-left: -50px; /* Natural overlap onto table edge */
+  margin-left: 30px; /* Shifted to the right */
 }
 
 .ponji-actor-img {
