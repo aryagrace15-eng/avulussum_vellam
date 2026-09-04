@@ -1462,10 +1462,10 @@ body {
   color: var(--gold-glow);
   padding: 8px 26px;
   border-radius: 30px;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 2.5px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1473,72 +1473,50 @@ body {
 }
 
 .intro-malayalam-title {
-  font-family: 'Noto Serif Malayalam', 'Cinzel', serif;
-  font-size: 3.5rem;
+  font-family: 'Noto Serif Malayalam', 'Gayathri', serif;
+  font-size: 3.8rem;
   font-weight: 900;
-  background: linear-gradient(180deg, #fff3e0 0%, #ffd54f 35%, #ff8f00 70%, #d84315 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #ffe082 30%, #ffb300 65%, #e65100 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.95));
-  margin-bottom: 8px;
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.95));
+  margin-bottom: 14px;
   text-align: center;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: 1px;
+}
+
+.title-divider-gold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 380px;
+  margin-bottom: 18px;
+}
+
+.title-divider-gold .divider-line {
+  height: 2px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+}
+
+.title-divider-gold .divider-gem {
+  font-size: 1.3rem;
+  color: var(--gold-glow);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
 }
 
 .intro-subtitle {
   font-family: 'Cinzel', serif;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   color: #ffe082;
   font-weight: 800;
-  letter-spacing: 3px;
-  margin-bottom: 28px;
+  letter-spacing: 3.5px;
+  margin-bottom: 38px;
   text-align: center;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-}
-
-/* Big Fancy Traditional Quote Box (Replaces Intro Image) */
-.intro-fancy-quote-box {
-  position: relative;
-  width: 100%;
-  max-width: 520px;
-  background: linear-gradient(145deg, rgba(12, 28, 20, 0.92) 0%, rgba(20, 45, 32, 0.95) 100%);
-  border: 2.5px solid var(--gold-primary);
-  border-radius: 24px;
-  padding: 26px 32px;
-  box-shadow: 
-    0 16px 40px rgba(0,0,0,0.8),
-    inset 0 0 25px rgba(255, 215, 0, 0.12);
-  margin-bottom: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.quote-stars {
-  font-size: 1.1rem;
-  color: var(--gold-glow);
-  letter-spacing: 6px;
-  margin-bottom: 12px;
-  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
-}
-
-.intro-quote-text {
-  font-family: 'Noto Serif Malayalam', serif;
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #fffde7;
-  line-height: 1.5;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-  margin-bottom: 10px;
-}
-
-.intro-quote-sub {
-  font-family: 'Cinzel', 'Noto Serif Malayalam', serif;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--gold-glow);
-  letter-spacing: 1px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9);
 }
 
 .art-overlay-caption {
