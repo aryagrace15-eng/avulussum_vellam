@@ -201,7 +201,8 @@ body {
   z-index: 25;
   display: flex;
   justify-content: center;
-  padding: 6px 16px 2px;
+  padding: 30px 16px 4px;
+  margin-top: 35px;
 }
 
 .prompt-banner {
@@ -262,9 +263,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px 85px;
+  padding: 0px 20px 10px;
   z-index: 10;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .integrated-dining-hall {
@@ -277,6 +278,7 @@ body {
   justify-content: space-between;
   gap: 0px;
   padding: 0 10px;
+  transform: translateY(-55px);
 }
 
 .table-flower-left, .table-flower-right {
@@ -294,15 +296,15 @@ body {
 /* 1. SEATED KING MAHABALI (REALISTIC HUMAN PROPORTION) */
 .maveli-figure {
   position: relative;
-  width: 270px;
-  height: 460px;
+  width: 360px;
+  height: 530px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  z-index: 15;
+  z-index: 9;
   flex-shrink: 0;
-  margin-right: -45px; /* Natural overlap onto table edge */
+  margin-right: -35px; /* Aligned so graphic touches left table edge */
 }
 
 .maveli-actor-img {
@@ -310,7 +312,9 @@ body {
   height: 100%;
   object-fit: contain;
   object-position: bottom center;
-  filter: drop-shadow(0 16px 28px rgba(0,0,0,0.75));
+  transform: scale(1.18);
+  transform-origin: bottom center;
+  filter: drop-shadow(0 18px 32px rgba(0,0,0,0.8));
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -379,7 +383,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
+  margin-bottom: 60px;
+  transform: translateY(-30px);
 }
 
 .table-wood-grain {
@@ -405,87 +410,50 @@ body {
   padding: 16px;
 }
 
-/* REALISTIC BANANA LEAF RESTING ON TABLETOP IN FRONT OF MAHABALI */
+/* USER'S AUTHENTIC REAL BANANA LEAF PHOTO */
 .banana-leaf {
   position: relative;
-  width: 660px;
-  height: 360px;
-  background: 
-    url('assets/dishes/clean_leaf_texture.jpg') center / cover no-repeat,
-    linear-gradient(135deg, #4caf50 0%, #2e7d32 45%, #1b5e20 90%);
-  background-blend-mode: overlay;
-  border-radius: 45px 140px 140px 45px / 75px 150px 150px 75px;
-  box-shadow: 
-    0 18px 45px rgba(0,0,0,0.75), 
-    inset 0 0 35px rgba(0,0,0,0.35),
-    inset 0 2px 6px rgba(255, 255, 255, 0.2);
+  width: 670px;
+  height: 365px;
+  background: url('assets/dishes/user_real_leaf.png') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 18px 45px rgba(0, 0, 0, 0.85));
   cursor: crosshair;
-  overflow: hidden;
-  border: 1.5px solid rgba(255, 255, 255, 0.15);
-  transition: box-shadow 0.2s ease;
+  overflow: visible;
+  border-radius: 0;
+  border: none;
+  transition: filter 0.25s ease, transform 0.25s ease;
 }
 
 .banana-leaf:hover {
-  box-shadow: 
-    0 22px 55px rgba(0,0,0,0.8), 
-    0 0 25px rgba(129, 199, 132, 0.35),
-    inset 0 0 35px rgba(0,0,0,0.3);
+  filter: drop-shadow(0 24px 55px rgba(0,0,0,0.92)) brightness(1.03);
 }
 
-.leaf-spine {
-  position: absolute;
-  top: 50%;
-  left: 2%;
-  right: 2%;
-  height: 6px;
-  background: linear-gradient(180deg, #dcedc8 0%, #aed581 40%, #689f38 100%);
-  border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.leaf-veins {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background-image: 
-    repeating-linear-gradient(70deg, 
-      transparent, 
-      transparent 28px, 
-      rgba(255, 255, 255, 0.06) 29px, 
-      transparent 30px),
-    repeating-linear-gradient(-70deg, 
-      transparent, 
-      transparent 28px, 
-      rgba(0, 0, 0, 0.04) 29px, 
-      transparent 30px);
+.leaf-spine, .leaf-veins {
+  display: none;
 }
 
 .leaf-dewdrop {
   position: absolute;
-  width: 9px;
-  height: 9px;
-  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9), rgba(255,255,255,0.2) 60%, transparent 80%);
+  width: 11px;
+  height: 11px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.3) 50%, transparent 80%);
   border-radius: 50%;
-  box-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+  box-shadow: 1px 3px 6px rgba(0,0,0,0.45);
   pointer-events: none;
+  z-index: 6;
 }
 
 /* Pre-served Small Kerala Banana (Pazham) */
 .real-banana-garnish {
   position: absolute;
-  bottom: 22%;
-  left: 4%;
-  width: 85px;
-  height: 105px;
+  bottom: 24%;
+  left: 3.5%;
+  width: 95px;
+  height: 65px;
   z-index: 14;
   pointer-events: none;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-  transform: rotate(-12deg);
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+  transform: rotate(-15deg);
 }
 
 .real-banana-garnish img {
@@ -561,15 +529,15 @@ body {
 /* 3. STANDING PONJIKKARA KESAVAN (TALLER STANDING PROPORTION) */
 .ponjikkara-figure {
   position: relative;
-  width: 275px;
-  height: 550px;
+  width: 240px;
+  height: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  z-index: 18;
+  z-index: 100;
   flex-shrink: 0;
-  margin-left: -50px; /* Natural overlap onto table edge */
+  margin-left: -60px; /* Shifted to the left */
 }
 
 .ponji-actor-img {
@@ -595,15 +563,15 @@ body {
 /* Comic Speech Bubble Above Ponjikkara's Head */
 .comic-speech-bubble {
   position: absolute;
-  top: -105px;
-  right: -10px;
-  width: 300px;
+  top: -180px;
+  right: 0px;
+  width: 320px;
   background: var(--bubble-bg);
-  border: 3px solid #111;
+  border: 3.5px solid #111;
   border-radius: 18px;
   padding: 12px 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6), 4px 4px 0px #111;
-  z-index: 35;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.75), 4px 4px 0px #111;
+  z-index: 1000;
   color: var(--text-dark);
   pointer-events: none;
   opacity: 0;
@@ -1026,6 +994,120 @@ body {
   transform: scale(1) translateY(0);
 }
 
+/* APPROVED RUBBER STAMP SEAL MODAL */
+.modal-content.approved-stamp-modal {
+  max-width: 480px;
+  padding: 40px 30px;
+  background: radial-gradient(circle at center, #1b3524 0%, #0d1e14 100%);
+  border: 3px solid var(--gold-primary);
+  box-shadow: 0 0 70px rgba(245, 176, 37, 0.4), 0 20px 60px rgba(0,0,0,0.9);
+}
+
+.ponjikkara-stamp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.ponjikkara-stamp-ring {
+  position: relative;
+  width: 330px;
+  height: 330px;
+  border: 6px double #d32f2f;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 16px;
+  color: #ef5350;
+  background: rgba(183, 28, 28, 0.06);
+  box-shadow: 
+    0 0 0 4px rgba(211, 47, 47, 0.35),
+    inset 0 0 0 4px rgba(211, 47, 47, 0.35),
+    0 0 35px rgba(211, 47, 47, 0.25);
+  transform: rotate(-7deg);
+  animation: stampDrop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes stampDrop {
+  0% { transform: scale(3) rotate(15deg); opacity: 0; }
+  100% { transform: scale(1) rotate(-7deg); opacity: 1; }
+}
+
+.stamp-stars-top, .stamp-stars-bottom {
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+  color: #ff5252;
+  text-shadow: 0 0 6px rgba(255, 82, 82, 0.6);
+}
+
+.stamp-outer-header {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ff5252;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  margin: 4px 0;
+  text-align: center;
+}
+
+.stamp-center-box {
+  border-top: 3px dashed #d32f2f;
+  border-bottom: 3px dashed #d32f2f;
+  padding: 14px 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(211, 47, 47, 0.08);
+}
+
+.stamp-star-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.stamp-star-icon {
+  font-size: 1.1rem;
+  color: #ffd54f;
+  filter: drop-shadow(0 0 4px rgba(255, 213, 79, 0.8));
+}
+
+.stamp-seal-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffcdd2;
+}
+
+.stamp-main-text {
+  font-family: 'Cinzel', 'Noto Serif Malayalam', serif;
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: #ff5252;
+  letter-spacing: 4px;
+  margin: 2px 0;
+  text-shadow: 0 0 2px rgba(211,47,47,0.8), 2px 2px 0px rgba(0,0,0,0.7);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.stamp-sub-text {
+  font-family: 'Noto Serif Malayalam', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffab91;
+  margin-top: 4px;
+}
+
 .modal-banner-top {
   position: absolute;
   top: -20px;
@@ -1257,4 +1339,229 @@ body {
     width: 60px;
     height: 75px;
   }
+}
+
+/* ============================================================================
+   TRADITIONAL KERALA INTRO LANDING SCREEN (AESTHETIC ROYAL EDITION)
+   ============================================================================ */
+.intro-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(ellipse at center, #122b1c 0%, #08140c 70%, #030805 100%);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s ease;
+}
+
+.intro-screen-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Traditional Pookkalam Floral Pattern Spinner */
+.intro-pookkalam-bg {
+  position: absolute;
+  width: 750px;
+  height: 750px;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle, transparent 40%, rgba(245, 176, 37, 0.08) 41%, transparent 42%),
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(212, 175, 55, 0.04) 0deg 15deg,
+      rgba(211, 47, 47, 0.04) 15deg 30deg,
+      rgba(76, 175, 80, 0.04) 30deg 45deg
+    );
+  animation: rotatePookkalam 120s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotatePookkalam {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Floating Gold Sparkles */
+.gold-sparks-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: floatSpark 4s infinite ease-in-out;
+}
+
+.spark.s1 { top: 20%; left: 18%; animation-delay: 0s; }
+.spark.s2 { top: 75%; left: 15%; animation-delay: 1.5s; }
+.spark.s3 { top: 25%; right: 20%; animation-delay: 0.8s; }
+.spark.s4 { top: 80%; right: 18%; animation-delay: 2.2s; }
+
+@keyframes floatSpark {
+  0% { transform: translateY(10px) scale(0.6); opacity: 0; }
+  50% { transform: translateY(-15px) scale(1.2); opacity: 0.8; }
+  100% { transform: translateY(-30px) scale(0.6); opacity: 0; }
+}
+
+/* Main Traditional Card Container */
+.intro-card-content {
+  background: linear-gradient(165deg, rgba(20, 38, 28, 0.94) 0%, rgba(10, 20, 15, 0.96) 100%);
+  border: 2.5px solid var(--gold-primary);
+  border-radius: 32px;
+  padding: 36px 48px;
+  max-width: 620px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 
+    0 0 80px rgba(245, 176, 37, 0.38),
+    0 25px 50px rgba(0, 0, 0, 0.85),
+    inset 0 0 40px rgba(0, 0, 0, 0.7),
+    inset 0 2px 8px rgba(255, 235, 150, 0.3);
+  position: relative;
+  overflow: visible;
+}
+
+/* Nilavilakku Lamps on Sides */
+.nilavilakku-side {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.nilavilakku-side.left-lamp { left: -32px; }
+.nilavilakku-side.right-lamp { right: -32px; }
+
+.lamp-symbol {
+  font-size: 2.6rem;
+  filter: drop-shadow(0 0 15px rgba(255, 213, 79, 0.9));
+  animation: flickerLamp 3s infinite alternate ease-in-out;
+}
+
+@keyframes flickerLamp {
+  0% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(255, 213, 79, 0.7)); }
+  50% { transform: scale(1.06); filter: drop-shadow(0 0 22px rgba(255, 213, 79, 1)); }
+  100% { transform: scale(0.98); filter: drop-shadow(0 0 15px rgba(255, 213, 79, 0.8)); }
+}
+
+.intro-badge {
+  background: rgba(245, 176, 37, 0.15);
+  border: 2px solid var(--gold-primary);
+  color: var(--gold-glow);
+  padding: 8px 26px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(245, 176, 37, 0.25);
+}
+
+.intro-malayalam-title {
+  font-family: 'Noto Serif Malayalam', 'Gayathri', serif;
+  font-size: 3.8rem;
+  font-weight: 900;
+  background: linear-gradient(180deg, #ffffff 0%, #ffe082 30%, #ffb300 65%, #e65100 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.95));
+  margin-bottom: 14px;
+  text-align: center;
+  line-height: 1.25;
+  letter-spacing: 1px;
+}
+
+.title-divider-gold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 380px;
+  margin-bottom: 18px;
+}
+
+.title-divider-gold .divider-line {
+  height: 2px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+}
+
+.title-divider-gold .divider-gem {
+  font-size: 1.3rem;
+  color: var(--gold-glow);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+.intro-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  color: #ffe082;
+  font-weight: 800;
+  letter-spacing: 3.5px;
+  margin-bottom: 38px;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+}
+
+.art-overlay-caption {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(10, 18, 12, 0.92) 100%);
+  color: #fffde7;
+  font-family: 'Noto Serif Malayalam', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 18px 16px 10px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+}
+
+/* CTA Enter Button */
+.intro-enter-btn {
+  background: linear-gradient(135deg, #ffd54f 0%, #ff8f00 50%, #d84315 100%);
+  color: #1a0800;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 1.15rem;
+  padding: 16px 42px;
+  border-radius: 35px;
+  border: 2.5px solid #fff8e1;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 25px rgba(245, 176, 37, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+}
+
+.intro-enter-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 14px 35px rgba(245, 176, 37, 0.7),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.intro-enter-btn:active {
+  transform: translateY(1px) scale(0.98);
 }

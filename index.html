@@ -9,6 +9,67 @@
 </head>
 <body>
 
+  <!-- TRADITIONAL KERALA INTRO LANDING SCREEN -->
+  <div id="intro-screen" class="intro-screen-overlay">
+    <!-- Rotating Traditional Pookkalam Backdrop Pattern -->
+    <div class="intro-pookkalam-bg"></div>
+
+    <!-- Floating Gold Dust Sparkles -->
+    <div class="gold-sparks-container">
+      <span class="spark s1">✨</span>
+      <span class="spark s2">✨</span>
+      <span class="spark s3">✨</span>
+      <span class="spark s4">✨</span>
+    </div>
+
+    <!-- Main Traditional Card Container -->
+    <div class="intro-card-content">
+      <!-- Brass Lamp Left -->
+      <div class="nilavilakku-side left-lamp" title="Nilavilakku Traditional Lamp">
+        <div class="lamp-flame"></div>
+        <div class="lamp-glow"></div>
+        <span class="lamp-symbol">🪔</span>
+      </div>
+
+      <!-- Brass Lamp Right -->
+      <div class="nilavilakku-side right-lamp" title="Nilavilakku Traditional Lamp">
+        <div class="lamp-flame"></div>
+        <div class="lamp-glow"></div>
+        <span class="lamp-symbol">🪔</span>
+      </div>
+
+      <!-- Top Traditional Header Badge -->
+      <div class="intro-badge">
+        <span class="badge-icon">🌸</span>
+        <span>കല്ല്യാണരാമൻ സ്പെഷ്യൽ • CELEBRATION EDITION</span>
+        <span class="badge-icon">🌸</span>
+      </div>
+
+      <!-- Traditional Malayalam Title -->
+      <h1 class="intro-malayalam-title">
+        പൊഞ്ചിക്കര കേശവന്റെ സദ്യ
+      </h1>
+
+      <!-- Gold Decorative Title Divider -->
+      <div class="title-divider-gold">
+        <span class="divider-line"></span>
+        <span class="divider-gem">⚜️</span>
+        <span class="divider-line"></span>
+      </div>
+      
+      <p class="intro-subtitle">
+        PONJIKKARA KESAVAN'S CHAOTIC SADHYA EXPERIENCE
+      </p>
+
+      <!-- Call to Action Button -->
+      <button id="start-game-btn" class="intro-enter-btn">
+        <span class="btn-icon-gold">🌺</span>
+        <span>സദ്യയിൽ പങ്കുചേരാം (Enter Sadhya)</span>
+        <span class="btn-icon-gold">🌺</span>
+      </button>
+    </div>
+  </div>
+
   <!-- Hanging Incandescent Bulb (Inspired by Reference Artwork) -->
   <div class="bulb-fixture">
     <div class="bulb-wire"></div>
@@ -22,9 +83,6 @@
   <!-- Header & Navigation -->
   <header class="game-header">
     <div class="title-container">
-      <div class="title-badge">
-        <span>ONAM SPECIAL</span>
-      </div>
       <div class="title-text">
         <h1>Mr. Ponjikkara's Sadhya</h1>
         <span class="malayalam-subtitle">പോഞ്ഞിക്കരയുടെ സദ്യ വിളമ്പ്!</span>
@@ -32,13 +90,9 @@
     </div>
 
     <div class="header-controls">
-      <button id="chenda-toggle-btn" class="ctrl-btn" title="Toggle Kerala Chenda Melam Beat">
-        <span class="btn-icon">🥁</span>
-        <span class="btn-text">Chenda Melam</span>
-      </button>
-      <button id="audio-toggle-btn" class="ctrl-btn" title="Toggle Sound Effects">
-        <span class="btn-icon">🔊</span>
-        <span class="btn-text">Sound: ON</span>
+      <button id="song-toggle-btn" class="ctrl-btn" title="Toggle Background Song">
+        <span class="btn-icon">🎵</span>
+        <span class="btn-text" id="song-btn-text">Song: OFF</span>
       </button>
       <button id="guide-btn" class="ctrl-btn" title="How to Play">
         <span class="btn-icon">📜</span>
@@ -47,22 +101,24 @@
     </div>
   </header>
 
+  <!-- Background Song Audio Element -->
+  <audio id="bgm-audio" loop preload="auto" playsinline>
+    <source src="assets/song.mp3" type="audio/mpeg">
+  </audio>
+
   <!-- Interactive Instruction Banner -->
   <div class="prompt-bar-container">
     <div class="prompt-banner">
       <span class="prompt-icon">👉</span>
       <span class="prompt-text">
-        Click <span class="highlight">anywhere on Mahabali's banana leaf</span> to choose where Ponjikkara should serve your next dish!
+        Click anywhere on the banana leaf
       </span>
-      <span class="prompt-subtext">(...Ponjikkara serves strictly by his own chaotic logic!)</span>
     </div>
   </div>
 
   <!-- MAIN STAGE: INTEGRATED DINING ROOM ARENA -->
   <main class="game-stage-wrapper">
     <div class="integrated-dining-hall" id="dining-table-arena">
-      <span class="table-flower-left">🌼🌺</span>
-      <span class="table-flower-right">🌺🌼</span>
 
       <!-- 1. LEFT: King Mahabali Seated on Chair at the Table (Realistic Proportion) -->
       <section class="maveli-figure" id="maveli-card" aria-label="King Mahabali seated at dining table">
@@ -180,19 +236,6 @@
       </div>
     </div>
 
-    <!-- Etiquette vs Ponjikkara Logic Display -->
-    <div class="hud-rule-comparison">
-      <div class="rule-col">
-        <span class="rule-label tradition">Proper Sadhya Etiquette:</span>
-        <span class="rule-value" id="tradition-rule">Mashed dal poured gently on center rice</span>
-      </div>
-      <div style="color: #ffd54f; font-weight: 900;">⚡ VS ⚡</div>
-      <div class="rule-col">
-        <span class="rule-label ponjikkara">Ponjikkara Logic:</span>
-        <span class="rule-value" id="ponjikkara-rule">"Who puts dal on rice? Top-corner drop!"</span>
-      </div>
-    </div>
-
     <!-- Quick Action Buttons -->
     <div class="hud-actions">
       <button id="reset-btn" class="action-btn secondary" title="Reset Sadhya">
@@ -207,44 +250,35 @@
   <!-- Confetti Canvas for Grand Finale -->
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- GRAND COMPLETION MODAL -->
+  <!-- GRAND COMPLETION STAMP MODAL -->
   <div class="modal-overlay" id="completion-modal">
-    <div class="modal-content">
-      <div class="modal-banner-top">
-        <span>SADHYA COMPLETE!</span>
-      </div>
-
-      <div class="modal-hero-art">
-        <img src="assets/reference_art.jpg" alt="Ponjikkara Kesavan and King Mahabali poster" />
-      </div>
-
-      <h2 class="modal-dialogue-headline">
-        "സദ്യ കഴിഞ്ഞു! പോഞ്ഞിക്കര സ്റ്റൈൽ!"
-      </h2>
-      <p class="modal-dialogue-manglish">
-        "Sadhya is ready! Ponjikkara style! Njan aana kettiya thariyil aada nee aadu mekkunnath!"
-      </p>
-
-      <div class="modal-stats-grid">
-        <div class="stat-item">
-          <div class="stat-val">16 / 16</div>
-          <div class="stat-desc">Realistic Dishes Served</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-val">0 / 16</div>
-          <div class="stat-desc">Etiquette Rules Followed</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-val">100%</div>
-          <div class="stat-desc">Ponjikkara Chaos</div>
+    <div class="modal-content approved-stamp-modal">
+      
+      <!-- Official Rubber Stamp Seal Container -->
+      <div class="ponjikkara-stamp-container">
+        <div class="ponjikkara-stamp-ring">
+          <div class="stamp-stars-top">★ ★ ★ ★ ★</div>
+          <div class="stamp-outer-header">
+            PONJIKKARA KESAVAN APPROVED
+          </div>
+          <div class="stamp-center-box">
+            <div class="stamp-star-row">
+              <span class="stamp-star-icon">⭐</span>
+              <span class="stamp-seal-tag">OFFICIAL SADHYA SEAL</span>
+              <span class="stamp-star-icon">⭐</span>
+            </div>
+            <h2 class="stamp-main-text">VELAMBAL</h2>
+            <span class="stamp-sub-text">പോഞ്ഞിക്കര കേശവൻ അംഗീകൃത സദ്യ വിളമ്പ്</span>
+          </div>
+          <div class="stamp-stars-bottom">★ ★ ★ ★ ★</div>
         </div>
       </div>
-
-      <div class="modal-actions">
+      <div class="modal-actions" style="margin-top: 25px;">
         <button id="modal-replay-btn" class="modal-btn-primary">
-          🍽️ Serve Again (Take 2)
+          🍽️ വീണ്ടും വിളമ്പാം (Replay)
         </button>
       </div>
+
     </div>
   </div>
 
