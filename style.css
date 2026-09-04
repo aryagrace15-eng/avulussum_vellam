@@ -561,7 +561,7 @@ body {
 /* Comic Speech Bubble Above Ponjikkara's Head */
 .comic-speech-bubble {
   position: absolute;
-  top: -85px;
+  top: -130px;
   right: 0px;
   width: 320px;
   background: var(--bubble-bg);
