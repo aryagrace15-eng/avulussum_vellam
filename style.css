@@ -446,14 +446,14 @@ body {
 /* Pre-served Small Kerala Banana (Pazham) */
 .real-banana-garnish {
   position: absolute;
-  bottom: 22%;
-  left: 4%;
-  width: 85px;
-  height: 105px;
+  bottom: 24%;
+  left: 3.5%;
+  width: 95px;
+  height: 65px;
   z-index: 14;
   pointer-events: none;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-  transform: rotate(-12deg);
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+  transform: rotate(-15deg);
 }
 
 .real-banana-garnish img {
