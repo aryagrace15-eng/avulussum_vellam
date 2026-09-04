@@ -304,7 +304,7 @@ body {
   justify-content: flex-end;
   z-index: 9;
   flex-shrink: 0;
-  margin-right: -95px; /* Shifted further to the right */
+  margin-right: -140px; /* Shifted further right */
 }
 
 .maveli-actor-img {
