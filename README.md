@@ -77,8 +77,8 @@ python3 -m http.server 8099
 
 #### Diagrams
 
-![Workflow Diagram](assets/screenshots/gameplay_preview.png)  
-*Game State Workflow: User Click Input ➔ Ponjikkara Rule Override ➔ Ladle Trajectory Animation ➔ Splatter Physics & Speech Synthesis ➔ King Mahabali Reaction ➔ Approved Rubber Stamp Seal Modal.*
+![Workflow Diagram](assets/screenshots/workflow_diagram.png)  
+*Game State Workflow Diagram showing Landing Screen, Audio Engine Initialization, Click Coordinates Capture, Ponjikkara Rule Override, Trajectory Calculation, Splatter Physics, Speech Synthesis, and Approved Rubber Stamp Seal Modal.*
 
 ---
 
