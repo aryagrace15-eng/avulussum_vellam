@@ -304,7 +304,7 @@ body {
   justify-content: flex-end;
   z-index: 9;
   flex-shrink: 0;
-  margin-right: -20px; /* Shifted to the left */
+  margin-right: -55px; /* Shifted to the right towards table */
 }
 
 .maveli-actor-img {
@@ -537,7 +537,7 @@ body {
   justify-content: flex-end;
   z-index: 100;
   flex-shrink: 0;
-  margin-left: -8px; /* Perfectly aligned with wooden table edge */
+  margin-left: -40px; /* Shifted to the left towards table */
 }
 
 .ponji-actor-img {
