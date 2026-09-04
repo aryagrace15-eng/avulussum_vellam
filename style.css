@@ -201,7 +201,8 @@ body {
   z-index: 25;
   display: flex;
   justify-content: center;
-  padding: 6px 16px 2px;
+  padding: 24px 16px 4px;
+  margin-top: 10px;
 }
 
 .prompt-banner {
@@ -526,8 +527,8 @@ body {
 /* 3. STANDING PONJIKKARA KESAVAN (TALLER STANDING PROPORTION) */
 .ponjikkara-figure {
   position: relative;
-  width: 275px;
-  height: 550px;
+  width: 240px;
+  height: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;
