@@ -263,7 +263,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px 85px;
+  padding: 0px 20px 40px;
   z-index: 10;
   overflow: visible;
 }
@@ -382,7 +382,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
+  margin-bottom: 60px;
+  transform: translateY(-30px);
 }
 
 .table-wood-grain {
