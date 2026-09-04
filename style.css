@@ -537,7 +537,7 @@ body {
   justify-content: flex-end;
   z-index: 100;
   flex-shrink: 0;
-  margin-left: -75px; /* Shifted further to the left */
+  margin-left: -120px; /* Shifted further to the left */
 }
 
 .ponji-actor-img {
