@@ -3,9 +3,8 @@
 ## Basic Details
 - **Team Name**: Avulussum Vellam
 - **Team Members**:
-  - **Team Lead**: Arya Grace - College
-  - **Member 2**: Akshita Sivasankaran - College
-  - **Member 3**: Team Member - College
+  - **Team Lead**: Arya K A - MEC
+  - **Member 2**: Akshita Sivasankaran - MEC
 
 ## Project Description
 An interactive, comedic single-page web application featuring a traditional Kerala Onam Sadhya serving experience. Players try to click where dishes should go on King Mahabali's banana leaf, but head caterer **Ponjikkara Kesavan** (*Kalyanaraman*) rejects every instruction and launches dishes wherever he wants!
@@ -32,12 +31,6 @@ Introducing Ponjikkara's Sadhya Simulator—an interactive simulator where head 
   - Google Fonts (`Cinzel`, `Noto Serif Malayalam`, `Gayathri`, `Outfit`, `Montserrat`)
 - **Tools used**: Python 3 (`http.server`), Git & GitHub, Pillow (PIL Image Processing)
 
-#### For Hardware:
-- *N/A (Software Project)*
-
----
-
-## Implementation
 
 ### For Software:
 
@@ -67,13 +60,13 @@ python3 -m http.server 8099
 #### Screenshots
 
 ![Screenshot 1 - Event Banner](assets/screenshots/tinkerhub_event.jpg)  
-*TinkerHub Useless Projects 3.0 event submission and GitHub repository overview.*
+*README*
 
 ![Screenshot 2 - Code & Terminal](assets/screenshots/code_terminal.jpg)  
-*Developer workspace showing VS Code editor, game state controller logic, and terminal git execution.*
+*FILES*
 
 ![Screenshot 3 - Gameplay Preview](assets/screenshots/gameplay_preview.png)  
-*Interactive game arena featuring King Mahabali, Ponjikkara Kesavan, the realistic banana leaf plate, and 16 served Sadhya delicacies.*
+*OUTPUT*
 
 #### Diagrams
 
@@ -86,18 +79,14 @@ python3 -m http.server 8099
 
 ### Video
 [Demo Video Link](#)  
-*Demonstrates interactive dish placement, Ponjikkara logic overrides, background song playback, speech synthesis, and the rubber stamp seal completion modal.*
+https://drive.google.com/drive/folders/1MdJQMBaXxK-1cy1gGSqyyW3eF24NbuNa
 
-### Additional Demos
-- Live Local Server: `http://localhost:8099`
 
 ---
 
 ## Team Contributions
 - **Arya Grace**: Project Conceptualization, Character Asset Selection, UI/UX Layout Design & Git Repository Management.
 - **Akshita Sivasankaran**: Core Game Engine Implementation, Physics Trajectory Animations, Audio/Speech API Integration, Image Processing Cutouts & CSS Styling.
-- **Team Member**: Testing, Sadhya Dish Etiquette Research & Documentation.
-
 ---
 
 Made with ❤️ at **TinkerHub Useless Projects 3.0**
