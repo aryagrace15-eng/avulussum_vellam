@@ -15,25 +15,24 @@ An interactive, single-page web application featuring a traditional **Kerala Ona
 
 
 ### Team Members
-- Team Lead: [akshita sivasankan] - [MEC]
-- Member 2: [akshita sivasankaran] - [MEC]
+- Team Lead: [Akshita Sivasankan] - [MEC]
+- Member 2: [Akshita Sivasankaran] - [MEC]
 - Member 3: [Arya K A] - [MEC]
 
 ### Project Description
-[Have you ever tried eating a peaceful Onam Sadhya, only to have that one unhinged uncle dump Payasam directly onto your Parippu Curry? We turned that specific trauma into a web app!
-
-Our project is a interactive game where you attempt to serve 16 traditional Sadhya items on a banana leaf. But there's a catch: we built it with Ponjikkara Logic. No matter where you click, the app completely ignores your inputs and drops dishes wherever Ponjikkara feels like—usually violating every rule of Kerala dining etiquette. Beneath the chaos, it's actually a sleek demo of CSS animations, dynamic DOM manipulation, and custom Web Audio synthesis!]
+A unhinged web game where you try to serve a 16-course Onam Sadhya, but the algorithm is powered by pure, unfiltered Ponjikkara Kesavan. You click where you want the dish to go, and the app basically says *"Cute idea, but no"*—splatting curries, pickles, and payasam wherever it wants while screaming iconic Malayalam movie dialogues at you.
 
 ### The Problem (that doesn't exist)
-[]
+For decades, web apps have been boringly polite. You click a button, the app does what you want. Where is the spice? Where is the disrespect? People serving Onam Sadhya have been trapped in a dark age of "orderly placement" and "following basic dining etiquette," leading to lunches that are tragically organized, peaceful, and completely devoid of drama.
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+Ponjikkara's Sadhya Express: A web app that actively fights its own user. Built with HTML, CSS animations, and vanilla JavaScript, we completely threw UX best practices out the window to engineer "Ponjikkara Logic." You gently click top-left for the mango pickle, and our code decides to dump a ladle of warm Payasam directly onto your Matta rice. It’s not a bug, it’s an authentic simulator of your favorite chaotic uncle ruining Sunday lunch.
+
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
+- Languages used : Python, HTML, CSS, Javascript
 - [Frameworks used]
 - [Libraries used]
 - [Tools used]
@@ -55,8 +54,7 @@ For Software:
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+
 
 ![Screenshot2](Add screenshot 2 here with proper name)
 *Add caption explaining what this shows*
@@ -105,66 +103,3 @@ Made with ❤️ at TinkerHub Useless Projects
 
 ![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
 ![Static Badge](https://img.shields.io/badge/UselessProjects--26-26?link=https%3A%2F%2Ftinkerhub.org%2Fevents%2F1M8ORET9A1%2Fuseless-projects-3.0)
-
-
-
-
-
-## 🌟 Key Features
-
-1. **Visual Setup & Scene**:
-   - **Backdrop Scene**: Features the iconic Ceylon Bake House poster illustration backdrop with **King Mahabali** (`👑 മഹാബലി തമ്പുരാൻ`) and **Ponjikkara Kesavan** (`👨‍🍳 പൊഞ്ചിക്കര കേശവൻ`) standing side-by-side at the wooden dining table.
-   - **Clean Empty Banana Leaf**: Starts with a pristine green banana leaf centerpiece (`assets/banana_leaf_base.png`) mounted on the wooden table.
-   - **Real Photo Dishes**: Uses authentic photographic cutouts from `assets/realistic_sadhya.jpg` for the Sadhya items.
-
-2. **Core Interactive Mechanic ("Ponjikkara Logic")**:
-   - **User Prompt**: *"Click anywhere on the banana leaf to choose where Ponjikkara should serve your next dish!"*
-   - **The Twist**: Clicking anywhere on the leaf or table ignores your target completely. Ponjikkara drops the dish wherever *he* wants, disregarding proper Sadhya etiquette.
-   - **Live Voice & Dialogue**: On every serve click, Ponjikkara speaks out loud via browser Web Speech Synthesis and displays dynamic comic speech bubbles over his head.
-
-3. **16 Sequential Sadhya Dishes**:
-   1. Parippu Curry & Ghee
-   2. Sambar
-   3. Avial
-   4. Thoran
-   5. Olan
-   6. Kalan
-   7. Erissery
-   8. Pachadi (Pineapple/Beetroot)
-   9. Khichadi (Cucumber Yogurt)
-   10. Inji Puli (Puli Inji)
-   11. Mango Pickle
-   12. Naranga Pickle
-   13. Banana Chips (Upperi)
-   14. Sharkara Varatti
-   15. Crispy Pappadam
-   16. Palada Payasam (The Finale)
-
-4. **Disaster Report Card Modal**:
-   - Live dish counter: `Dishes Served: [X / 16]`.
-   - Pop-up modal upon completion with Ponjikkara's victory pose and a downloadable **Disaster Report Card (PNG)** with an official rubber stamp seal.
-
----
-
-## 🚀 Getting Started
-
-Simply open `index.html` in any web browser, or start a local HTTP server:
-
-```bash
-python3 -m http.server 8090
-```
-
-Then visit `http://localhost:8090` in your browser!
-
----
-
-## 🛠️ Tech Stack
-
-- **HTML5 Canvas** (Physics, liquid splatters, curved redirection arrows, steam vapor)
-- **Vanilla JavaScript (ES6+)**
-- **Tailwind CSS** & **Vanilla CSS**
-- **Web Audio API** & **Web Speech API**
-
----
-
-*Made with ❤️ for Onam!*
