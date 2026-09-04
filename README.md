@@ -1,105 +1,106 @@
-# 🍃 പോഞ്ഞിക്കര ഓണ സദ്യ സിമുലേറ്റർ | Ponjikkara Onam Sadhya Simulator
-
-An interactive, single-page web application featuring a traditional **Kerala Onam Sadhya** serving game with a comedic twist based on the movie character **Ponjikkara Kesavan** (*Kalyanaraman*).
-
----
-<img width="1280" height="640" alt="git (1)" src="https://github.com/user-attachments/assets/8920b256-2ba8-4988-b824-5351134eb4bd" />
-
-
-
-# [ponjikkara sadhya] 🎯
-
+# 🍃 Ponjikkara Onam Sadhya Simulator 🎯
 
 ## Basic Details
-### Team Name: [avulussum vellam]
+- **Team Name**: Avulussum Vellam
+- **Team Members**:
+  - **Team Lead**: Arya Grace - College
+  - **Member 2**: Akshita Sivasankaran - College
+  - **Member 3**: Team Member - College
 
+## Project Description
+An interactive, comedic single-page web application featuring a traditional Kerala Onam Sadhya serving experience. Players try to click where dishes should go on King Mahabali's banana leaf, but head caterer **Ponjikkara Kesavan** (*Kalyanaraman*) rejects every instruction and launches dishes wherever he wants!
 
-### Team Members
-- Team Lead: [Akshita Sivasankan] - [MEC]
-- Member 2: [Akshita Sivasankaran] - [MEC]
-- Member 3: [Arya K A] - [MEC]
+## The Problem (that doesn't exist)
+People attending Onam Sadhyas are forced to follow strict dining etiquette on where Parippu, Sambar, Avial, and Payasam are placed on the banana leaf, depriving society of chaotic catering freedom.
 
-### Project Description
-A unhinged web game where you try to serve a 16-course Onam Sadhya, but the algorithm is powered by pure, unfiltered Ponjikkara Kesavan. You click where you want the dish to go, and the app basically says *"Cute idea, but no"*—splatting curries, pickles, and payasam wherever it wants while screaming iconic Malayalam movie dialogues at you.
-
-### The Problem (that doesn't exist)
-For decades, web apps have been boringly polite. You click a button, the app does what you want. Where is the spice? Where is the disrespect? People serving Onam Sadhya have been trapped in a dark age of "orderly placement" and "following basic dining etiquette," leading to lunches that are tragically organized, peaceful, and completely devoid of drama.
-
-### The Solution (that nobody asked for)
-Ponjikkara's Sadhya Express: A web app that actively fights its own user. Built with HTML, CSS animations, and vanilla JavaScript, we completely threw UX best practices out the window to engineer "Ponjikkara Logic." You gently click top-left for the mango pickle, and our code decides to dump a ladle of warm Payasam directly onto your Matta rice. It’s not a bug, it’s an authentic simulator of your favorite chaotic uncle ruining Sunday lunch.
-
-
-## Technical Details
-### Technologies/Components Used
-For Software:
-- Languages used : Python, HTML, CSS, Javascript
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
-
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
-
-### Implementation
-For Software:
-# Installation
-[commands]
-
-# Run
-[commands]
-
-### Project Documentation
-For Software:
-
-# Screenshots (Add at least 3)
-
-
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
-### Project Demo
-# Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
-
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+## The Solution (that nobody asked for)
+Introducing Ponjikkara's Sadhya Simulator—an interactive simulator where head caterer Ponjikkara Kesavan ignores your placement clicks, scoffs at traditional rules, speaks out loud via Web Speech Synthesis, and splatters 16 authentic dishes with dynamic physics onto the leaf!
 
 ---
-Made with ❤️ at TinkerHub Useless Projects 
 
-![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
-![Static Badge](https://img.shields.io/badge/UselessProjects--26-26?link=https%3A%2F%2Ftinkerhub.org%2Fevents%2F1M8ORET9A1%2Fuseless-projects-3.0)
+## Technical Details
+
+### Technologies/Components Used
+
+#### For Software:
+- **Languages used**: HTML5, JavaScript (ES6+), CSS3
+- **Frameworks used**: Vanilla Web Stack (No external frontend frameworks required)
+- **Libraries used**:
+  - Web Audio API (Background Music & Audio FX)
+  - Web Speech API (`SpeechSynthesis` for Malayalam Voice Lines)
+  - HTML5 Canvas 2D API (Dish Trajectories, Splatters, Steam, Confetti)
+  - Google Fonts (`Cinzel`, `Noto Serif Malayalam`, `Gayathri`, `Outfit`, `Montserrat`)
+- **Tools used**: Python 3 (`http.server`), Git & GitHub, Pillow (PIL Image Processing)
+
+#### For Hardware:
+- *N/A (Software Project)*
+
+---
+
+## Implementation
+
+### For Software:
+
+#### Installation
+```bash
+# Clone the repository from GitHub
+git clone https://github.com/aryagrace15-eng/avulussum_vellam.git
+
+# Navigate into the project directory
+cd avulussum_vellam
+```
+
+#### Run
+```bash
+# Start the local Python HTTP web server
+python3 -m http.server 8099
+
+# Open http://localhost:8099 in your web browser
+```
+
+---
+
+## Project Documentation
+
+### For Software:
+
+#### Screenshots
+
+![Screenshot 1 - Event Banner](assets/screenshots/tinkerhub_event.jpg)  
+*TinkerHub Useless Projects 3.0 event submission and GitHub repository overview.*
+
+![Screenshot 2 - Code & Terminal](assets/screenshots/code_terminal.jpg)  
+*Developer workspace showing VS Code editor, game state controller logic, and terminal git execution.*
+
+![Screenshot 3 - Gameplay Preview](assets/screenshots/gameplay_preview.png)  
+*Interactive game arena featuring King Mahabali, Ponjikkara Kesavan, the realistic banana leaf plate, and 16 served Sadhya delicacies.*
+
+#### Diagrams
+
+![Workflow Diagram](assets/screenshots/gameplay_preview.png)  
+*Game State Workflow: User Click Input ➔ Ponjikkara Rule Override ➔ Ladle Trajectory Animation ➔ Splatter Physics & Speech Synthesis ➔ King Mahabali Reaction ➔ Approved Rubber Stamp Seal Modal.*
+
+---
+
+## Project Demo
+
+### Video
+[Demo Video Link](#)  
+*Demonstrates interactive dish placement, Ponjikkara logic overrides, background song playback, speech synthesis, and the rubber stamp seal completion modal.*
+
+### Additional Demos
+- Live Local Server: `http://localhost:8099`
+
+---
+
+## Team Contributions
+- **Arya Grace**: Project Conceptualization, Character Asset Selection, UI/UX Layout Design & Git Repository Management.
+- **Akshita Sivasankaran**: Core Game Engine Implementation, Physics Trajectory Animations, Audio/Speech API Integration, Image Processing Cutouts & CSS Styling.
+- **Team Member**: Testing, Sadhya Dish Etiquette Research & Documentation.
+
+---
+
+Made with ❤️ at **TinkerHub Useless Projects 3.0**
+
+![TinkerHub](https://img.shields.io/badge/TinkerHub-Useless%20Projects%203.0-orange?style=for-the-badge)
+![Kerala Onam](https://img.shields.io/badge/Kerala-Onam%20Sadhya-green?style=for-the-badge)
